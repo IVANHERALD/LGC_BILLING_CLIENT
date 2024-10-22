@@ -1,0 +1,77 @@
+.invoice-container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #000;
+    font-family: Arial, sans-serif;
+  }
+  .invoice-header {
+    
+    justify-content: space-between;
+    border-bottom: 1px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  .header-left {
+    text-align: center;
+  }
+  
+  .invoice-header {
+    text-align: center;
+  }
+  
+  .header-right {
+    text-align: right;
+  }
+  .invoice-header h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .invoice-header p {
+    margin: 2px;
+    font-size: 0.9rem;
+  }
+  
+  .invoice-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .invoice-info, .transport-info {
+    width: 48%;
+  }
+  
+  .invoice-info p, .transport-info p {
+    margin: 2px 0;
+  }
+  
+  .invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .invoice-table th, .invoice-table td {
+    border: 1px solid #000;
+    padding: 5px;
+    text-align: left;
+  }
+  
+  .invoice-summary {
+    margin-top: 20px;
+  }
+  
+  .invoice-summary p {
+    font-weight: bold;
+  }
+  
+  .invoice-footer {
+    text-align: center;
+    margin-top: 40px;
+  }
+  .input-field {
+    flex-grow: 1;
+  }
