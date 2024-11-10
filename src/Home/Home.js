@@ -1,13 +1,43 @@
-import React from 'react'
+import React, { useState,useEffect} from 'react'
 import '../../src/Home/Home.css';
-import { TextField,Button } from '@mui/material';
+import { TextField,Button,Typography,Box } from '@mui/material';
 import lgc from '../assest/lgc.svg';
 import Invoice from '../Invoice/Invoice';
 
 function Home() {
+  const [invoice_no,setinvoice_no]=useState('');
+  const [invoice_date,setinvoice_date]=useState('');
+  const [state,setstate]=useState('TamilNadu');
+  const [state_code,setstate_code]=useState('33');
+  const [transport_name,settransport_name]=useState('');
+  const [vehicle_number,setvehicle_number]=useState('');
+  const [date_of_supply,setdate_of_supply]=useState('');
+  const [place_of_supply,setplace_of_supply]=useState('');
+  const [pono_date,setpono_date]=useState('');
+  const [eway_bill_no,seteway_bill_no]=useState('');
+  const [receiver_name,setreceiver_name]=useState('');
+  const [receiver_address,setreceiver_address]=useState('');
+  const [receiver_gstin,setreceiver_gstin]=useState('');
+  const [receiver_state,setreceiver_state]=useState('');
+  const [receiver_state_code,setreceiver_state_code]=useState('');
+  const [consignee_name,setconsignee_name]=useState('');
+  const [consignee_address,setconsignee_address]=useState('');
+  const [consignee_gstin,setconsignee_gstin]=useState('');
+  const [consignee_state,setconsignee_state]=useState('');
+  const [consignee_state_code,setconsignee_state_code]=useState('');
+  
+  
+  
+  
   const handlePrint = () => {
     window.print();
+    console.log(invoice_no,invoice_date,state,state_code,transport_name,vehicle_number,date_of_supply,place_of_supply,pono_date,eway_bill_no);
   };
+  useEffect(() => {
+    const now = new Date();
+    const formattedDateTime = `${now.toLocaleDateString()} ${now.toLocaleTimeString([], { hour12: false })}`; // Formats date and time according to system locale
+    setinvoice_date(formattedDateTime);
+  }, []);
   return (
     <div>
       
@@ -32,43 +62,86 @@ function Home() {
         <hr className='horizontal-line'/>
           <div className='invoice_details'>
             <div className='invoice_details_set1'>
-        
-        <TextField variant='standard' label="Invoice No:"></TextField ><br/>
-        <TextField variant='standard' label="Invoice Date:"></TextField><br/>
-        <TextField variant='standard' label="State:"></TextField>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <TextField variant='standard' label="State code:"></TextField>
+            <Box display={'flex'} alignItems="center" gap={5}>
+            <Typography variant="body1" sx={{ fontSize: '0.85rem' }}>Invoice No:</Typography> 
+        <TextField variant='standard' value={invoice_no} onChange={(e)=>setinvoice_no(e.target.value)}></TextField ></Box><br/>
+        <Box display={'flex'} alignItems="center" gap={5}>
+        <Typography variant="body1" sx={{ fontSize: '0.85rem' }}>Invoice Date:</Typography> 
+        <TextField variant='standard' value={invoice_date}></TextField></Box><br/>
+        <Box display={'flex'} alignItems="center" gap={5}>
+        <Typography variant="body1" sx={{ fontSize: '0.85rem' }}>State:</Typography> 
+        <TextField variant='standard' value={state} ></TextField>
+        <Typography variant="body1" sx={{ fontSize: '0.85rem' }}>State code:</Typography> 
+        <TextField variant='standard'value={state_code} ></TextField></Box>
         </div>
         <hr className='horizontal-line'/>
         <div className="vertical_line"></div>
         <div className='invoice_details_set2'>
-        
-        <TextField variant='standard' label="Name of Transport:"></TextField><br/>
-        <TextField variant='standard' label="Vehicle Number:"></TextField><br/>
-        <TextField variant='standard' label="Date of Supply:"></TextField><br/>
-        <TextField variant='standard' label="Place of Supply:"></TextField><br/>
-        <TextField variant='standard' label="Po.No. & Date:"></TextField><br/>
-        <TextField variant='standard' label="E-WAY Bill No:"></TextField><br/></div>
+        <Box display={'flex'} alignItems="center" gap={5}>
+        <Typography variant="body1" sx={{ fontSize: '0.70rem',fontWeight: 'bold' }}>Name of Transport:</Typography> 
+        <TextField variant='standard' InputProps={{ disableUnderline: true }} value={transport_name} onChange={(e)=>settransport_name(e.target.value)}></TextField></Box><br/>
+        <Box display={'flex'} alignItems="center" gap={5}>
+        <Typography variant="body1" sx={{ fontSize: '0.75rem',fontWeight: 'bold' }}>Vehicle Number:</Typography> 
+        <TextField variant='standard'  onChange={(e)=>setvehicle_number(e.target.value)}  ></TextField></Box><br/>
+        <Box display={'flex'} alignItems="center" gap={5}>
+        <Typography variant="body1" sx={{ fontSize: '0.70rem',fontWeight: 'bold' }}>Date of Supply:</Typography> 
+        <TextField variant='standard' onChange={(e)=>setdate_of_supply(e.target.value)}  ></TextField></Box><br/>
+        <Box display={'flex'} alignItems="center" gap={5}>
+        <Typography variant="body1" sx={{ fontSize: '0.70rem',fontWeight: 'bold' }} onChange={(e)=>setplace_of_supply(e.target.value)}  >Place of Supply:</Typography> 
+        <TextField variant='standard' ></TextField></Box><br/>
+        <Box display={'flex'} alignItems="center" gap={5}>
+        <Typography variant="body1" sx={{ fontSize: '0.70rem',fontWeight: 'bold' }} >Po.No. & Date:</Typography> 
+        <TextField variant='standard' onChange={(e)=>setpono_date(e.target.value)} ></TextField></Box><br/>
+        <Box display={'flex'} alignItems="center" gap={5}>
+        <Typography variant="body1" sx={{ fontSize: '0.70rem',fontWeight: 'bold' }}>E-WAY Bill No:</Typography> 
+        <TextField variant='standard' onChange={(e)=>seteway_bill_no(e.target.value)} ></TextField></Box><br/></div>
         </div>
         <span>
         <hr className='horizontal-line'/>
-            <h5>Details of Receiver/Billed To</h5>
+            <h5>Details of Receiver/Billed To</h5><div className="vertical_line"></div>
+            <h5>Details of Consignee/Shipped To</h5>
             <hr className='horizontal-line'/>
+            
             <div className='invoice_details_set1'>
-            <TextField variant='standard' label="Name:"></TextField><br/>
-            <TextField variant='standard' label="Address:"></TextField><br/>
-            <TextField variant='standard' label="GSTIN:"></TextField><br/>
-            <TextField variant='standard' label="State:"></TextField>
-            <TextField variant='standard' label="State code:"></TextField>
+            <Box display={'flex'} alignItems="center" gap={5}>
+            <Typography variant="body1"  sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>Name:</Typography> 
+            <TextField variant='standard' sx={{ width: '250px' }} ></TextField></Box><br/>
+            <Box display={'flex'} alignItems="center" gap={3}>
+            <Typography variant="body1"  sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>Address:</Typography> 
+            <TextField variant='standard' sx={{ width: '450px' }} MULTILINE></TextField></Box><br/>
+            <Box display={'flex'} alignItems="center" gap={4.5}>
+            <Typography variant="body1"  sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>GSTIN:</Typography> 
+            <TextField variant='standard' sx={{ width: '250px' }} ></TextField></Box><br/>
+            <Box display={'flex'} alignItems="center" gap={5}>
+            <Typography variant="body1"  sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>State:</Typography> 
+            <TextField variant='standard' sx={{ width: '100px' }} ></TextField></Box>
+            <Box display={'flex'} alignItems="center" gap={3}>
+            <Typography variant="body1"  sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>State code:</Typography> 
+            <TextField variant='standard' sx={{ width: '250px' }} ></TextField></Box>
             </div>
+            
         </span>
         <span>
-        <h5>Details of Consignee/Shipped To</h5>
-        <div className='invoice_details_set2'>
-        <TextField variant='standard' label="Name:"></TextField><br/>
-        <TextField variant='standard' label="Address:"></TextField><br/>
-        <TextField variant='standard' label="GSTIN:"></TextField><br/>
-        <TextField variant='standard' label="State:"></TextField><br/>
-        </div>
+        
+        
+        <Box display={'flex'} alignItems="center" gap={5}>
+        <Typography variant="body1" sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>Name:</Typography> 
+        <TextField variant='standard' sx={{ width: '250px' }}></TextField></Box><br/>
+        <Box display={'flex'} alignItems="center" gap={3}>
+        <Typography variant="body1" sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>Address:</Typography>
+        <TextField variant='standard'  sx={{ width: '200px' }} multiline></TextField><br/></Box><br/>
+        <Box display={'flex'} alignItems="center" gap={4.5}>
+        <Typography variant="body1" sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>GSTIN:</Typography>
+        <TextField variant='standard'  sx={{ width: '200px' }}></TextField></Box><br/>
+        <Box display={'flex'} alignItems="center" gap={5}>
+
+        <Typography variant="body1"sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>State:</Typography>
+        <TextField variant='standard'  sx={{ width: '200px' }}></TextField><br/></Box>
+        <Box display={'flex'} alignItems="center" gap={3}>
+            <Typography variant="body1"  sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>State code:</Typography> 
+            <TextField variant='standard' sx={{ width: '250px' }} ></TextField></Box>
+        
+        
         </span>
         <hr className='horizontal-line'/>
         <div>
@@ -88,13 +161,15 @@ function Home() {
                 Interest @24% will be charged if the bills are not settled before 30 days.
             </p>
             <div className="vertical_line"></div>
-            <div>
+            <div className="seal">
               <p>(Common Seal)</p>
             </div>
             <div className="vertical_line"></div>
+          <div className='signature'>
         <p>Certified that the particulars given above are true and correct.</p>
         <p>For LAKSHMI GRADE CASTINGS</p>
         <p> Authorized Signatory</p>
+        </div>
       </footer>
       
         </span>

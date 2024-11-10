@@ -23,7 +23,7 @@ function Invoice() {
                     <TextField variant='standard' InputProps={{ sx: { fontSize: '15px' } }} />
                 </TableCell>
                 <TableCell sx={{borderRight: '1px solid black' }}> 
-                    <TextField variant='standard' multiline sx={{width:'200px'}} InputProps={{ sx: { fontSize: '15px' } }}/>
+                    <TextField variant='standard' multiline sx={{width:'200px'}} InputProps={{ disableUnderline: true, sx: { fontSize: '15px'} }}/>
                 </TableCell>
                 <TableCell sx={{borderRight: '1px solid black' }} >
                     <TextField variant='standard' InputProps={{ sx: { fontSize: '15px' } }} />
