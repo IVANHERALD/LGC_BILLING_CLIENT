@@ -3,6 +3,7 @@ import '../../src/Home/Home.css';
 import { TextField,Button,Typography,Box } from '@mui/material';
 import lgc from '../assest/lgc.svg';
 import Invoice from '../Invoice/Invoice';
+import Navbar from '../Navbar/Navbar';
 
 function Home() {
   const [invoice_no,setinvoice_no]=useState('');
@@ -31,7 +32,7 @@ function Home() {
   
   const handlePrint = () => {
     window.print();
-    console.log(invoice_no,invoice_date,state,state_code,transport_name,vehicle_number,date_of_supply,place_of_supply,pono_date,eway_bill_no);
+    console.log(invoice_no,invoice_date,state,state_code,transport_name,vehicle_number,date_of_supply,place_of_supply,pono_date,eway_bill_no,receiver_name,receiver_address,receiver_gstin,receiver_state,receiver_state_code,consignee_name,consignee_address,consignee_gstin,consignee_state,consignee_state_code);
   };
   useEffect(() => {
     const now = new Date();
@@ -40,7 +41,9 @@ function Home() {
   }, []);
   return (
     <div>
-      
+      <Navbar/>
+      <div className="watermark-container">
+        <div className="watermark">Lakshmi Grade Casting</div>
          <div  className="invoice-container">
         
         <header className="invoice-header">
@@ -63,22 +66,22 @@ function Home() {
           <div className='invoice_details'>
             <div className='invoice_details_set1'>
             <Box display={'flex'} alignItems="center" gap={5}>
-            <Typography variant="body1" sx={{ fontSize: '0.85rem' }}>Invoice No:</Typography> 
+            <Typography variant="body1" sx={{ fontSize: '0.85rem' ,fontWeight: 'bold'}}>Invoice No:</Typography> 
         <TextField variant='standard' value={invoice_no} onChange={(e)=>setinvoice_no(e.target.value)}></TextField ></Box><br/>
         <Box display={'flex'} alignItems="center" gap={5}>
-        <Typography variant="body1" sx={{ fontSize: '0.85rem' }}>Invoice Date:</Typography> 
+        <Typography variant="body1" sx={{ fontSize: '0.75rem',fontWeight: 'bold' }}>Invoice Date:</Typography> 
         <TextField variant='standard' value={invoice_date}></TextField></Box><br/>
         <Box display={'flex'} alignItems="center" gap={5}>
-        <Typography variant="body1" sx={{ fontSize: '0.85rem' }}>State:</Typography> 
-        <TextField variant='standard' value={state} ></TextField>
-        <Typography variant="body1" sx={{ fontSize: '0.85rem' }}>State code:</Typography> 
+        <Typography variant="body1" sx={{ fontSize: '0.75rem',fontWeight: 'bold' }}>State:</Typography> 
+        <TextField variant='standard' value={state} sx={{width:'180px'}}></TextField>
+        <Typography variant="body1" sx={{ fontSize: '0.75rem',fontWeight: 'bold' }}>State code:</Typography> 
         <TextField variant='standard'value={state_code} ></TextField></Box>
         </div>
         <hr className='horizontal-line'/>
         <div className="vertical_line"></div>
         <div className='invoice_details_set2'>
         <Box display={'flex'} alignItems="center" gap={5}>
-        <Typography variant="body1" sx={{ fontSize: '0.70rem',fontWeight: 'bold' }}>Name of Transport:</Typography> 
+        <Typography variant="body1" sx={{ fontSize: '0.41rem',fontWeight: 'bold' }}>Name of Transport:</Typography> 
         <TextField variant='standard' InputProps={{ disableUnderline: true }} value={transport_name} onChange={(e)=>settransport_name(e.target.value)}></TextField></Box><br/>
         <Box display={'flex'} alignItems="center" gap={5}>
         <Typography variant="body1" sx={{ fontSize: '0.75rem',fontWeight: 'bold' }}>Vehicle Number:</Typography> 
@@ -105,19 +108,19 @@ function Home() {
             <div className='invoice_details_set1'>
             <Box display={'flex'} alignItems="center" gap={5}>
             <Typography variant="body1"  sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>Name:</Typography> 
-            <TextField variant='standard' sx={{ width: '250px' }} ></TextField></Box><br/>
+            <TextField variant='standard' sx={{ width: '250px' }} onChange={(e)=>setreceiver_name(e.target.value)} ></TextField></Box><br/>
             <Box display={'flex'} alignItems="center" gap={3}>
             <Typography variant="body1"  sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>Address:</Typography> 
-            <TextField variant='standard' sx={{ width: '450px' }} MULTILINE></TextField></Box><br/>
+            <TextField variant='standard' sx={{ width: '450px' }} MULTILINE onChange={(e)=>setreceiver_address(e.target.value)}></TextField></Box><br/>
             <Box display={'flex'} alignItems="center" gap={4.5}>
             <Typography variant="body1"  sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>GSTIN:</Typography> 
-            <TextField variant='standard' sx={{ width: '250px' }} ></TextField></Box><br/>
+            <TextField variant='standard' sx={{ width: '250px' }} onChange={(e)=>setreceiver_gstin(e.target.value)}></TextField ></Box><br/>
             <Box display={'flex'} alignItems="center" gap={5}>
             <Typography variant="body1"  sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>State:</Typography> 
-            <TextField variant='standard' sx={{ width: '100px' }} ></TextField></Box>
+            <TextField variant='standard' sx={{ width: '100px' }} onChange={(e)=>setreceiver_state(e.target.value)}></TextField></Box>
             <Box display={'flex'} alignItems="center" gap={3}>
             <Typography variant="body1"  sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>State code:</Typography> 
-            <TextField variant='standard' sx={{ width: '250px' }} ></TextField></Box>
+            <TextField variant='standard' sx={{ width: '250px' }} onChange={(e)=>setreceiver_state_code(e.target.value)} ></TextField></Box>
             </div>
             
         </span>
@@ -126,20 +129,20 @@ function Home() {
         
         <Box display={'flex'} alignItems="center" gap={5}>
         <Typography variant="body1" sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>Name:</Typography> 
-        <TextField variant='standard' sx={{ width: '250px' }}></TextField></Box><br/>
+        <TextField variant='standard' sx={{ width: '250px' }} onChange={(e)=>setconsignee_name(e.target.value)}></TextField></Box><br/>
         <Box display={'flex'} alignItems="center" gap={3}>
-        <Typography variant="body1" sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>Address:</Typography>
-        <TextField variant='standard'  sx={{ width: '200px' }} multiline></TextField><br/></Box><br/>
+        <Typography variant="body1" sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }} >Address:</Typography>
+        <TextField variant='standard'  sx={{ width: '200px' }} multiline onChange={(e)=>setconsignee_address(e.target.value)}></TextField><br/></Box><br/>
         <Box display={'flex'} alignItems="center" gap={4.5}>
         <Typography variant="body1" sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>GSTIN:</Typography>
-        <TextField variant='standard'  sx={{ width: '200px' }}></TextField></Box><br/>
+        <TextField variant='standard'  sx={{ width: '200px' }} onChange={(e)=>setconsignee_gstin(e.target.value)}></TextField></Box><br/>
         <Box display={'flex'} alignItems="center" gap={5}>
 
         <Typography variant="body1"sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>State:</Typography>
-        <TextField variant='standard'  sx={{ width: '200px' }}></TextField><br/></Box>
+        <TextField variant='standard'  sx={{ width: '200px' }} onChange={(e)=>setconsignee_state(e.target.value)}></TextField><br/></Box>
         <Box display={'flex'} alignItems="center" gap={3}>
             <Typography variant="body1"  sx={{ fontSize: '0.85rem',fontWeight: 'bold'  }}>State code:</Typography> 
-            <TextField variant='standard' sx={{ width: '250px' }} ></TextField></Box>
+            <TextField variant='standard' sx={{ width: '250px' }} onChange={(e)=>setconsignee_state_code(e.target.value)}></TextField></Box>
         
         
         </span>
@@ -147,6 +150,7 @@ function Home() {
         <div>
           <Invoice/>
         </div>
+        <hr className='horizontal-line'/>
         <span>
 
             <p>Total Invoice Amount in Words:</p>
@@ -170,9 +174,11 @@ function Home() {
         <p>For LAKSHMI GRADE CASTINGS</p>
         <p> Authorized Signatory</p>
         </div>
+        
       </footer>
       
         </span>
+        </div>
         </div>
         <center>
         <div className="print-button-container">
@@ -181,6 +187,9 @@ function Home() {
         </Button>&nbsp;&nbsp;&nbsp;&nbsp;
         <Button variant="contained" color="success" onClick={handlePrint}>
           Review Invoice
+        </Button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <Button variant="contained" color="error" onClick={handlePrint}>
+          Exit
         </Button>
         </div></center>
         

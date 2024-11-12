@@ -109,4 +109,28 @@
     height: auto;
     align-self: stretch;
   }
-  
+  .watermark-container {
+  position: relative;
+  background: #fff;
+}
+
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5rem; /* Adjust size as needed */
+  color: rgba(0, 0, 0, 0.1); /* Light gray for watermark effect */
+  text-transform: uppercase;
+  font-weight: bold;
+  white-space: nowrap;
+  z-index: -1; /* Send watermark to the background */
+  pointer-events: none; /* Make it non-interactive */
+}
+
+.invoice-container {
+  position: relative;
+  z-index: 1; /* Ensure invoice content is above the watermark */
+  background: #fff;
+  padding: 20px;
+}
