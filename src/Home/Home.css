@@ -1,6 +1,6 @@
 .invoice-container {
-    width: 95%;
-    margin: auto;
+    width: 96%;
+    
     padding: 15px;
     border: 1px solid #000;
     font-family: Arial, sans-serif;
@@ -87,6 +87,9 @@
     .print-button-container {
       display: none;
     }
+    .navbar-container {
+      display: none;
+    }
   }
   .horizontal{
     border:1px solid #000;
@@ -132,5 +135,12 @@
   position: relative;
   z-index: 1; /* Ensure invoice content is above the watermark */
   background: #fff;
-  padding: 20px;
+  
+  
+}
+.segment{
+  display: flex;
+}
+.information{
+  font-size: x-small;
 }

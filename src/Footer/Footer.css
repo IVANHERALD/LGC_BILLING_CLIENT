@@ -1,0 +1,37 @@
+.invoice-footer {
+    display: flex;
+    justify-content: space-between; /* Space sections apart */
+    align-items: flex-start; /* Align items at the top */
+    width: 100%;
+    padding: 20px;
+    height: 150px; /* Ensure footer has enough height */
+  border-top: 1px solid #000;
+  }
+  
+  .footer-section {
+    width: 33%; /* Each section takes up one-third of the width */
+    display: flex;
+  flex-direction: column; /* Stack content vertically */
+  justify-content: space-between; /* Ensure content is spaced between top and bottom */
+  height: 100%; 
+  }
+  
+  .information-text {
+    font-size: 12px;
+    margin: 0;
+    flex-grow: 1;
+  }
+  
+  .vertical-line {
+    width: 1px;
+    background-color: #000; /* Vertical line separator */
+    height: 100px; /* Set the height of the line */
+  }
+  
+
+  
+  
+    .seal_c {
+        margin-top: auto; /* Pushes the element to the bottom */
+        text-align: center;
+      }
