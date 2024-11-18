@@ -90,6 +90,7 @@
     .navbar-container {
       display: none;
     }
+    
   }
   .horizontal{
     border:1px solid #000;
@@ -109,8 +110,8 @@
   .vertical_line {
     width: 1px;
     background-color: #000; /* Adjust the color if needed */
-    height: auto;
-    align-self: stretch;
+    height: 100%;
+    
   }
   .watermark-container {
   position: relative;
@@ -143,4 +144,56 @@
 }
 .information{
   font-size: x-small;
+}
+.receiever_details,
+.consignee_details {
+  flex: 1; /* Equal width for both sections */
+}
+
+.receiver-consignee-container {
+  display: flex;
+  gap: 10px; /* Add space between sections */
+}
+
+.vertical_line {
+  width: 1px;
+  background-color: #000; /* Vertical line color */
+  height: auto; /* Adjusts to container height */
+  align-self: stretch; /* Ensures full height */
+}
+
+.receiever_details .text-field,
+.consignee_details .text-field {
+  margin-bottom: 10px; /* Spacing between text fields */
+}
+
+h6 {
+  margin: 0px 0; /* Minimal margin for titles inside the header */
+  text-align: center;
+  font-style: bold;
+}
+
+.invoice_details h5 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+.shipping_details_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 2px 0; /* Reduce padding to minimal */
+  margin: 0;
+}
+
+.details_left {
+  flex: 1;
+  text-align: left;
+  margin-right: 10px; /* Optional spacing */
+}
+
+.details_right {
+  flex: 1;
+  text-align: right;
+  margin-left: 10px; /* Optional spacing */
 }

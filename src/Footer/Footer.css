@@ -1,37 +1,78 @@
 .invoice-footer {
     display: flex;
-    justify-content: space-between; /* Space sections apart */
-    align-items: flex-start; /* Align items at the top */
+    justify-content: space-between;
+    /* Space sections apart */
+    align-items: flex-start;
+    /* Align items at the top */
     width: 100%;
-    padding: 20px;
-    height: 150px; /* Ensure footer has enough height */
-  border-top: 1px solid #000;
-  }
-  
-  .footer-section {
-    width: 33%; /* Each section takes up one-third of the width */
-    display: flex;
-  flex-direction: column; /* Stack content vertically */
-  justify-content: space-between; /* Ensure content is spaced between top and bottom */
-  height: 100%; 
-  }
-  
-  .information-text {
-    font-size: 12px;
-    margin: 0;
-    flex-grow: 1;
-  }
-  
-  .vertical-line {
-    width: 1px;
-    background-color: #000; /* Vertical line separator */
-    height: 100px; /* Set the height of the line */
-  }
-  
+    padding: 5px;
 
+    border-top: 1px solid #000;
+    font-size: 10px;
+    margin-bottom: 0px; 
+}
+
+.footer-section {
+    width: 33%;
+    /* Each section takes up one-third of the width */
+    display: flex;
+    flex-direction: column;
+    /* Stack content vertically */
+    justify-content: space-between;
+    min-height: 100px; /* Adjust height as needed */
+    padding-bottom: 5px; 
+}
+
+.information {
+    font-size: 8px;
+    line-height: 1.2;
+    text-align: justify;
+}
+
+.information-text {
+    font-size: 8px;
+    margin: 0;
+
+    text-align: justify;
+}
+
+.vertical-line {
+    width: 1px;
+    background-color: #000;
+    /* Vertical line separator */
+    height: 100%;
+    /* Set the height of the line */
+}
+
+.seal,
+.signature {
+    display: flex;
+    flex-direction: column;
+    
+    /* Push content to top and bottom */
+    align-items: center;
+    font-size: 8px;
+
+    text-align: center;
+    height: 100%; /* Full height to allow items to push down */
+  position: relative;
+}
+
+.seal .seal-text, .signature .signature-text {
+    margin-top: auto; /* Pushes to bottom */
+    font-weight: bold;
+    margin-bottom: 0px;
+  }
   
+  /* Additional styling for the "Certified that..." and "For LAKSHMI GRADE CASTINGS" texts */
+  .signature p:first-child {
+    margin-bottom: 4px; /* Space between "Certified that..." and "For Lakshmi Grade Castings" */
+  }
+  .signature p:nth-child(2) {
+    margin-bottom: 20px; /* Space before "Authorized Signatory" */
+  }
   
-    .seal_c {
-        margin-top: auto; /* Pushes the element to the bottom */
-        text-align: center;
-      }
+  /* "Authorized Signatory" fixed at the bottom */
+  .signature .seal-text {
+    margin-top: auto;
+  }

@@ -16,3 +16,8 @@
     z-index: -1; /* Send watermark to the background */
     pointer-events: none; /* Make it non-interactive */
   }
+  @media print {
+    .hide-print {
+      display: none!important;
+    }}
+    
