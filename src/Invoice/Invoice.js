@@ -13,12 +13,25 @@ function Invoice() {
         setitems([...items, { si_no: '', name: 0, hsn: 0, qty: 0, weight: 0, rate: 0, value: 0 }]);
 
     };
+    // const handleRemoveRow = (index) => {
+    //     const updatedItems = [...items];
+    //     updatedItems.splice(index, 1);
+    //     setitems(updatedItems);
+    //     console.log(items)
+    // };
     const handleRemoveRow = (index) => {
-        const updatedItems = [...items];
-        updatedItems.splice(index, 1);
-        setitems(updatedItems);
-        console.log(items)
+        setitems((prevItems) => {
+            // Filter out the row at the given index
+            const updatedItems = prevItems.filter((_, i) => i !== index);
+    
+            // Recalculate taxable value for all remaining rows (if necessary)
+            return updatedItems.map((item) => ({
+                ...item,
+                value: item.weight * item.rate || 0, // Ensure taxable value is updated
+            }));
+        });
     };
+    
     const handleInputChange = (index, field, value) => {
         const updatedItems = [...items];
         updatedItems[index] = { ...updatedItems[index], [field]: value };
@@ -100,7 +113,7 @@ function Invoice() {
         </TableContainer>
             <div>
                 <Button className="hide-print" onClick={handleAddRow}>+</Button>
-                <Button className="hide-print" onClick={() => handleRemoveRow()} >-</Button>
+                <Button className="hide-print" onClick={() => handleRemoveRow(items.length - 1)} disabled={items.length === 1} >-</Button>
             </div>
             <hr className='horizontal-line' />
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', height: '173px' }}>

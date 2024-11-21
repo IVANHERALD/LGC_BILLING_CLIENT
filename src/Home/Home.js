@@ -28,6 +28,12 @@ function Home() {
   const [consignee_gstin, setconsignee_gstin] = useState('');
   const [consignee_state, setconsignee_state] = useState('');
   const [consignee_state_code, setconsignee_state_code] = useState('');
+  const [copyLabels] = useState([
+    "Original for Recipient",
+    "Duplicate Copy for Transporter",
+    "Triplicate Copy",
+    "Duplicate Copy",
+  ]);
 
   useEffect(() => {
     const fetchInvoiceNumber = async () => {
@@ -49,8 +55,8 @@ function Home() {
 
 
   const handlePrint = () => {
-    window.print();
-    console.log(invoice_no, invoice_date, state, state_code, transport_name, vehicle_number, date_of_supply, pono_date, eway_bill_no, receiver_name, receiver_address, receiver_gstin, receiver_state, receiver_state_code, consignee_name, consignee_address, consignee_gstin, consignee_state, consignee_state_code);
+    
+      window.print(); // Trigger print
   };
   useEffect(() => {
     const now = new Date();
@@ -66,7 +72,12 @@ function Home() {
 
       <div className="watermark-container">
         <div className="watermark">Lakshmi Grade Casting</div>
-        <div className='segment'>        
+        <div className='segment'>       
+        <div className="invoice-copy-label">
+          {copyLabels.map((label,index)=>
+          <div key={index} className='invoice-copy'>
+            <div className="invoice-label">{label}</div></div>)}
+        </div> 
            <div className="invoice-container">
             <div className='header-container'>
               <Header/>
@@ -133,7 +144,7 @@ function Home() {
               
             </div>
 
-            <div className="vertical_line"></div>
+            <div className="vertical-line-wrapper"></div>
           <div className='consignee_details'>
             <Box display={'flex'} alignItems="center" gap={5}>
               <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Name:</Typography>

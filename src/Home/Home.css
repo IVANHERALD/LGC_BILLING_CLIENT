@@ -35,6 +35,8 @@
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
+    gap:20px;
+    position: relative;
   }
   
   .invoice-info, .transport-info {
@@ -107,12 +109,7 @@
     flex: 1;
   }
   
-  .vertical_line {
-    width: 1px;
-    background-color: #000; /* Adjust the color if needed */
-    height: 100%;
-    
-  }
+  
   .watermark-container {
   position: relative;
   background: #fff;
@@ -134,8 +131,7 @@
 
 .invoice-container {
   position: relative;
-  z-index: 1; /* Ensure invoice content is above the watermark */
-  background: #fff;
+ 
   
   
 }
@@ -160,6 +156,7 @@
   background-color: #000; /* Vertical line color */
   height: auto; /* Adjusts to container height */
   align-self: stretch; /* Ensures full height */
+  margin: 0 auto;
 }
 
 .receiever_details .text-field,
@@ -196,4 +193,13 @@ h6 {
   flex: 1;
   text-align: right;
   margin-left: 10px; /* Optional spacing */
+}
+.vertical-line-wrapper {
+  position: absolute;
+  top: 0; /* Adjust as needed to align with the header horizontal line */
+  bottom: 0; /* Extends to the bottom horizontal line */
+  left: 50%; /* Center the line horizontally */
+  transform: translateX(-50%);
+  width: 1px;
+  background-color: #000; /* Line color */
 }
