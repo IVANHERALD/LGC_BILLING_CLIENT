@@ -194,12 +194,3 @@ h6 {
   text-align: right;
   margin-left: 10px; /* Optional spacing */
 }
-.vertical-line-wrapper {
-  position: absolute;
-  top: 0; /* Adjust as needed to align with the header horizontal line */
-  bottom: 0; /* Extends to the bottom horizontal line */
-  left: 50%; /* Center the line horizontally */
-  transform: translateX(-50%);
-  width: 1px;
-  background-color: #000; /* Line color */
-}
