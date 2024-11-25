@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react'
 import '../../src/Home/Home.css';
-import { TextField, Button, Typography, Box } from '@mui/material';
 
-import Invoice from '../Invoice/Invoice';
-import Navbar from '../Navbar/Navbar';
+import { Box, Button, TextField, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react'
+
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
+import Invoice from '../Invoice/Invoice';
+import Navbar from '../Navbar/Navbar';
+import { fetchgenInvoiceNumber } from '../services/bill';
 
 function Home() {
   const [invoice_no, setinvoice_no] = useState('');
@@ -35,24 +37,21 @@ function Home() {
     "Duplicate Copy",
   ]);
 
-  useEffect(() => {
-    const fetchInvoiceNumber = async () => {
-        try {
-            const response = await fetch("/generate-invoice-number"); // Replace with your backend endpoint
-            if (response.ok) {
-                const data = await response.json();
-                setinvoice_no(data.invoice_no);
-            } else {
-                console.error("Failed to fetch invoice number:", response.status);
-            }
-        } catch (error) {
-            console.error("Error fetching invoice number:", error);
-        }
-    };
-
+  async function fetchInvoiceNumber(){
+    try{
+      const response=await fetchgenInvoiceNumber();
+      if(response.ok){
+        const data=await response.json();
+        setinvoice_no(data.invoice_no);
+      }
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+  useEffect(()=>{
     fetchInvoiceNumber();
-}, []);
-
+  },[])
 
   const handlePrint = () => {
     
@@ -89,7 +88,7 @@ function Home() {
             <div className='invoice_details_set1'>
               <Box display={'flex'} alignItems="center" gap={5} mb={1}>
                 <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Invoice No:</Typography>
-                <TextField variant='standard' value={invoice_no} InputProps={{ disableUnderline: true }}  onChange={(e) => setinvoice_no(e.target.value)}></TextField ></Box>
+                <TextField variant='standard' value={invoice_no} InputProps={{ disableUnderline: true }}  ></TextField ></Box>
               <Box display={'flex'} alignItems="center" gap={5}>
                 <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Invoice Date:</Typography>
                 <TextField variant='standard' value={invoice_date} InputProps={{ disableUnderline: true }}></TextField></Box>

@@ -1,8 +1,10 @@
 import '../Customer/Customer.css';
 
 import { Button, TextField } from '@mui/material'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+
 import Navbar from '../Navbar/Navbar';
+import { savecustomer } from '../services/Customer';
 
 function Customer() {
   const [consignee_name, setconsignee_name] = useState('')
@@ -10,6 +12,28 @@ function Customer() {
   const [consignee_gstin, setconsignee_gstin] = useState('')
   const [consignee_state, setconsignee_state] = useState('')
   const [consignee_state_code, setconsignee_state_code] = useState('')
+const handlecustomer=async()=>{
+  const customerDetails={
+    consignee_name,
+    consignee_address,consignee_gstin,
+    consignee_state,
+    consignee_state_code
+    
+    
+  };
+  try{
+    const response=await savecustomer(customerDetails);
+    if (response.status===201){
+      console.log('Consignee added');
+    }
+    else{
+      console.error('Customer not added');
+    }
+  }
+  catch(error){
+    console.error('Error',error)
+  }
+}  ;
 
 
   return (
@@ -28,7 +52,7 @@ function Customer() {
             backgroundColor: '#ffff', color: "black", borderColor: "black"
 
           }
-        }}>ADD CONSIGNEE</Button>
+        }} onClick={handlecustomer}>ADD CONSIGNEE</Button>
 
       </div>
     </div>
