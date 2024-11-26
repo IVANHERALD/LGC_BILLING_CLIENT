@@ -1,7 +1,9 @@
-import { Table, TableContainer, TableCell, TableRow, TableHead, Paper, TextField, TableBody, Button, Typography } from '@mui/material'
-import React, { useState } from 'react'
-import NumberToWords from '../Wordgen/wordgen';
 import '../Invoice/Invoice.css';
+
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
+import React, { useState } from 'react'
+
+import NumberToWords from '../Wordgen/wordgen';
 
 function Invoice() {
     const [items, setitems] = useState([{}])
@@ -63,7 +65,7 @@ function Invoice() {
     const roundedTotalGrandAmount = roundOffAmount(totalGrandAmount);
 
     return (
-        <div> <TableContainer component={Paper} className="tb-container">
+        <div> <TableContainer component={Paper} className="tb-container" sx={{ height: '550px' }}>
 
             <Table aria-label="simple table">
                 <TableHead>

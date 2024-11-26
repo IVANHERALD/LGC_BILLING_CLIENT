@@ -1,12 +1,12 @@
 .invoice-container {
     width: 96%;
     
+    
     padding: 15px;
     border: 1px solid #000;
     font-family: Arial, sans-serif;
   }
   .invoice-header {
-    padding: 20px;
   background-color: #f5f5f5;
   }
   .header-content {
@@ -193,4 +193,16 @@ h6 {
   flex: 1;
   text-align: right;
   margin-left: 10px; /* Optional spacing */
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, auto); /* 2 columns */
+  grid-template-rows: repeat(3, auto);
+   /* 3 rows */
+}
+
+.grid-item {
+  padding: 5px;
+  border: 1px solid #000000;
 }

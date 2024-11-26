@@ -17,7 +17,7 @@ function Home() {
   const [transport_name, settransport_name] = useState('');
   const [vehicle_number, setvehicle_number] = useState('');
   const [date_of_supply, setdate_of_supply] = useState('');
- 
+
   const [pono_date, setpono_date] = useState('');
   const [eway_bill_no, seteway_bill_no] = useState('');
   const [receiver_name, setreceiver_name] = useState('');
@@ -37,25 +37,25 @@ function Home() {
     "Duplicate Copy",
   ]);
 
-  async function fetchInvoiceNumber(){
-    try{
-      const response=await fetchgenInvoiceNumber();
-      if(response.ok){
-        const data=await response.json();
+  async function fetchInvoiceNumber() {
+    try {
+      const response = await fetchgenInvoiceNumber();
+      if (response.ok) {
+        const data = await response.json();
         setinvoice_no(data.invoice_no);
       }
     }
-    catch(error){
+    catch (error) {
       console.log(error);
     }
   }
-  useEffect(()=>{
+  useEffect(() => {
     fetchInvoiceNumber();
-  },[])
+  }, [])
 
   const handlePrint = () => {
-    
-      window.print(); // Trigger print
+
+    window.print(); // Trigger print
   };
   useEffect(() => {
     const now = new Date();
@@ -65,114 +65,94 @@ function Home() {
   return (
 
     <div >
-      <div style={{display:'flex'}}>
-      <div className='navbar-container' >    <Navbar /></div>
+      <div style={{ display: 'flex' }}>
+        <div className='navbar-container' >    <Navbar /></div>
 
 
-      <div className="watermark-container">
-        <div className="watermark">Lakshmi Grade Casting</div>
-        <div className='segment'>       
-        <div className="invoice-copy-label">
-          {copyLabels.map((label,index)=>
-          <div key={index} className='invoice-copy'>
-            <div className="invoice-label">{label}</div></div>)}
-        </div> 
-           <div className="invoice-container">
-            <div className='header-container'>
-              <Header/>
-            </div>
-
-          
-        
-          <div className='invoice_details'>
-            <div className='invoice_details_set1'>
-              <Box display={'flex'} alignItems="center" gap={5} mb={1}>
-                <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Invoice No:</Typography>
-                <TextField variant='standard' value={invoice_no} InputProps={{ disableUnderline: true }}  ></TextField ></Box>
-              <Box display={'flex'} alignItems="center" gap={5}>
-                <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Invoice Date:</Typography>
-                <TextField variant='standard' value={invoice_date} InputProps={{ disableUnderline: true }}></TextField></Box>
-              <Box display={'flex'} alignItems="center" gap={5}>
-                <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>State:</Typography>
-                <TextField variant='standard' value={state} sx={{ width: '180px' }} InputProps={{ disableUnderline: true }}></TextField>
-                <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>State code:</Typography>
-                <TextField variant='standard' value={state_code} InputProps={{ disableUnderline: true }} ></TextField></Box>
-            </div>
-            <hr className='horizontal-line' />
-            <div className="vertical_line"></div>
-            <div className='invoice_details_set2'>
-              <Box display={'flex'} alignItems="center" gap={5}>
-                <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Name of Transport:</Typography>
-                <TextField variant='standard' InputProps={{ disableUnderline: true }} value={transport_name} onChange={(e) => settransport_name(e.target.value)}></TextField></Box>
-              <Box display={'flex'} alignItems="center" gap={5}>
-                <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Vehicle Number:</Typography>
-                <TextField variant='standard' onChange={(e) => setvehicle_number(e.target.value)} InputProps={{ disableUnderline: true }} ></TextField></Box>
-              <Box display={'flex'} alignItems="center" gap={5}>
-                <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Date of Supply:</Typography>
-                <TextField variant='standard' onChange={(e) => setdate_of_supply(e.target.value)} InputProps={{ disableUnderline: true }} ></TextField></Box>
-              
-              <Box display={'flex'} alignItems="center" gap={5}>
-                <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }} >Po.No. & Date:</Typography>
-                <TextField variant='standard' onChange={(e) => setpono_date(e.target.value)} InputProps={{ disableUnderline: true }} ></TextField></Box>
-              <Box display={'flex'} alignItems="center" gap={5}>
-                <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>E-WAY Bill No:</Typography>
-                <TextField variant='standard' onChange={(e) => seteway_bill_no(e.target.value)} InputProps={{ disableUnderline: true }} ></TextField></Box></div>
-          </div>
-          
-            <hr className='horizontal-line' />
-            <div className='shipping_details_header'>
-                        <h6>Details of Receiver/Billed To</h6><div className="vertical_line"></div>
-            <h6>Details of Consignee/Shipped To</h6></div>
-  
-            <hr className='horizontal-line' />
-            <div className="receiver-consignee-container">
-            <div className='receiever_details'>
-              <Box display={'flex'} alignItems="center" gap={5} mt={0}>
-                <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Name:</Typography>
-                <TextField variant='standard' sx={{ width: '250px' }} onChange={(e) => setreceiver_name(e.target.value)} InputProps={{ disableUnderline: true }}></TextField></Box>
-              <Box display={'flex'} alignItems="center" gap={3} mt={0}>
-                <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Address:</Typography>
-                <TextField variant='standard' sx={{ width: '450px' }} MULTILINE onChange={(e) => setreceiver_address(e.target.value)} InputProps={{ disableUnderline: true }}></TextField></Box><br/>            <Box display={'flex'} alignItems="center" gap={4.5} mt={0}>
-                <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>GSTIN:</Typography>
-                <TextField variant='standard' sx={{ width: '250px' }} onChange={(e) => setreceiver_gstin(e.target.value)} InputProps={{ disableUnderline: true }}></TextField ></Box>
-              <Box display={'flex'} alignItems="center" gap={5} mt={0}>
-                <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>State:</Typography>
-                <TextField variant='standard' sx={{ width: '100px' }} onChange={(e) => setreceiver_state(e.target.value)} InputProps={{ disableUnderline: true }}></TextField>
-                <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>State code:</Typography>
-                <TextField variant='standard' sx={{ width: '100px' }} onChange={(e) => setreceiver_state_code(e.target.value)} InputProps={{ disableUnderline: true }} ></TextField></Box>
-              
-            </div>
-
-            <div className="vertical-line-wrapper"></div>
-          <div className='consignee_details'>
-            <Box display={'flex'} alignItems="center" gap={5}>
-              <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Name:</Typography>
-              <TextField variant='standard' sx={{ width: '250px' }} onChange={(e) => setconsignee_name(e.target.value)} InputProps={{ disableUnderline: true }}></TextField></Box>
-            <Box display={'flex'} alignItems="center" gap={3}>
-              <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }} >Address:</Typography>
-              <TextField variant='standard' sx={{ width: '200px' }} multiline onChange={(e) => setconsignee_address(e.target.value)} InputProps={{ disableUnderline: true }}></TextField></Box><br />
-            <Box display={'flex'} alignItems="center" gap={4.5}>
-              <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>GSTIN:</Typography>
-              <TextField variant='standard' sx={{ width: '200px' }} onChange={(e) => setconsignee_gstin(e.target.value)} InputProps={{ disableUnderline: true }}></TextField></Box>
-            <Box display={'flex'} alignItems="center" gap={5}>
-
-              <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>State:</Typography>
-              <TextField variant='standard' sx={{ width: '80px' }} onChange={(e) => setconsignee_state(e.target.value)} InputProps={{ disableUnderline: true }}></TextField>
-              <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>State code:</Typography>
-              <TextField variant='standard' sx={{ width: '100px' }} onChange={(e) => setconsignee_state_code(e.target.value)} InputProps={{ disableUnderline: true }}></TextField></Box>
+        <div className="watermark-container">
+          <div className="watermark">Lakshmi Grade Casting</div>
+          <div className='segment'>
             
-          </div></div>
-          <hr className='horizontal-line' />
-          <div>
-            <Invoice />
-          </div>
-          <Footer/>
-                  </div>
-                  
-        </div>
-        
+            <div className="invoice-container">
+              <div className='header-container'>
+                <Header />
+              </div>
+              <div>
+
+              <div className="grid-container">
+      <div className="grid-item">
+      <Box display={'flex'} alignItems="center" gap={5} mb={1}>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Invoice No:</Typography>
+                    <TextField variant='standard' value={invoice_no} InputProps={{ disableUnderline: true }}  ></TextField ></Box>
+                  <Box display={'flex'} alignItems="center" gap={5}>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Invoice Date:</Typography>
+                    <TextField variant='standard' value={invoice_date} InputProps={{ disableUnderline: true }}></TextField></Box>
+                  <Box display={'flex'} alignItems="center" gap={5}>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>State:</Typography>
+                    <TextField variant='standard' value={state} sx={{ width: '180px' }} InputProps={{ disableUnderline: true }}></TextField>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>State code:</Typography>
+                    <TextField variant='standard' value={state_code} InputProps={{ disableUnderline: true }} ></TextField></Box>
       </div>
+      <div className="grid-item">
+      <Box display={'flex'} alignItems="center" gap={5}>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Name of Transport:</Typography>
+                    <TextField variant='standard' InputProps={{ disableUnderline: true }} value={transport_name} onChange={(e) => settransport_name(e.target.value)}></TextField></Box>
+                  <Box display={'flex'} alignItems="center" gap={5}>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Vehicle Number:</Typography>
+                    <TextField variant='standard' onChange={(e) => setvehicle_number(e.target.value)} InputProps={{ disableUnderline: true }} ></TextField></Box>
+                  <Box display={'flex'} alignItems="center" gap={5}>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Date of Supply:</Typography>
+                    <TextField variant='standard' onChange={(e) => setdate_of_supply(e.target.value)} InputProps={{ disableUnderline: true }} ></TextField></Box>
+
+                  <Box display={'flex'} alignItems="center" gap={5}>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }} >Po.No. & Date:</Typography>
+                    <TextField variant='standard' onChange={(e) => setpono_date(e.target.value)} InputProps={{ disableUnderline: true }} ></TextField></Box>
+                  <Box display={'flex'} alignItems="center" gap={5}>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>E-WAY Bill No:</Typography>
+                    <TextField variant='standard' onChange={(e) => seteway_bill_no(e.target.value)} InputProps={{ disableUnderline: true }} ></TextField></Box>
+      </div>
+      <div className="grid-item"><h6>Details of Receiver/Billed To</h6></div>
+      <div className="grid-item"><h6>Details of Consignee/Shipped To</h6></div>
+      <div className="grid-item">
+      <Box display={'flex'} alignItems="center" gap={5} mt={0}>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Name:</Typography>
+                    <TextField variant='standard' sx={{ width: '250px' }} onChange={(e) => setreceiver_name(e.target.value)} InputProps={{ disableUnderline: true }}></TextField></Box>
+                  <Box display={'flex'} alignItems="center" gap={3} mt={0}>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Address:</Typography>
+                    <TextField variant='standard' sx={{ width: '450px' }} MULTILINE onChange={(e) => setreceiver_address(e.target.value)} InputProps={{ disableUnderline: true }}></TextField></Box><br />            <Box display={'flex'} alignItems="center" gap={4.5} mt={0}>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>GSTIN:</Typography>
+                    <TextField variant='standard' sx={{ width: '250px' }} onChange={(e) => setreceiver_gstin(e.target.value)} InputProps={{ disableUnderline: true }}></TextField ></Box>
+                  <Box display={'flex'} alignItems="center" gap={5} mt={0}>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>State:</Typography>
+                    <TextField variant='standard' sx={{ width: '100px' }} onChange={(e) => setreceiver_state(e.target.value)} InputProps={{ disableUnderline: true }}></TextField>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>State code:</Typography>
+                    <TextField variant='standard' sx={{ width: '100px' }} onChange={(e) => setreceiver_state_code(e.target.value)} InputProps={{ disableUnderline: true }} ></TextField></Box></div>
+      <div className="grid-item">
+      <Box display={'flex'} alignItems="center" gap={5} mt={0}>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Name:</Typography>
+                    <TextField variant='standard' sx={{ width: '250px' }} onChange={(e) => setreceiver_name(e.target.value)} InputProps={{ disableUnderline: true }}></TextField></Box>
+                  <Box display={'flex'} alignItems="center" gap={3} mt={0}>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>Address:</Typography>
+                    <TextField variant='standard' sx={{ width: '450px' }} MULTILINE onChange={(e) => setreceiver_address(e.target.value)} InputProps={{ disableUnderline: true }}></TextField></Box><br />            <Box display={'flex'} alignItems="center" gap={4.5} mt={0}>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>GSTIN:</Typography>
+                    <TextField variant='standard' sx={{ width: '250px' }} onChange={(e) => setreceiver_gstin(e.target.value)} InputProps={{ disableUnderline: true }}></TextField ></Box>
+                  <Box display={'flex'} alignItems="center" gap={5} mt={0}>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>State:</Typography>
+                    <TextField variant='standard' sx={{ width: '100px' }} onChange={(e) => setreceiver_state(e.target.value)} InputProps={{ disableUnderline: true }}></TextField>
+                    <Typography variant="body1" sx={{ fontSize: '0.70rem', fontWeight: 'bold' }}>State code:</Typography>
+                    <TextField variant='standard' sx={{ width: '100px' }} onChange={(e) => setreceiver_state_code(e.target.value)} InputProps={{ disableUnderline: true }} ></TextField></Box>
+      </div>
+    </div>
     
+                <Invoice />
+              </div>
+              <Footer />
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
 
       <center>
