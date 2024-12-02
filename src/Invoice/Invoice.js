@@ -435,8 +435,8 @@ function Invoice({ onInvoiceChange }) {
                     variant="standard"
                     value={cgst}
                     onChange={(e) => setCgst(parseFloat(e.target.value) || 0)}
-                    sx={{ flex: "0 0 auto" }}
-                  />
+                    sx={{ flex: "0 0 auto" ,width:'30px'}}
+                  />%
                 </div>
               </Typography>
             </div>
@@ -465,8 +465,8 @@ function Invoice({ onInvoiceChange }) {
                     variant="standard"
                     value={sgst}
                     onChange={(e) => setSgst(parseFloat(e.target.value) || 0)}
-                    sx={{ flex: "0 0 auto" }}
-                  />
+                    sx={{ flex: "0 0 auto" ,width:'30px'}}
+                  />%
                 </div>
               </Typography>
             </div>
@@ -495,8 +495,8 @@ function Invoice({ onInvoiceChange }) {
                     variant="standard"
                     value={igst}
                     onChange={(e) => setIgst(parseFloat(e.target.value) || 0)}
-                    sx={{ flex: "0 0 auto" }}
-                  />
+                    sx={{ flex: "0 0 auto",width:'30px' }}
+                  />%
                 </div>
               </Typography>
             </div>
