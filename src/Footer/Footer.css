@@ -31,6 +31,7 @@
 }
 
 .seal-text {
+  align-self: end;
   font-weight: bold;
   font-size: 1rem;
   color: #333;
@@ -50,4 +51,37 @@
 .container1{
   display: flex;
   flex-direction: column;
+}
+
+
+.main-container {
+  display: grid;
+  grid-template-columns: 50% 50%; 
+  width: 100%;
+}
+
+.first-main-column {
+  display: grid;
+  grid-template-columns: 60% 40%; 
+  border: 1px solid #000000;
+}
+
+.inner-column {
+  border: 1px solid #000;
+}
+
+.second-main-column {
+  border: 1px solid #000000; 
+  padding: 10px;
+  text-align: center;
+}
+
+.second-inner {
+  height: 100%;
+  justify-items: center;
+  display: grid;
+}
+
+.first-inner {
+  padding: 6px;
 }
