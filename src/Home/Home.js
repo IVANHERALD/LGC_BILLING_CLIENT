@@ -8,6 +8,8 @@ import Header from "../Header/Header";
 import Invoice from "../Invoice/Invoice";
 import Navbar from "../Navbar/Navbar";
 import { fetchgenInvoiceNumber } from "../services/bill";
+import { fetchcustomer } from "../services/Customer";
+import { fetchcasting } from "../services/Casting";
 
 function Home() {
   const [invoice_no, setinvoice_no] = useState("");
@@ -34,13 +36,16 @@ function Home() {
   const [invoiceCgst, setInvoiceCgst] = useState(0);
   const [invoiceSgst, setInvoiceSgst] = useState(0);
   const [invoiceIgst, setInvoiceIgst] = useState(0);
+  const [invoicetotaltaxablevalue, setInvoicetotaltaxablevalue] = useState(0);
   const [invoicegrandtotal, setInvoicegrandtotal] = useState(0);
+  const [customerDetails, setcustomerDetails] = useState([]);
   const [copyLabels] = useState([
     "Original for Recipient",
     "Duplicate Copy for Transporter",
     "Triplicate Copy",
     "Duplicate Copy",
   ]);
+  
 
   async function fetchInvoiceNumber() {
     try {
@@ -56,14 +61,52 @@ function Home() {
   useEffect(() => {
     fetchInvoiceNumber();
   }, []);
+  useEffect(() => {
 
+    const fetchCustomerDetails = async () => {
+        try {
+            const response = await fetchcustomer();
+            if (!response) {
+                throw new Error('Failed to fetch data');
+            }
+            const data = await response.json();
+            console.log("fetch customer details" ,data.customers);
+            setcustomerDetails(data.customers);
+            console.log("console",data.customers);
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
+    fetchCustomerDetails();
+}, []);
+useEffect(() => {
+
+  const fetchCastingDetails = async () => {
+      try {
+          const response = await fetchcasting();
+          if (!response) {
+              throw new Error('Failed to fetch data');
+          }
+          const data = await response.json();
+          console.log("fetch casting details" ,data.casting);
+          setcustomerDetails(data.casting);
+          console.log("console",data.casting);
+      } catch (error) {
+          console.log(error.message);
+      }
+  };
+
+  fetchCastingDetails();
+}, []);
   const handlePrint = () => {
     const invoiceData = {
       items: invoiceItems,
       cgst: invoiceCgst,
       sgst: invoiceSgst,
       igst: invoiceIgst,
-      grandtotal: invoicegrandtotal,
+      totaltaxablevalue: invoicetotaltaxablevalue,
+      totalgrandAmount:invoicegrandtotal
     };
 
     console.log("Invoice Data to Save:", invoiceData);
@@ -72,18 +115,26 @@ function Home() {
   };
   useEffect(() => {
     const now = new Date();
-    const formattedDateTime = `${now.toLocaleDateString()} ${now.toLocaleTimeString(
-      [],
-      { hour12: false }
-    )}`; // Formats date and time according to system locale
+  
+    // Format date as dd/mm/yyyy
+    const formattedDate = `${String(now.getDate()).padStart(2, "0")}/${String(now.getMonth() + 1).padStart(2, "0")}/${now.getFullYear()}`;
+  
+    // Format time as hh:mm:ss
+    const formattedTime = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(now.getSeconds()).padStart(2, "0")}`;
+  
+    // Combine date and time
+    const formattedDateTime = `${formattedDate} ${formattedTime}`;
+    
     setinvoice_date(formattedDateTime);
   }, []);
-  const handleInvoiceData = (items, cgst, sgst, igst, grandtotal) => {
+  
+  const handleInvoiceData = (items, cgst, sgst, igst, totaltaxablevalue,totalGrandAmount) => {
     setInvoiceItems(items);
     setInvoiceCgst(cgst);
     setInvoiceSgst(sgst);
     setInvoiceIgst(igst);
-    setInvoicegrandtotal(grandtotal);
+    setInvoicetotaltaxablevalue(totaltaxablevalue);
+    setInvoicegrandtotal(totalGrandAmount);
   };
 
   return (

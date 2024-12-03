@@ -8,4 +8,7 @@ export const savecustomer=async(customerDetails)=>{
     });
     return response;
     };
-    
+    export const fetchcustomer = async() => {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/lgc/fetchcustomer`);
+        return response;
+      };

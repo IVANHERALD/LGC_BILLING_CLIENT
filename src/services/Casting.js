@@ -8,4 +8,7 @@ export const savecasting=async(castingDetails)=>{
     });
     return response;
     };
-    
+    export const fetchcasting = async() => {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/lgc/fetchcasting`);
+        return response;
+      };

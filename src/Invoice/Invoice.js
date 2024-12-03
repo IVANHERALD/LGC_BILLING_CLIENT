@@ -22,6 +22,7 @@ function Invoice({ onInvoiceChange }) {
   const [cgst, setCgst] = useState();
   const [sgst, setSgst] = useState();
   const [igst, setIgst] = useState();
+  //const [grandtotal, setgrandtotal] = useState(totalGrandAmount.toFixed(2));
 
   const handleAddRow = (e) => {
     e.preventDefault();
@@ -83,12 +84,13 @@ function Invoice({ onInvoiceChange }) {
 
   const roundedTotalGrandAmount = roundOffAmount(totalGrandAmount);
 
-  const [grandtotal, setgrandtotal] = useState(totalGrandAmount.toFixed(2));
+  ///const [grandtotal, setgrandtotal] = useState(totalGrandAmount.toFixed(2));
   useEffect(() => {
     if (onInvoiceChange) {
-      onInvoiceChange(items, cgst, sgst, igst, grandtotal);
+      onInvoiceChange(items, cgst, sgst, igst,totalTaxableValue,totalGrandAmount);
+      
     }
-  }, [items, cgst, sgst, igst, onInvoiceChange, grandtotal]);
+  }, [items, cgst, sgst, igst,totalTaxableValue,totalGrandAmount, onInvoiceChange ]);
   return (
     <div>
       {" "}

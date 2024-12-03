@@ -41,9 +41,9 @@ function Footer() {
       </div>
 
       <div class="second-main-column">
-        <p>Certified that the particulars given above are true and correct.</p>
+        <p className='certify'>Certified that the particulars given above are true and correct.</p>
         <div>
-        <p>For <b>LAKSHMI GRADE CASTINGS</b></p>
+        <p className='certify'>For <b>LAKSHMI GRADE CASTINGS</b></p>
         <p className="seal-text">Authorized Signatory</p>
         </div>
       </div>
