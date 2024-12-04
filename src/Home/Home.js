@@ -38,7 +38,9 @@ function Home() {
   const [invoiceIgst, setInvoiceIgst] = useState(0);
   const [invoicetotaltaxablevalue, setInvoicetotaltaxablevalue] = useState(0);
   const [invoicegrandtotal, setInvoicegrandtotal] = useState(0);
+  const [invoicetotalinwords, setInvoicetotalinwords] = useState(0);
   const [customerDetails, setcustomerDetails] = useState([]);
+
   const [copyLabels] = useState([
     "Original for Recipient",
     "Duplicate Copy for Transporter",
@@ -106,7 +108,8 @@ useEffect(() => {
       sgst: invoiceSgst,
       igst: invoiceIgst,
       totaltaxablevalue: invoicetotaltaxablevalue,
-      totalgrandAmount:invoicegrandtotal
+      totalgrandAmount:invoicegrandtotal,
+      totalinwords:invoicetotalinwords
     };
 
     console.log("Invoice Data to Save:", invoiceData);
@@ -128,13 +131,14 @@ useEffect(() => {
     setinvoice_date(formattedDateTime);
   }, []);
   
-  const handleInvoiceData = (items, cgst, sgst, igst, totaltaxablevalue,totalGrandAmount) => {
+  const handleInvoiceData = (items, cgst, sgst, igst, totaltaxablevalue,totalGrandAmount,totalinwords) => {
     setInvoiceItems(items);
     setInvoiceCgst(cgst);
     setInvoiceSgst(sgst);
     setInvoiceIgst(igst);
     setInvoicetotaltaxablevalue(totaltaxablevalue);
     setInvoicegrandtotal(totalGrandAmount);
+    setInvoicetotalinwords(totalinwords);
   };
 
   return (

@@ -22,6 +22,8 @@ function Invoice({ onInvoiceChange }) {
   const [cgst, setCgst] = useState();
   const [sgst, setSgst] = useState();
   const [igst, setIgst] = useState();
+  const [totalInWords, setTotalInWords] = useState("");
+
   //const [grandtotal, setgrandtotal] = useState(totalGrandAmount.toFixed(2));
 
   const handleAddRow = (e) => {
@@ -49,7 +51,7 @@ function Invoice({ onInvoiceChange }) {
       }));
     });
   };
-
+  
   const handleInputChange = (index, field, value) => {
     const updatedItems = [...items];
     updatedItems[index] = { ...updatedItems[index], [field]: value };
@@ -83,14 +85,20 @@ function Invoice({ onInvoiceChange }) {
   };
 
   const roundedTotalGrandAmount = roundOffAmount(totalGrandAmount);
+  useEffect(() => {
+    // Extract total in words whenever the total amount changes
+    const words = <NumberToWords total={roundedTotalGrandAmount} />;
+    setTotalInWords(words);
+  }, [roundedTotalGrandAmount]); // Re-run this effect when the total changes
+  
 
   ///const [grandtotal, setgrandtotal] = useState(totalGrandAmount.toFixed(2));
   useEffect(() => {
     if (onInvoiceChange) {
-      onInvoiceChange(items, cgst, sgst, igst,totalTaxableValue,totalGrandAmount);
+      onInvoiceChange(items, cgst, sgst, igst,totalTaxableValue,totalGrandAmount,totalInWords);
       
     }
-  }, [items, cgst, sgst, igst,totalTaxableValue,totalGrandAmount, onInvoiceChange ]);
+  }, [items, cgst, sgst, igst,totalTaxableValue,totalGrandAmount,totalInWords, onInvoiceChange ]);
   return (
     <div>
       {" "}
