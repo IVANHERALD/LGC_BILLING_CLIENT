@@ -14,40 +14,31 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
-
-import NumberToWords from "../Wordgen/wordgen";
+import { ToWords } from 'to-words';
 
 function Invoice({ onInvoiceChange }) {
-  const [items, setitems] = useState([{}]);
+  const [items, setitems] = useState([{ si_no: 1, name: "", hsn: 0, qty: 0, weight: 0, rate: 0, value: 0 }]);
   const [cgst, setCgst] = useState();
   const [sgst, setSgst] = useState();
   const [igst, setIgst] = useState();
   const [totalInWords, setTotalInWords] = useState("");
-
-  //const [grandtotal, setgrandtotal] = useState(totalGrandAmount.toFixed(2));
+  const toWords = new ToWords();
 
   const handleAddRow = (e) => {
     e.preventDefault();
     setitems([
       ...items,
-      { si_no: "", name: 0, hsn: 0, qty: 0, weight: 0, rate: 0, value: 0 },
+      { si_no: 0, name: "", hsn: 0, qty: 0, weight: 0, rate: 0, value: 0 },
     ]);
   };
-  // const handleRemoveRow = (index) => {
-  //     const updatedItems = [...items];
-  //     updatedItems.splice(index, 1);
-  //     setitems(updatedItems);
-  //     console.log(items)
-  // };
+
   const handleRemoveRow = (index) => {
     setitems((prevItems) => {
-      // Filter out the row at the given index
       const updatedItems = prevItems.filter((_, i) => i !== index);
 
-      // Recalculate taxable value for all remaining rows (if necessary)
       return updatedItems.map((item) => ({
         ...item,
-        value: item.weight * item.rate || 0, // Ensure taxable value is updated
+        value: item.weight * item.rate || 0, 
       }));
     });
   };
@@ -55,8 +46,8 @@ function Invoice({ onInvoiceChange }) {
   const handleInputChange = (index, field, value) => {
     const updatedItems = [...items];
     updatedItems[index] = { ...updatedItems[index], [field]: value };
+    console.log(updatedItems)
 
-    // Recalculate taxable value if weight or rate changes
     if (field === "weight" || field === "rate") {
       updatedItems[index].value =
         updatedItems[index].weight * updatedItems[index].rate;
@@ -64,6 +55,8 @@ function Invoice({ onInvoiceChange }) {
 
     setitems(updatedItems);
   };
+
+  
   const totalTaxableValue = items.reduce(
     (total, item) => total + (item.value || 0),
     0
@@ -73,6 +66,7 @@ function Invoice({ onInvoiceChange }) {
   const igstAmount = (totalTaxableValue * igst) / 100;
   const totalGrandAmount =
     totalTaxableValue + cgstAmount + sgstAmount + igstAmount;
+
   const roundOffAmount = (amount) => {
     const rupee = Math.floor(amount);
     const paise = amount - rupee;
@@ -83,22 +77,19 @@ function Invoice({ onInvoiceChange }) {
 
     return Math.floor(amount);
   };
-
+  
   const roundedTotalGrandAmount = roundOffAmount(totalGrandAmount);
   useEffect(() => {
-    // Extract total in words whenever the total amount changes
-    const words = <NumberToWords total={roundedTotalGrandAmount} />;
+    let words = toWords.convert(roundedTotalGrandAmount || 0, { currency: true, ignoreDecimal: true });
     setTotalInWords(words);
-  }, [roundedTotalGrandAmount]); // Re-run this effect when the total changes
+  }, [roundedTotalGrandAmount]); 
   
-
-  ///const [grandtotal, setgrandtotal] = useState(totalGrandAmount.toFixed(2));
   useEffect(() => {
     if (onInvoiceChange) {
       onInvoiceChange(items, cgst, sgst, igst,totalTaxableValue,totalGrandAmount,totalInWords);
-      
     }
   }, [items, cgst, sgst, igst,totalTaxableValue,totalGrandAmount,totalInWords, onInvoiceChange ]);
+
   return (
     <div>
       {" "}
@@ -191,6 +182,13 @@ function Invoice({ onInvoiceChange }) {
                       disableUnderline: true,
                     }}
                     value={index + 1}
+                    onChange={(e) =>
+                      handleInputChange(
+                        index,
+                        "si_no",
+                        parseInt(e.target.value) || 0
+                      )
+                    }
                   />
                 </TableCell>
                 <TableCell
@@ -209,6 +207,13 @@ function Invoice({ onInvoiceChange }) {
                       sx: { fontSize: "15px" },
                       disableUnderline: true,
                     }}
+                    onChange={(e) =>
+                      handleInputChange(
+                        index,
+                        "name",
+                        e.target.value || " "
+                      )
+                    }
                   />
                 </TableCell>
                 <TableCell
@@ -224,6 +229,13 @@ function Invoice({ onInvoiceChange }) {
                       sx: { fontSize: "15px" },
                       disableUnderline: true,
                     }}
+                    onChange={(e) =>
+                      handleInputChange(
+                        index,
+                        "hsn",
+                        parseInt(e.target.value) || 0
+                      )
+                    }
                   />
                 </TableCell>
                 <TableCell
@@ -321,85 +333,6 @@ function Invoice({ onInvoiceChange }) {
           -
         </Button>
       </div>
-      {/* <Grid container spacing={2} style={{ height: "173px" }}>
-        <Grid item xs={6} style={{ display: "flex", alignItems: "flex-start" }}>
-          <div className="total_amount_words" style={{ flex: 1 }}>
-            <Typography
-              variant="body1"
-              sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
-            >
-              Total Invoice Amount in Words:
-              <NumberToWords total={roundedTotalGrandAmount} />
-            </Typography>
-          </div>
-        </Grid>
-        <Grid
-          item
-          xs={6}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            paddingLeft: "10px",
-          }}
-        > */}
-      {/* <div className='total_amount' style={{ flex: 1 }}>
-                    <Typography variant="body1" sx={{ fontSize: '0.85rem', fontWeight: 'bold' }}>Total Amount Before Tax:{totalTaxableValue}</Typography>
-                    
-                    <Typography
-                        variant="body1"
-                        sx={{
-                            fontSize: '0.85rem',
-                            fontWeight: 'bold',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center'
-                        }}>Add.CGST:<div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
-                            <TextField variant='standard' value={cgst}
-                                onChange={(e) => setCgst(parseFloat(e.target.value) || 0)} sx={{ flex: '0 0 auto' }} /><span style={{ whiteSpace: 'nowrap' }}>({cgstAmount.toFixed(2)})</span></div></Typography>
-
-                    <hr className='horizontal-line' />
-                    <Typography
-                        variant="body1"
-                        sx={{
-                            fontSize: '0.85rem',
-                            fontWeight: 'bold',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center'
-                        }}>Add.SGST:<div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
-                            <TextField variant='standard' value={sgst}
-                                onChange={(e) => setSgst(parseFloat(e.target.value) || 0)} sx={{ flex: '0 0 auto' }} /><span style={{ whiteSpace: 'nowrap' }}>({sgstAmount.toFixed(2)})</span></div></Typography>
-                    <hr className='horizontal-line' />
-                    <Typography
-                        variant="body1"
-                        sx={{
-                            fontSize: '0.85rem',
-                            fontWeight: 'bold',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center'
-                        }}>Add.IGST:<div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
-                            <TextField variant='standard' value={igst}
-                                onChange={(e) => setIgst(parseFloat(e.target.value) || 0)} sx={{ flex: '0 0 auto' }} /><span style={{ whiteSpace: 'nowrap' }}>({igstAmount.toFixed(2)})</span></div></Typography>
-                    <hr className='horizontal-line' />
-                    <Typography variant="body1" sx={{ fontSize: '0.99rem', fontWeight: 'bold' }}>Total Grand Amount:{totalGrandAmount.toFixed(2)}</Typography>
-
-
-                </div> */}
-      {/* <div class="grid-container">
-            <div class="grid-item">1</div>
-            <div class="grid-item">2</div>
-            <div class="grid-item">3</div>
-            <div class="grid-item">4</div>
-            <div class="grid-item">5</div>
-            <div class="grid-item">6</div>
-            <div class="grid-item">7</div>
-            <div class="grid-item">8</div>
-            <div class="grid-item">9</div>
-            <div class="grid-item">10</div>
-          </div>
-        </Grid>
-      </Grid> */}
       <div class="main-grid">
         <div class="main-column">
           <Typography
@@ -407,7 +340,7 @@ function Invoice({ onInvoiceChange }) {
             sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
           >
             Total Invoice Amount in Words:
-            <NumberToWords total={roundedTotalGrandAmount} />
+            <div>{totalInWords}</div>
           </Typography>
         </div>
         <div class="second-column">

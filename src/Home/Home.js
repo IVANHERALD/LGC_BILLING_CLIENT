@@ -102,6 +102,11 @@ useEffect(() => {
   fetchCastingDetails();
 }, []);
   const handlePrint = () => {
+    const billdetails={
+      invoice_no,
+      invoice_date,state,state_code, transport_name, vehicle_number, date_of_supply, pono_date, eway_bill_no, receiver_name, receiver_address, receiver_gstin, receiver_state, receiver_state_code, consignee_name, consignee_address, consignee_gstin, consignee_state, consignee_state_code
+
+    }
     const invoiceData = {
       items: invoiceItems,
       cgst: invoiceCgst,
@@ -112,7 +117,7 @@ useEffect(() => {
       totalinwords:invoicetotalinwords
     };
 
-    console.log("Invoice Data to Save:", invoiceData);
+    console.log("Invoice Data to Save:", invoiceData,billdetails);
 
     window.print(); // Trigger print
   };
@@ -369,7 +374,7 @@ useEffect(() => {
                       <TextField
                         variant="standard"
                         sx={{ width: "250px" }}
-                        onChange={(e) => setreceiver_name(e.target.value)}
+                        onChange={(e) => setconsignee_name(e.target.value)}
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
                     </Box>
@@ -384,7 +389,7 @@ useEffect(() => {
                         variant="standard"
                         sx={{ width: "450px" }}
                         MULTILINE
-                        onChange={(e) => setreceiver_address(e.target.value)}
+                        onChange={(e) => setconsignee_address(e.target.value)}
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
                     </Box>
@@ -399,7 +404,7 @@ useEffect(() => {
                       <TextField
                         variant="standard"
                         sx={{ width: "250px" }}
-                        onChange={(e) => setreceiver_gstin(e.target.value)}
+                        onChange={(e) => setconsignee_gstin(e.target.value)}
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
                     </Box>
@@ -413,7 +418,7 @@ useEffect(() => {
                       <TextField
                         variant="standard"
                         sx={{ width: "100px" }}
-                        onChange={(e) => setreceiver_state(e.target.value)}
+                        onChange={(e) => setconsignee_state(e.target.value)}
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
                       <Typography
@@ -425,7 +430,7 @@ useEffect(() => {
                       <TextField
                         variant="standard"
                         sx={{ width: "100px" }}
-                        onChange={(e) => setreceiver_state_code(e.target.value)}
+                        onChange={(e) => setconsignee_state_code(e.target.value)}
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
                     </Box>

@@ -4,7 +4,6 @@ import Home from './Home/Home';
 import Invoice from './Invoice/Invoice';
 import Customer from './Customer/Customer.js'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import NumberToWords from './Wordgen/wordgen';
 import Casting from './Casting/Casting.js';
 
 function App() {
