@@ -83,3 +83,12 @@
     font-size:  28px; 
     font-weight: bold;
   }
+  /* Ensure the background color is applied during print */
+@media print {
+  .mrfs {
+      -webkit-print-color-adjust: exact; /* Chrome, Safari */
+      print-color-adjust: exact; /* Modern browsers */
+      background-color: black !important; /* Ensure background color is set */
+      color: white !important; /* Ensure text color is visible */
+  }
+}

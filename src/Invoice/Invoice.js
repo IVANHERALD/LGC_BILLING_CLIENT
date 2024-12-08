@@ -17,7 +17,7 @@ import React, { useState, useEffect } from "react";
 import { ToWords } from 'to-words';
 
 function Invoice({ onInvoiceChange }) {
-  const [items, setitems] = useState([{ si_no: 1, name: "", hsn: 0, qty: 0, weight: 0, rate: 0, value: 0 }]);
+  const [items, setitems] = useState([{ si_no: 1, name: "", hsncode: 0, quantity: 0, weight: 0, rate: 0, value: 0 }]);
   const [cgst, setCgst] = useState();
   const [sgst, setSgst] = useState();
   const [igst, setIgst] = useState();
@@ -28,7 +28,7 @@ function Invoice({ onInvoiceChange }) {
     e.preventDefault();
     setitems([
       ...items,
-      { si_no: 0, name: "", hsn: 0, qty: 0, weight: 0, rate: 0, value: 0 },
+      { si_no: 0, name: "", hsncode: 0, quantity: 0, weight: 0, rate: 0, value: 0 },
     ]);
   };
 
@@ -232,7 +232,7 @@ function Invoice({ onInvoiceChange }) {
                     onChange={(e) =>
                       handleInputChange(
                         index,
-                        "hsn",
+                        "hsncode",
                         parseInt(e.target.value) || 0
                       )
                     }
@@ -373,12 +373,12 @@ function Invoice({ onInvoiceChange }) {
                     gap: "8px",
                     flex: 1,
                   }}
-                >
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <TextField
                     variant="standard"
                     value={cgst}
                     onChange={(e) => setCgst(parseFloat(e.target.value) || 0)}
-                    sx={{ flex: "0 0 auto" ,width:'30px'}}
+                    sx={{ flex: "0 0 auto" ,width:'30px'}}  InputProps={{ disableUnderline: true }}
                   />%
                 </div>
               </Typography>
@@ -403,12 +403,12 @@ function Invoice({ onInvoiceChange }) {
                     gap: "8px",
                     flex: 1,
                   }}
-                >
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <TextField
                     variant="standard"
                     value={sgst}
                     onChange={(e) => setSgst(parseFloat(e.target.value) || 0)}
-                    sx={{ flex: "0 0 auto" ,width:'30px'}}
+                    sx={{ flex: "0 0 auto" ,width:'30px'}}  InputProps={{ disableUnderline: true }}
                   />%
                 </div>
               </Typography>
@@ -433,12 +433,12 @@ function Invoice({ onInvoiceChange }) {
                     gap: "8px",
                     flex: 1,
                   }}
-                >
+                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <TextField
                     variant="standard"
                     value={igst}
                     onChange={(e) => setIgst(parseFloat(e.target.value) || 0)}
-                    sx={{ flex: "0 0 auto",width:'30px' }}
+                    sx={{ flex: "0 0 auto",width:'30px' }}  InputProps={{ disableUnderline: true }}
                   />%
                 </div>
               </Typography>
@@ -450,9 +450,18 @@ function Invoice({ onInvoiceChange }) {
                 sx={{ fontSize: "0.99rem", fontWeight: "bold" }}
               >
                 Total Grand Amount:
-              </Typography>
+              </Typography>&nbsp;&nbsp;
             </div>
             <div class="sub-grid-item">{totalGrandAmount.toFixed(2)}</div>
+            <div class="sub-grid-item">
+              <Typography
+                variant="body1"
+                sx={{ fontSize: "0.99rem", fontWeight: "bold" }}
+              >
+                RoundOff Amount:
+              </Typography>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="sub-grid-item"></div>
           </div>
         </div>
       </div>

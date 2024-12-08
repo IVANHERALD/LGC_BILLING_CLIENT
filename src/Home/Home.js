@@ -7,7 +7,7 @@ import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import Invoice from "../Invoice/Invoice";
 import Navbar from "../Navbar/Navbar";
-import { fetchgenInvoiceNumber } from "../services/bill";
+import { addnewbill, fetchgenInvoiceNumber } from "../services/bill";
 import { fetchcustomer } from "../services/Customer";
 import { fetchcasting } from "../services/Casting";
 
@@ -101,25 +101,35 @@ useEffect(() => {
 
   fetchCastingDetails();
 }, []);
-  const handlePrint = () => {
-    const billdetails={
+  const handlePrint =async () => {
+    const billDetails={
       invoice_no,
-      invoice_date,state,state_code, transport_name, vehicle_number, date_of_supply, pono_date, eway_bill_no, receiver_name, receiver_address, receiver_gstin, receiver_state, receiver_state_code, consignee_name, consignee_address, consignee_gstin, consignee_state, consignee_state_code
+      invoice_date,state,state_code, transport_name, vehicle_number, date_of_supply, pono_date, eway_bill_no, receiver_name, receiver_address, receiver_gstin, receiver_state, receiver_state_code, consignee_name, consignee_address, consignee_gstin, consignee_state, consignee_state_code,
+      items:invoiceItems,cgst:invoiceCgst,sgst:invoiceSgst,igst:invoiceIgst,total_before_tax:invoicetotaltaxablevalue,
+      grand_total:invoicegrandtotal,grand_total_words:invoicetotalinwords
 
-    }
-    const invoiceData = {
-      items: invoiceItems,
-      cgst: invoiceCgst,
-      sgst: invoiceSgst,
-      igst: invoiceIgst,
-      totaltaxablevalue: invoicetotaltaxablevalue,
-      totalgrandAmount:invoicegrandtotal,
-      totalinwords:invoicetotalinwords
+
     };
+    try {
+      // Call the addnewbill service to save the bill details
+      const response = await addnewbill(billDetails);
+      console.log(invoiceItems);
+      if (response.ok) {
+          const data = await response.json();
+          console.log("Bill Saved Successfully:", data);
+          alert("Bill saved successfully!");
+      } else {
+          const errorData = await response.json();
+          console.error("Error saving bill:", errorData);
+          alert(`Error: ${errorData.message || 'Failed to save the bill'}`);
+      }
+  } catch (error) {
+      console.error("Error during saving bill:", error);
+      alert("An unexpected error occurred while saving the bill.");
+  }
 
-    console.log("Invoice Data to Save:", invoiceData,billdetails);
-
-    window.print(); // Trigger print
+  // Trigger print functionality
+  window.print();
   };
   useEffect(() => {
     const now = new Date();
