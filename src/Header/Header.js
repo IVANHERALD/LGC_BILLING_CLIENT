@@ -10,7 +10,7 @@ function Header() {
             <div className='header-content'>
                 <div className='logo_container'>
                 <Logo className="logo" />
-                </div>
+                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div className='header-left'>
                     
 

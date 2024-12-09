@@ -70,15 +70,17 @@ function Invoice({ onInvoiceChange }) {
   const roundOffAmount = (amount) => {
     const rupee = Math.floor(amount);
     const paise = amount - rupee;
+    
 
     if (paise >= 0.5) {
+
       return Math.ceil(amount);
     }
 
     return Math.floor(amount);
   };
   
-  const roundedTotalGrandAmount = roundOffAmount(totalGrandAmount);
+  const roundedTotalGrandAmount= roundOffAmount(totalGrandAmount);
   useEffect(() => {
     let words = toWords.convert(roundedTotalGrandAmount || 0, { currency: true, ignoreDecimal: true });
     setTotalInWords(words);
@@ -104,8 +106,9 @@ function Invoice({ onInvoiceChange }) {
               <TableCell
                 sx={{
                   padding: "2px",
-                  borderRight: "1px solid black",
+                  borderRight: "1.5px solid black",
                   width: "2.8%",
+                  fontSize: "1rem"
                 }}
               >
                 SI.No
@@ -113,8 +116,9 @@ function Invoice({ onInvoiceChange }) {
               <TableCell
                 sx={{
                   padding: "2px",
-                  borderRight: "1px solid black",
+                  borderRight: "1.5px solid black",
                   width: "20%",
+                  fontSize: "1rem"
                 }}
               >
                 Name Of Products
@@ -123,7 +127,8 @@ function Invoice({ onInvoiceChange }) {
                 sx={{
                   padding: "2px",
                   borderRight: "1px solid black",
-                  width: "12.8%",
+                  width: "13.375%",
+                  fontSize: "1rem"
                 }}
               >
                 HSN CODE
@@ -133,6 +138,7 @@ function Invoice({ onInvoiceChange }) {
                   padding: "2px",
                   borderRight: "1px solid black",
                   width: "8%",
+                  fontSize: "1rem"
                 }}
               >
                 Qty
@@ -142,6 +148,7 @@ function Invoice({ onInvoiceChange }) {
                   padding: "3px",
                   borderRight: "1px solid black",
                   width: "10%",
+                  fontSize: "1rem"
                 }}
               >
                 Weight
@@ -151,11 +158,12 @@ function Invoice({ onInvoiceChange }) {
                   padding: "2px",
                   borderRight: "1px solid black",
                   width: "9%",
+                  fontSize: "1rem"
                 }}
               >
                 Rate
               </TableCell>
-              <TableCell sx={{ padding: "2px", width: "10%" }}>
+              <TableCell sx={{ padding: "2px", width: "10%",fontSize: "1rem" }}>
                 Taxable Value
               </TableCell>
             </TableRow>
@@ -449,19 +457,20 @@ function Invoice({ onInvoiceChange }) {
                 variant="body1"
                 sx={{ fontSize: "0.99rem", fontWeight: "bold" }}
               >
-                Total Grand Amount:
-              </Typography>&nbsp;&nbsp;
+                RoundOff Amount:
+              </Typography>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
-            <div class="sub-grid-item">{totalGrandAmount.toFixed(2)}</div>
+            <div class="sub-grid-item"></div>
             <div class="sub-grid-item">
               <Typography
                 variant="body1"
                 sx={{ fontSize: "0.99rem", fontWeight: "bold" }}
               >
-                RoundOff Amount:
-              </Typography>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Total Grand Amount:
+              </Typography>&nbsp;&nbsp;
             </div>
-            <div class="sub-grid-item"></div>
+            <div class="sub-grid-item">{totalGrandAmount.toFixed(2)}</div>
+            
           </div>
         </div>
       </div>
