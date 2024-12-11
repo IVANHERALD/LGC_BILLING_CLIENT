@@ -40,7 +40,8 @@ function Home() {
   const [invoicegrandtotal, setInvoicegrandtotal] = useState(0);
   const [invoicetotalinwords, setInvoicetotalinwords] = useState(0);
   const [customerDetails, setcustomerDetails] = useState([]);
-
+  const [invoiceRounfoff,setInvoiceRoundoff]=useState(0);
+  
   const [copyLabels] = useState([
     "Original for Recipient",
     "Duplicate Copy for Transporter",
@@ -82,31 +83,13 @@ function Home() {
 
     fetchCustomerDetails();
 }, []);
-useEffect(() => {
 
-  const fetchCastingDetails = async () => {
-      try {
-          const response = await fetchcasting();
-          if (!response) {
-              throw new Error('Failed to fetch data');
-          }
-          const data = await response.json();
-          console.log("fetch casting details" ,data.casting);
-          setcustomerDetails(data.casting);
-          console.log("console",data.casting);
-      } catch (error) {
-          console.log(error.message);
-      }
-  };
-
-  fetchCastingDetails();
-}, []);
   const handlePrint =async () => {
     const billDetails={
       invoice_no,
       invoice_date,state,state_code, transport_name, vehicle_number, date_of_supply, pono_date, eway_bill_no, receiver_name, receiver_address, receiver_gstin, receiver_state, receiver_state_code, consignee_name, consignee_address, consignee_gstin, consignee_state, consignee_state_code,
       items:invoiceItems,cgst:invoiceCgst,sgst:invoiceSgst,igst:invoiceIgst,total_before_tax:invoicetotaltaxablevalue,
-      grand_total:invoicegrandtotal,grand_total_words:invoicetotalinwords
+      roundoff:invoiceRounfoff, grand_total:invoicegrandtotal,grand_total_words:invoicetotalinwords
 
 
     };
@@ -146,7 +129,7 @@ useEffect(() => {
     setinvoice_date(formattedDateTime);
   }, []);
   
-  const handleInvoiceData = (items, cgst, sgst, igst, totaltaxablevalue,totalGrandAmount,totalinwords) => {
+  const handleInvoiceData = (items, cgst, sgst, igst, totaltaxablevalue,roundoffAdjustment,totalGrandAmount,totalinwords) => {
     setInvoiceItems(items);
     setInvoiceCgst(cgst);
     setInvoiceSgst(sgst);
@@ -154,6 +137,7 @@ useEffect(() => {
     setInvoicetotaltaxablevalue(totaltaxablevalue);
     setInvoicegrandtotal(totalGrandAmount);
     setInvoicetotalinwords(totalinwords);
+    setInvoiceRoundoff(roundoffAdjustment);
   };
 
   return (

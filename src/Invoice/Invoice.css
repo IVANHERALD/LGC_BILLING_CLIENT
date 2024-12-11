@@ -48,7 +48,23 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      border: 1px solid #000000;
+      border: 1px solid black;
     }
-    
-    
+
+.tb-container {
+  border-bottom:1px solid black;
+  border-right:1px solid black;
+  border-left:1px solid black;
+}
+
+.css-yeh1yo-MuiPaper-root-MuiTableContainer-root {
+  border-radius: 0px !important;
+}
+
+.css-elneag-MuiTableCell-root {
+  border-bottom: 1px solid black !important;
+}
+
+.css-6u92iu-MuiTableCell-root {
+  border-bottom: 0px !important;
+}
