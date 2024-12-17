@@ -177,7 +177,7 @@ useEffect(() => {
                     <Box display={"flex"} alignItems="center" gap={5} mb={1}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         Invoice No:
                       </Typography>
@@ -190,7 +190,7 @@ useEffect(() => {
                     <Box display={"flex"} alignItems="center" gap={5}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         Invoice Date:
                       </Typography>
@@ -203,7 +203,7 @@ useEffect(() => {
                     <Box display={"flex"} alignItems="center" gap={5}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         State:
                       </Typography>
@@ -215,7 +215,7 @@ useEffect(() => {
                       ></TextField>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         State code:
                       </Typography>
@@ -230,7 +230,7 @@ useEffect(() => {
                     <Box display={"flex"} alignItems="center" gap={5}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         Name of Transport:
                       </Typography>
@@ -244,7 +244,7 @@ useEffect(() => {
                     <Box display={"flex"} alignItems="center" gap={5}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         Vehicle Number:
                       </Typography>
@@ -257,7 +257,7 @@ useEffect(() => {
                     <Box display={"flex"} alignItems="center" gap={5}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         Date of Supply:
                       </Typography>
@@ -271,7 +271,7 @@ useEffect(() => {
                     <Box display={"flex"} alignItems="center" gap={5}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         Po.No. & Date:
                       </Typography>
@@ -284,7 +284,7 @@ useEffect(() => {
                     <Box display={"flex"} alignItems="center" gap={5}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         E-WAY Bill No:
                       </Typography>
@@ -305,7 +305,7 @@ useEffect(() => {
                     <Box display={"flex"} alignItems="center" gap={5} mt={0}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         Name:
                       </Typography>
@@ -319,7 +319,7 @@ useEffect(() => {
                     <Box display={"flex"} alignItems="center" gap={3} mt={0}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         Address:
                       </Typography>
@@ -335,7 +335,7 @@ useEffect(() => {
                     <Box display={"flex"} alignItems="center" gap={4.5} mt={0}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         GSTIN:
                       </Typography>
@@ -349,7 +349,7 @@ useEffect(() => {
                     <Box display={"flex"} alignItems="center" gap={5} mt={0}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         State:
                       </Typography>
@@ -361,7 +361,7 @@ useEffect(() => {
                       ></TextField>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         State code:
                       </Typography>
@@ -377,7 +377,7 @@ useEffect(() => {
                     <Box display={"flex"} alignItems="center" gap={5} mt={0}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         Name:
                       </Typography>
@@ -391,7 +391,7 @@ useEffect(() => {
                     <Box display={"flex"} alignItems="center" gap={3} mt={0}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         Address:
                       </Typography>
@@ -407,7 +407,7 @@ useEffect(() => {
                     <Box display={"flex"} alignItems="center" gap={4.5} mt={0}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         GSTIN:
                       </Typography>
@@ -421,7 +421,7 @@ useEffect(() => {
                     <Box display={"flex"} alignItems="center" gap={5} mt={0}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         State:
                       </Typography>
@@ -433,7 +433,7 @@ useEffect(() => {
                       ></TextField>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.80rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
                       >
                         State code:
                       </Typography>

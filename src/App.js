@@ -5,6 +5,8 @@ import Invoice from './Invoice/Invoice';
 import Customer from './Customer/Customer.js'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Casting from './Casting/Casting.js';
+import Einvoice from './Einvoicemain/Einvoice/Einvoice.js';
+
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/customers" element={<Customer />} />
       <Route path="/casting" element={<Casting />} />
+      <Route path="/invoices" element={<Einvoice/>}/>
       </Routes>
       
       </Router>
