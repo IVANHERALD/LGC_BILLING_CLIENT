@@ -1,4 +1,6 @@
 import "../Invoice/Invoice.css";
+import Autocomplete from "@mui/material";
+import { fetchcasting } from "../services/Casting";
 
 import {
   Button,
@@ -22,6 +24,8 @@ function Invoice({ onInvoiceChange }) {
   const [sgst, setSgst] = useState();
   const [igst, setIgst] = useState();
   const [totalInWords, setTotalInWords] = useState("");
+  const [castingDetails,setcastingDetails]=useState([]);
+
   const toWords = new ToWords();
 
   const handleAddRow = (e) => {
@@ -49,8 +53,9 @@ function Invoice({ onInvoiceChange }) {
     console.log(updatedItems)
 
     if (field === "weight" || field === "rate") {
-      updatedItems[index].value =
+      const calculatedvalue=
         updatedItems[index].weight * updatedItems[index].rate;
+        updatedItems[index].value=parseFloat(calculatedvalue.toFixed(2))
     }
 
     setitems(updatedItems);
@@ -61,6 +66,7 @@ function Invoice({ onInvoiceChange }) {
     (total, item) => total + (item.value || 0),
     0
   );
+  
   const cgstAmount = (totalTaxableValue * cgst) / 100;
   const sgstAmount = (totalTaxableValue * sgst) / 100;
   const igstAmount = (totalTaxableValue * igst) / 100;
@@ -74,13 +80,18 @@ function Invoice({ onInvoiceChange }) {
 
     if (paise >= 0.5) {
 
-      return Math.ceil(amount);
+      return rupee+1;
     }
 
-    return Math.floor(amount);
+    return rupee;
   };
   
+  
   const roundedTotalGrandAmount= roundOffAmount(totalGrandAmount);
+  console.log(roundedTotalGrandAmount);
+  const roundoffAdjustment=(roundedTotalGrandAmount-totalGrandAmount).toFixed(2);
+  console.log(roundoffAdjustment);
+
   useEffect(() => {
     let words = toWords.convert(roundedTotalGrandAmount || 0, { currency: true, ignoreDecimal: true });
     setTotalInWords(words);
@@ -88,14 +99,33 @@ function Invoice({ onInvoiceChange }) {
   
   useEffect(() => {
     if (onInvoiceChange) {
-      onInvoiceChange(items, cgst, sgst, igst,totalTaxableValue,totalGrandAmount,totalInWords);
+      onInvoiceChange(items, cgst, sgst, igst,totalTaxableValue,roundoffAdjustment,totalGrandAmount,totalInWords);
     }
-  }, [items, cgst, sgst, igst,totalTaxableValue,totalGrandAmount,totalInWords, onInvoiceChange ]);
+  }, [items, cgst, sgst, igst,totalTaxableValue,roundoffAdjustment,totalGrandAmount,totalInWords, onInvoiceChange ]);
+  useEffect(() => {
+
+    const fetchCastingDetails = async () => {
+        try {
+            const response = await fetchcasting();
+            if (!response) {
+                throw new Error('Failed to fetch data');
+            }
+            const data = await response.json();
+            console.log("fetch casting details" ,data.casting);
+            setcastingDetails(data.casting);
+            console.log("console",data.casting);
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+  
+    fetchCastingDetails();
+  }, []);
 
   return (
-    <div>
+    <div> 
       {" "}
-      <TableContainer
+      <TableContainer 
         component={Paper}
         className="tb-container"
         sx={{ height: "550px" }}
@@ -106,7 +136,8 @@ function Invoice({ onInvoiceChange }) {
               <TableCell
                 sx={{
                   padding: "2px",
-                  borderRight: "1.5px solid black",
+                  borderRight: "1px solid black",
+                  borderBottom: "1px solid black",
                   width: "2.8%",
                   fontSize: "1rem"
                 }}
@@ -116,7 +147,8 @@ function Invoice({ onInvoiceChange }) {
               <TableCell
                 sx={{
                   padding: "2px",
-                  borderRight: "1.5px solid black",
+                  borderRight: "1px solid black",
+                  borderBottom: "1px solid black",
                   width: "20%",
                   fontSize: "1rem"
                 }}
@@ -127,6 +159,7 @@ function Invoice({ onInvoiceChange }) {
                 sx={{
                   padding: "2px",
                   borderRight: "1px solid black",
+                  borderBottom: "1px solid black",
                   width: "13.375%",
                   fontSize: "1rem"
                 }}
@@ -137,6 +170,7 @@ function Invoice({ onInvoiceChange }) {
                 sx={{
                   padding: "2px",
                   borderRight: "1px solid black",
+                  borderBottom: "1px solid black",
                   width: "8%",
                   fontSize: "1rem"
                 }}
@@ -147,6 +181,7 @@ function Invoice({ onInvoiceChange }) {
                 sx={{
                   padding: "3px",
                   borderRight: "1px solid black",
+                  borderBottom: "1px solid black",
                   width: "10%",
                   fontSize: "1rem"
                 }}
@@ -157,20 +192,25 @@ function Invoice({ onInvoiceChange }) {
                 sx={{
                   padding: "2px",
                   borderRight: "1px solid black",
+                  borderBottom: "1px solid black",
                   width: "9%",
                   fontSize: "1rem"
                 }}
               >
                 Rate
               </TableCell>
-              <TableCell sx={{ padding: "2px", width: "10%",fontSize: "1rem" }}>
+              <TableCell sx={{ padding: "2px", width: "10%",fontSize: "1rem",
+                  borderBottom: "1px solid black", }}>
                 Taxable Value
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {items.map((item, index) => (
-              <TableRow>
+              <TableRow key={index}
+              sx={{
+                borderBottom: "1.2px solid black", // Added row border for consistency
+              }}>
                 <TableCell
                   sx={{
                     padding: "2.8px",
@@ -343,12 +383,14 @@ function Invoice({ onInvoiceChange }) {
       </div>
       <div class="main-grid">
         <div class="main-column">
+          &nbsp;
           <Typography
             variant="body1"
             sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
-          >
+          >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             Total Invoice Amount in Words:
-            <div>{totalInWords}</div>
+            
+            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{totalInWords}</div>
           </Typography>
         </div>
         <div class="second-column">
@@ -451,7 +493,7 @@ function Invoice({ onInvoiceChange }) {
                 </div>
               </Typography>
             </div>
-            <div class="sub-grid-item">{igstAmount.toFixed(2)}</div>
+            <div class="sub-grid-item">{igstAmount.toFixed(2)}&nbsp;&nbsp;</div>
             <div class="sub-grid-item">
               <Typography
                 variant="body1"
@@ -460,7 +502,13 @@ function Invoice({ onInvoiceChange }) {
                 RoundOff Amount:
               </Typography>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
-            <div class="sub-grid-item"></div>
+            <div class="sub-grid-item">{(()=>{
+              const prefix = parseFloat(roundoffAdjustment) > 0 ? "+" : "";
+
+              // Return formatted value with prefix
+              return `${prefix}${roundoffAdjustment}`;
+            })()}&nbsp;&nbsp;
+  </div>
             <div class="sub-grid-item">
               <Typography
                 variant="body1"
@@ -469,7 +517,7 @@ function Invoice({ onInvoiceChange }) {
                 Total Grand Amount:
               </Typography>&nbsp;&nbsp;
             </div>
-            <div class="sub-grid-item">{totalGrandAmount.toFixed(2)}</div>
+            <div class="sub-grid-item">{roundedTotalGrandAmount.toFixed(2)}</div>
             
           </div>
         </div>

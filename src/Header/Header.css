@@ -23,10 +23,7 @@
     margin-right: 20px;
   }
   
-  .logo {
-    width: 200px; /* Adjust as necessary */
-    height: 100px;
-  }
+  
   
   .header-left {
     text-align: left;
@@ -93,5 +90,5 @@
   }
 }
 .header_right{
-  font-size: medium;
+  font-size: small;
 }
