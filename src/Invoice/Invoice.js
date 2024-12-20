@@ -386,7 +386,7 @@ function Invoice({ onInvoiceChange }) {
           &nbsp;
           <Typography
             variant="body1"
-            sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+            sx={{ fontSize: "1.0rem", fontWeight: "bold" }}
           >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             Total Invoice Amount in Words:
             

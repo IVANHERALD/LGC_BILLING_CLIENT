@@ -1,6 +1,6 @@
 import "../../src/Home/Home.css";
 
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Autocomplete, Box, Button, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 import Footer from "../Footer/Footer";
@@ -293,12 +293,54 @@ function Home() {
                       >
                         Name:
                       </Typography>
-                      <TextField
-                        variant="standard"
-                        sx={{ width: "250px" }}
-                        onChange={(e) => setreceiver_name(e.target.value)}
-                        InputProps={{ disableUnderline: true }}
-                      ></TextField>
+                      <Autocomplete
+    options={customerDetails}
+    getOptionLabel={(option) => option.consignee_name || ""} // Display GSTIN
+    filterOptions={(options, { inputValue }) =>
+      options.filter((option) =>
+        option.consignee_name
+          .toLowerCase()
+          .includes(inputValue.toLowerCase()) // Search GSTIN
+      )
+    }
+    value={
+      customerDetails.find((customer) => customer.consignee_name === receiver_name) || null
+    }
+    onChange={(event, newValue) => {
+      if (newValue) {
+        // Autofill details based on GSTIN
+        setreceiver_name(newValue.consignee_name);
+        setreceiver_gstin(newValue.consignee_gstin);
+        setreceiver_address(newValue.consignee_address);
+        setreceiver_state(newValue.consignee_state);
+        setreceiver_state_code(newValue.consignee_state_code);
+      } else {
+        // Clear fields when no value selected
+        setreceiver_gstin("");
+        setreceiver_name("");
+        setreceiver_address("");
+        setreceiver_state("");
+        setreceiver_state_code("");
+      }
+    }}
+    renderInput={(params) => (
+      <TextField
+        {...params}
+        variant="standard"
+        
+        sx={{ width: "350px" }}
+        InputProps={{
+          ...params.InputProps,
+          disableUnderline: true,
+          style: { padding: 0 }, // Clean appearance
+        }}
+      />
+    )}
+    popupIcon={null} // Hides dropdown arrow
+    disableClearable
+    forcePopupIcon={false} // Ensures no arrow icon appears
+  />
+                     
                     </Box>
                     <Box display={"flex"} alignItems="center" gap={3} mt={0}>
                       <Typography
@@ -310,9 +352,12 @@ function Home() {
                       <TextField
                         variant="standard"
                         sx={{ width: "450px" }}
-                        MULTILINE
-                        onChange={(e) => setreceiver_address(e.target.value)}
-                        InputProps={{ disableUnderline: true }}
+                        multiline
+                        rows={2}
+                       
+                        value={receiver_address}
+                        
+                                                InputProps={{ disableUnderline: true }}
                       ></TextField>
                     </Box>
                     <br />{" "}
@@ -326,9 +371,11 @@ function Home() {
                       <TextField
                         variant="standard"
                         sx={{ width: "250px" }}
-                        onChange={(e) => setreceiver_gstin(e.target.value)}
+                        value={receiver_gstin}
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
+    
+                      
                     </Box>
                     <Box display={"flex"} alignItems="center" gap={5} mt={0}>
                       <Typography
@@ -340,7 +387,7 @@ function Home() {
                       <TextField
                         variant="standard"
                         sx={{ width: "100px" }}
-                        onChange={(e) => setreceiver_state(e.target.value)}
+                        value={receiver_state}
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
                       <Typography
@@ -352,7 +399,7 @@ function Home() {
                       <TextField
                         variant="standard"
                         sx={{ width: "100px" }}
-                        onChange={(e) => setreceiver_state_code(e.target.value)}
+                       value={receiver_state_code}
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
                     </Box>
@@ -365,12 +412,54 @@ function Home() {
                       >
                         Name:
                       </Typography>
-                      <TextField
-                        variant="standard"
-                        sx={{ width: "250px" }}
-                        onChange={(e) => setconsignee_name(e.target.value)}
-                        InputProps={{ disableUnderline: true }}
-                      ></TextField>
+                      <Autocomplete
+    options={customerDetails}
+    getOptionLabel={(option) => option.consignee_name || ""} // Display GSTIN
+    filterOptions={(options, { inputValue }) =>
+      options.filter((option) =>
+        option.consignee_name
+          .toLowerCase()
+          .includes(inputValue.toLowerCase()) // Search GSTIN
+      )
+    }
+    value={
+      customerDetails.find((customer) => customer.consignee_name === consignee_name) || null
+    }
+    onChange={(event, newValue) => {
+      if (newValue) {
+        // Autofill details based on GSTIN
+        setconsignee_name(newValue.consignee_name);
+        setconsignee_address(newValue.consignee_address);
+        setconsignee_gstin(newValue.consignee_gstin);
+        setconsignee_state(newValue.consignee_state);
+        setconsignee_state_code(newValue.consignee_state_code);
+      } else {
+        // Clear fields when no value selected
+        setconsignee_gstin("");
+        setconsignee_name("");
+        setconsignee_address("");
+        setconsignee_state("");
+        setconsignee_state_code("");
+      }
+    }}
+    renderInput={(params) => (
+      <TextField
+        {...params}
+        variant="standard"
+        
+        sx={{ width: "250px" }}
+        InputProps={{
+          ...params.InputProps,
+          disableUnderline: true,
+          style: { padding: 0 }, // Clean appearance
+        }}
+      />
+    )}
+    popupIcon={null} // Hides dropdown arrow
+    disableClearable
+    forcePopupIcon={false} // Ensures no arrow icon appears
+  />
+                      
                     </Box>
                     <Box display={"flex"} alignItems="center" gap={3} mt={0}>
                       <Typography
@@ -382,8 +471,10 @@ function Home() {
                       <TextField
                         variant="standard"
                         sx={{ width: "450px" }}
-                        MULTILINE
-                        onChange={(e) => setconsignee_address(e.target.value)}
+                        multiline
+                        rows={2}
+                        value={consignee_address}
+                        
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
                     </Box>
@@ -395,12 +486,13 @@ function Home() {
                       >
                         GSTIN:
                       </Typography>
+                     
                       <TextField
                         variant="standard"
                         sx={{ width: "250px" }}
-                        onChange={(e) => setconsignee_gstin(e.target.value)}
-                        InputProps={{ disableUnderline: true }}
+                        value={consignee_gstin}                       InputProps={{ disableUnderline: true }}
                       ></TextField>
+
                     </Box>
                     <Box display={"flex"} alignItems="center" gap={5} mt={0}>
                       <Typography
@@ -412,7 +504,7 @@ function Home() {
                       <TextField
                         variant="standard"
                         sx={{ width: "100px" }}
-                        onChange={(e) => setconsignee_state(e.target.value)}
+                        value={consignee_state}
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
                       <Typography
@@ -424,7 +516,7 @@ function Home() {
                       <TextField
                         variant="standard"
                         sx={{ width: "100px" }}
-                        onChange={(e) => setconsignee_state_code(e.target.value)}
+                        value={consignee_state_code}
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
                     </Box>
