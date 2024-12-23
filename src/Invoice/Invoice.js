@@ -121,6 +121,15 @@ function Invoice({ onInvoiceChange }) {
   
     fetchCastingDetails();
   }, []);
+  const handleAutocompleteChange = (index, selectedProduct) => {
+    const updatedItems = [...items];
+    updatedItems[index] = {
+      ...updatedItems[index],
+      name: selectedProduct.name,
+      hsncode: selectedProduct.hsncode,
+    };
+    setitems(updatedItems);
+  };
 
   return (
     <div> 
@@ -128,7 +137,7 @@ function Invoice({ onInvoiceChange }) {
       <TableContainer 
         component={Paper}
         className="tb-container"
-        sx={{ height: "550px" }}
+        sx={{ height: "550px" ,width:'auto'}} 
       >
         <Table aria-label="simple table">
           <TableHead>
@@ -160,7 +169,7 @@ function Invoice({ onInvoiceChange }) {
                   padding: "2px",
                   borderRight: "1px solid black",
                   borderBottom: "1px solid black",
-                  width: "13.375%",
+                  width: "13.1%",
                   fontSize: "1rem"
                 }}
               >
@@ -175,7 +184,7 @@ function Invoice({ onInvoiceChange }) {
                   fontSize: "1rem"
                 }}
               >
-                Qty
+                Quantity
               </TableCell>
               <TableCell
                 sx={{
