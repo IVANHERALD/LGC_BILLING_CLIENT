@@ -161,7 +161,7 @@ function Home() {
                     <Box display={"flex"} alignItems="center" gap={5} mb={1}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         Invoice No:
                       </Typography>
@@ -174,7 +174,7 @@ function Home() {
                     <Box display={"flex"} alignItems="center" gap={5}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         Invoice Date:
                       </Typography>
@@ -187,7 +187,7 @@ function Home() {
                     <Box display={"flex"} alignItems="center" gap={5}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         State:
                       </Typography>
@@ -199,7 +199,7 @@ function Home() {
                       ></TextField>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         State code:
                       </Typography>
@@ -214,7 +214,7 @@ function Home() {
                     <Box display={"flex"} alignItems="center" gap={5}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         Name of Transport:
                       </Typography>
@@ -228,7 +228,7 @@ function Home() {
                     <Box display={"flex"} alignItems="center" gap={5}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         Vehicle Number:
                       </Typography>
@@ -241,7 +241,7 @@ function Home() {
                     <Box display={"flex"} alignItems="center" gap={5}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         Date of Supply:
                       </Typography>
@@ -255,7 +255,7 @@ function Home() {
                     <Box display={"flex"} alignItems="center" gap={5}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         Po.No. & Date:
                       </Typography>
@@ -268,7 +268,7 @@ function Home() {
                     <Box display={"flex"} alignItems="center" gap={5}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         E-WAY Bill No:
                       </Typography>
@@ -289,7 +289,7 @@ function Home() {
                     <Box display={"flex"} alignItems="center" gap={5} mt={0}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         Name:
                       </Typography>
@@ -328,7 +328,8 @@ function Home() {
         {...params}
         variant="standard"
         
-        sx={{ width: "350px" }}
+        sx={{ width: "350px","& .MuiInputBase-input": {
+          fontWeight: "bold",},}}
         InputProps={{
           ...params.InputProps,
           disableUnderline: true,
@@ -345,7 +346,7 @@ function Home() {
                     <Box display={"flex"} alignItems="center" gap={3} mt={0}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         Address:
                       </Typography>
@@ -364,7 +365,7 @@ function Home() {
                     <Box display={"flex"} alignItems="center" gap={4.5} mt={0}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         GSTIN:
                       </Typography>
@@ -380,7 +381,7 @@ function Home() {
                     <Box display={"flex"} alignItems="center" gap={5} mt={0}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         State:
                       </Typography>
@@ -392,7 +393,7 @@ function Home() {
                       ></TextField>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         State code:
                       </Typography>
@@ -408,7 +409,7 @@ function Home() {
                     <Box display={"flex"} alignItems="center" gap={5} mt={0}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         Name:
                       </Typography>
@@ -447,7 +448,8 @@ function Home() {
         {...params}
         variant="standard"
         
-        sx={{ width: "250px" }}
+        sx={{ width: "350px","& .MuiInputBase-input": {
+          fontWeight: "bold",}, }}
         InputProps={{
           ...params.InputProps,
           disableUnderline: true,
@@ -464,7 +466,7 @@ function Home() {
                     <Box display={"flex"} alignItems="center" gap={3} mt={0}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         Address:
                       </Typography>
@@ -482,7 +484,7 @@ function Home() {
                     <Box display={"flex"} alignItems="center" gap={4.5} mt={0}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         GSTIN:
                       </Typography>
@@ -497,7 +499,7 @@ function Home() {
                     <Box display={"flex"} alignItems="center" gap={5} mt={0}>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         State:
                       </Typography>
@@ -509,7 +511,7 @@ function Home() {
                       ></TextField>
                       <Typography
                         variant="body1"
-                        sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                        sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
                       >
                         State code:
                       </Typography>

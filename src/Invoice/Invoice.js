@@ -1,5 +1,5 @@
 import "../Invoice/Invoice.css";
-import Autocomplete from "@mui/material";
+import Autocomplete from "@mui/material/Autocomplete";
 import { fetchcasting } from "../services/Casting";
 
 import {
@@ -16,15 +16,25 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { ToWords } from 'to-words';
+import { ToWords } from "to-words";
 
 function Invoice({ onInvoiceChange }) {
-  const [items, setitems] = useState([{ si_no: 1, name: "", hsncode: 0, quantity: 0, weight: 0, rate: 0, value: 0 }]);
+  const [items, setitems] = useState([
+    {
+      si_no: 1,
+      name: "",
+      hsncode: 0,
+      quantity: 0,
+      weight: 0,
+      rate: 0,
+      value: 0,
+    },
+  ]);
   const [cgst, setCgst] = useState();
   const [sgst, setSgst] = useState();
   const [igst, setIgst] = useState();
   const [totalInWords, setTotalInWords] = useState("");
-  const [castingDetails,setcastingDetails]=useState([]);
+  const [castingDetails, setcastingDetails] = useState([]);
 
   const toWords = new ToWords();
 
@@ -32,7 +42,15 @@ function Invoice({ onInvoiceChange }) {
     e.preventDefault();
     setitems([
       ...items,
-      { si_no: 0, name: "", hsncode: 0, quantity: 0, weight: 0, rate: 0, value: 0 },
+      {
+        si_no: 0,
+        name: "",
+        hsncode: 0,
+        quantity: 0,
+        weight: 0,
+        rate: 0,
+        value: 0,
+      },
     ]);
   };
 
@@ -42,31 +60,41 @@ function Invoice({ onInvoiceChange }) {
 
       return updatedItems.map((item) => ({
         ...item,
-        value: item.weight * item.rate || 0, 
+        value: item.weight * item.rate || 0,
       }));
     });
   };
-  
+
   const handleInputChange = (index, field, value) => {
     const updatedItems = [...items];
     updatedItems[index] = { ...updatedItems[index], [field]: value };
-    console.log(updatedItems)
+    console.log("update",updatedItems);
 
-    if (field === "weight" || field === "rate") {
-      const calculatedvalue=
-        updatedItems[index].weight * updatedItems[index].rate;
-        updatedItems[index].value=parseFloat(calculatedvalue.toFixed(2))
+    // if (field === "weight" || field === "rate") {
+    //   const calculatedvalue =
+    //     updatedItems[index].weight * updatedItems[index].rate;
+    //   updatedItems[index].value = parseFloat(calculatedvalue.toFixed(2));
+    // }
+    const quantity = parseFloat(updatedItems[index].quantity) || 0; // Default to 0 if invalid
+  const weight = parseFloat(updatedItems[index].weight) || 0; // Default to 0 if invalid
+  const rate = parseFloat(updatedItems[index].rate) || 0;
+    if (field === "quantity" || field === "rate") {
+      const totalWeight =quantity*weight;
+      const calculatedvalue=totalWeight*rate;
+
+      updatedItems[index].weight=parseFloat(totalWeight.toFixed(2));
+      updatedItems[index].value=parseFloat(calculatedvalue.toFixed(2));
+         
     }
 
     setitems(updatedItems);
   };
 
-  
   const totalTaxableValue = items.reduce(
     (total, item) => total + (item.value || 0),
     0
   );
-  
+
   const cgstAmount = (totalTaxableValue * cgst) / 100;
   const sgstAmount = (totalTaxableValue * sgst) / 100;
   const igstAmount = (totalTaxableValue * igst) / 100;
@@ -76,68 +104,90 @@ function Invoice({ onInvoiceChange }) {
   const roundOffAmount = (amount) => {
     const rupee = Math.floor(amount);
     const paise = amount - rupee;
-    
 
     if (paise >= 0.5) {
-
-      return rupee+1;
+      return rupee + 1;
     }
 
     return rupee;
   };
-  
-  
-  const roundedTotalGrandAmount= roundOffAmount(totalGrandAmount);
-  console.log(roundedTotalGrandAmount);
-  const roundoffAdjustment=(roundedTotalGrandAmount-totalGrandAmount).toFixed(2);
-  console.log(roundoffAdjustment);
+
+  const roundedTotalGrandAmount = roundOffAmount(totalGrandAmount);
+  const roundoffAdjustment = (
+    roundedTotalGrandAmount - totalGrandAmount
+  ).toFixed(2);
 
   useEffect(() => {
-    let words = toWords.convert(roundedTotalGrandAmount || 0, { currency: true, ignoreDecimal: true });
+    let words = toWords.convert(roundedTotalGrandAmount || 0, {
+      currency: true,
+      ignoreDecimal: true,
+    });
     setTotalInWords(words);
-  }, [roundedTotalGrandAmount]); 
-  
+  }, [roundedTotalGrandAmount]);
+
   useEffect(() => {
     if (onInvoiceChange) {
-      onInvoiceChange(items, cgst, sgst, igst,totalTaxableValue,roundoffAdjustment,totalGrandAmount,totalInWords);
+      onInvoiceChange(
+        items,
+        cgst,
+        sgst,
+        igst,
+        totalTaxableValue,
+        roundoffAdjustment,
+        totalGrandAmount,
+        totalInWords
+      );
     }
-  }, [items, cgst, sgst, igst,totalTaxableValue,roundoffAdjustment,totalGrandAmount,totalInWords, onInvoiceChange ]);
+  }, [
+    items,
+    cgst,
+    sgst,
+    igst,
+    totalTaxableValue,
+    roundoffAdjustment,
+    totalGrandAmount,
+    totalInWords,
+    onInvoiceChange,
+  ]);
   useEffect(() => {
-
     const fetchCastingDetails = async () => {
-        try {
-            const response = await fetchcasting();
-            if (!response) {
-                throw new Error('Failed to fetch data');
-            }
-            const data = await response.json();
-            console.log("fetch casting details" ,data.casting);
-            setcastingDetails(data.casting);
-            console.log("console",data.casting);
-        } catch (error) {
-            console.log(error.message);
+      try {
+        const response = await fetchcasting();
+        if (!response) {
+          throw new Error("Failed to fetch data");
         }
+        const data = await response.json();
+        console.log("fetch casting details", data.casting);
+        setcastingDetails(data.casting);
+        console.log("console", data.casting);
+      } catch (error) {
+        console.log(error.message);
+      }
     };
-  
+
     fetchCastingDetails();
   }, []);
   const handleAutocompleteChange = (index, selectedProduct) => {
+    if (!selectedProduct) return;
+
     const updatedItems = [...items];
+    console.log("select", selectedProduct);
     updatedItems[index] = {
       ...updatedItems[index],
-      name: selectedProduct.name,
-      hsncode: selectedProduct.hsncode,
+      name: selectedProduct.casting_name,
+      hsncode: selectedProduct.casting_hsn,
+      weight: selectedProduct.casting_weight,
     };
     setitems(updatedItems);
   };
 
   return (
-    <div> 
+    <div>
       {" "}
-      <TableContainer 
+      <TableContainer
         component={Paper}
         className="tb-container"
-        sx={{ height: "550px" ,width:'auto'}} 
+        sx={{ height: "550px", width: "auto" }}
       >
         <Table aria-label="simple table">
           <TableHead>
@@ -148,7 +198,7 @@ function Invoice({ onInvoiceChange }) {
                   borderRight: "1px solid black",
                   borderBottom: "1px solid black",
                   width: "2.8%",
-                  fontSize: "1rem"
+                  fontSize: "1rem",
                 }}
               >
                 SI.No
@@ -159,7 +209,7 @@ function Invoice({ onInvoiceChange }) {
                   borderRight: "1px solid black",
                   borderBottom: "1px solid black",
                   width: "20%",
-                  fontSize: "1rem"
+                  fontSize: "1rem",
                 }}
               >
                 Name Of Products
@@ -170,7 +220,7 @@ function Invoice({ onInvoiceChange }) {
                   borderRight: "1px solid black",
                   borderBottom: "1px solid black",
                   width: "13.1%",
-                  fontSize: "1rem"
+                  fontSize: "1rem",
                 }}
               >
                 HSN CODE
@@ -181,7 +231,7 @@ function Invoice({ onInvoiceChange }) {
                   borderRight: "1px solid black",
                   borderBottom: "1px solid black",
                   width: "8%",
-                  fontSize: "1rem"
+                  fontSize: "1rem",
                 }}
               >
                 Quantity
@@ -192,7 +242,7 @@ function Invoice({ onInvoiceChange }) {
                   borderRight: "1px solid black",
                   borderBottom: "1px solid black",
                   width: "10%",
-                  fontSize: "1rem"
+                  fontSize: "1rem",
                 }}
               >
                 Weight
@@ -203,23 +253,31 @@ function Invoice({ onInvoiceChange }) {
                   borderRight: "1px solid black",
                   borderBottom: "1px solid black",
                   width: "9%",
-                  fontSize: "1rem"
+                  fontSize: "1rem",
                 }}
               >
                 Rate
               </TableCell>
-              <TableCell sx={{ padding: "2px", width: "10%",fontSize: "1rem",
-                  borderBottom: "1px solid black", }}>
+              <TableCell
+                sx={{
+                  padding: "2px",
+                  width: "10%",
+                  fontSize: "1rem",
+                  borderBottom: "1px solid black",
+                }}
+              >
                 Taxable Value
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {items.map((item, index) => (
-              <TableRow key={index}
-              sx={{
-                borderBottom: "1.2px solid black", // Added row border for consistency
-              }}>
+              <TableRow
+                key={index}
+                sx={{
+                  borderBottom: "1.2px solid black", // Added row border for consistency
+                }}
+              >
                 <TableCell
                   sx={{
                     padding: "2.8px",
@@ -255,22 +313,37 @@ function Invoice({ onInvoiceChange }) {
                     verticalAlign: "top",
                   }}
                 >
-                  <TextField
-                    variant="standard"
-                    multiline
-                    sx={{ width: "200px" }}
-                    InputProps={{
-                      disableUnderline: true,
-                      sx: { fontSize: "15px" },
-                      disableUnderline: true,
-                    }}
-                    onChange={(e) =>
-                      handleInputChange(
-                        index,
-                        "name",
-                        e.target.value || " "
-                      )
+                  <Autocomplete
+                  freeSolo
+                    options={castingDetails}
+                    getOptionLabel={(option) => option.casting_name || ""}
+                    onChange={(e, selectedProduct) =>
+                      handleAutocompleteChange(index, selectedProduct)
                     }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="standard"
+                        multiline
+                        sx={{ width: "350px" }}
+                        InputProps={{
+                          ...params.InputProps,
+                          disableUnderline: true,
+                          sx: { fontSize: "15px" },
+                        }}
+                        onChange={(e) =>
+                          handleInputChange(
+                            index,
+                            "name",
+                            e.target.value || " "
+                          )
+                        }
+                      />
+                    )}
+                    popupIcon={null} // Hides dropdown arrow
+    disableClearable
+    forcePopupIcon={false}
+    
                   />
                 </TableCell>
                 <TableCell
@@ -282,6 +355,7 @@ function Invoice({ onInvoiceChange }) {
                 >
                   <TextField
                     variant="standard"
+                    value={item.hsncode}
                     InputProps={{
                       sx: { fontSize: "15px" },
                       disableUnderline: true,
@@ -311,7 +385,7 @@ function Invoice({ onInvoiceChange }) {
                     onChange={(e) =>
                       handleInputChange(
                         index,
-                        "qty",
+                        "quantity",
                         parseInt(e.target.value) || 0
                       )
                     }
@@ -326,6 +400,7 @@ function Invoice({ onInvoiceChange }) {
                 >
                   <TextField
                     variant="standard"
+                    value={item.weight}
                     onChange={(e) =>
                       handleInputChange(
                         index,
@@ -396,10 +471,12 @@ function Invoice({ onInvoiceChange }) {
           <Typography
             variant="body1"
             sx={{ fontSize: "1.0rem", fontWeight: "bold" }}
-          >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            Total Invoice Amount in Words:
-            
-            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{totalInWords}</div>
+          >
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total Invoice Amount in Words:
+            <div>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              {totalInWords}
+            </div>
           </Typography>
         </div>
         <div class="second-column">
@@ -407,17 +484,17 @@ function Invoice({ onInvoiceChange }) {
             <div class="sub-grid-item">
               <Typography
                 variant="body1"
-                sx={{ fontSize: "0.85rem", fontWeight: "bold" }}
+                sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
               >
                 Total Amount Before Tax:{" "}
               </Typography>
             </div>
-            <div class="sub-grid-item">{totalTaxableValue}</div>
+            <div class="sub-grid-item">{totalTaxableValue}&nbsp;&nbsp;</div>
             <div class="sub-grid-item">
               <Typography
                 variant="body1"
                 sx={{
-                  fontSize: "0.85rem",
+                  fontSize: "0.95rem",
                   fontWeight: "bold",
                   display: "flex",
                   justifyContent: "space-between",
@@ -432,13 +509,16 @@ function Invoice({ onInvoiceChange }) {
                     gap: "8px",
                     flex: 1,
                   }}
-                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                >
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <TextField
                     variant="standard"
                     value={cgst}
                     onChange={(e) => setCgst(parseFloat(e.target.value) || 0)}
-                    sx={{ flex: "0 0 auto" ,width:'30px'}}  InputProps={{ disableUnderline: true }}
-                  />%
+                    sx={{ flex: "0 0 auto", width: "30px" }}
+                    InputProps={{ disableUnderline: true }}
+                  />
+                  %
                 </div>
               </Typography>
             </div>
@@ -447,7 +527,7 @@ function Invoice({ onInvoiceChange }) {
               <Typography
                 variant="body1"
                 sx={{
-                  fontSize: "0.85rem",
+                  fontSize: "0.95rem",
                   fontWeight: "bold",
                   display: "flex",
                   justifyContent: "space-between",
@@ -462,13 +542,16 @@ function Invoice({ onInvoiceChange }) {
                     gap: "8px",
                     flex: 1,
                   }}
-                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                >
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <TextField
                     variant="standard"
                     value={sgst}
                     onChange={(e) => setSgst(parseFloat(e.target.value) || 0)}
-                    sx={{ flex: "0 0 auto" ,width:'30px'}}  InputProps={{ disableUnderline: true }}
-                  />%
+                    sx={{ flex: "0 0 auto", width: "30px" }}
+                    InputProps={{ disableUnderline: true }}
+                  />
+                  %
                 </div>
               </Typography>
             </div>
@@ -477,7 +560,7 @@ function Invoice({ onInvoiceChange }) {
               <Typography
                 variant="body1"
                 sx={{
-                  fontSize: "0.85rem",
+                  fontSize: "0.95rem",
                   fontWeight: "bold",
                   display: "flex",
                   justifyContent: "space-between",
@@ -492,13 +575,16 @@ function Invoice({ onInvoiceChange }) {
                     gap: "8px",
                     flex: 1,
                   }}
-                >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                >
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <TextField
                     variant="standard"
                     value={igst}
                     onChange={(e) => setIgst(parseFloat(e.target.value) || 0)}
-                    sx={{ flex: "0 0 auto",width:'30px' }}  InputProps={{ disableUnderline: true }}
-                  />%
+                    sx={{ flex: "0 0 auto", width: "30px" }}
+                    InputProps={{ disableUnderline: true }}
+                  />
+                  %
                 </div>
               </Typography>
             </div>
@@ -509,25 +595,30 @@ function Invoice({ onInvoiceChange }) {
                 sx={{ fontSize: "0.99rem", fontWeight: "bold" }}
               >
                 RoundOff Amount:
-              </Typography>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </Typography>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;&nbsp;
             </div>
-            <div class="sub-grid-item">{(()=>{
-              const prefix = parseFloat(roundoffAdjustment) > 0 ? "+" : "";
+            <div class="sub-grid-item">
+              {(() => {
+                const prefix = parseFloat(roundoffAdjustment) > 0 ? "+" : "";
 
-              // Return formatted value with prefix
-              return `${prefix}${roundoffAdjustment}`;
-            })()}&nbsp;&nbsp;
-  </div>
+                // Return formatted value with prefix
+                return `${prefix}${roundoffAdjustment}`;
+              })()}
+              &nbsp;&nbsp;
+            </div>
             <div class="sub-grid-item">
               <Typography
                 variant="body1"
                 sx={{ fontSize: "0.99rem", fontWeight: "bold" }}
               >
                 Total Grand Amount:
-              </Typography>&nbsp;&nbsp;
+              </Typography>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
-            <div class="sub-grid-item">{roundedTotalGrandAmount.toFixed(2)}</div>
-            
+            <div class="sub-grid-item">
+              {roundedTotalGrandAmount.toFixed(2)}
+            </div>
           </div>
         </div>
       </div>

@@ -18,9 +18,7 @@
   }
   
   .logo_container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 21%
   }
   
   .header-left {
