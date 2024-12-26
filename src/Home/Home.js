@@ -168,7 +168,8 @@ function Home() {
                       <TextField
                         variant="standard"
                         value={invoice_no}
-                        InputProps={{ disableUnderline: true }}
+                        onChange={(e) => setinvoice_no(e.target.value)}
+                        InputProps={{ disableUnderline: true,inputProps: { style: { fontWeight: "bold" } } }}
                       ></TextField>
                     </Box>
                     <Box display={"flex"} alignItems="center" gap={5}>
@@ -181,7 +182,7 @@ function Home() {
                       <TextField
                         variant="standard"
                         value={invoice_date}
-                        InputProps={{ disableUnderline: true }}
+                        InputProps={{ disableUnderline: true,inputProps: { style: { fontWeight: "bold" } } }}
                       ></TextField>
                     </Box>
                     <Box display={"flex"} alignItems="center" gap={5}>
@@ -235,7 +236,7 @@ function Home() {
                       <TextField
                         variant="standard"
                         onChange={(e) => setvehicle_number(e.target.value)}
-                        InputProps={{ disableUnderline: true }}
+                        InputProps={{ disableUnderline: true ,inputProps: { style: { fontWeight: "bold" } }}}
                       ></TextField>
                     </Box>
                     <Box display={"flex"} alignItems="center" gap={5}>
@@ -275,7 +276,7 @@ function Home() {
                       <TextField
                         variant="standard"
                         onChange={(e) => seteway_bill_no(e.target.value)}
-                        InputProps={{ disableUnderline: true }}
+                        InputProps={{ disableUnderline: true ,inputProps: { style: { fontWeight: "bold" } }}}
                       ></TextField>
                     </Box>
                   </div>
@@ -354,7 +355,7 @@ function Home() {
                         variant="standard"
                         sx={{ width: "450px" }}
                         multiline
-                        rows={2}
+                        rows={3}
                        
                         value={receiver_address}
                         
@@ -532,7 +533,7 @@ function Home() {
           </div>
         </div>
       </div>
-
+<div className="generated"> This is a Computer Generated Invoice</div>
       <center>
         <div className="print-button-container">
           <Button variant="contained" color="primary" onClick={handlePrint}>
@@ -548,6 +549,7 @@ function Home() {
           </Button>
         </div>
       </center>
+      
     </div>
   );
 }

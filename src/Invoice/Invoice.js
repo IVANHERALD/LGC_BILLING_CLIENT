@@ -75,17 +75,19 @@ function Invoice({ onInvoiceChange }) {
     //     updatedItems[index].weight * updatedItems[index].rate;
     //   updatedItems[index].value = parseFloat(calculatedvalue.toFixed(2));
     // }
-    const quantity = parseFloat(updatedItems[index].quantity) || 0; // Default to 0 if invalid
-  const weight = parseFloat(updatedItems[index].weight) || 0; // Default to 0 if invalid
-  const rate = parseFloat(updatedItems[index].rate) || 0;
-    if (field === "quantity" || field === "rate") {
-      const totalWeight =quantity*weight;
-      const calculatedvalue=totalWeight*rate;
-
-      updatedItems[index].weight=parseFloat(totalWeight.toFixed(2));
-      updatedItems[index].value=parseFloat(calculatedvalue.toFixed(2));
-         
+    if (field === "quantity" && updatedItems[index].unitWeight) {
+      // Update the weight dynamically based on quantity
+      updatedItems[index].weight = updatedItems[index].unitWeight * value;
     }
+
+    if (field === "weight" || field === "rate") {
+      const calculatedvalue =
+        updatedItems[index].weight * updatedItems[index].rate;
+      updatedItems[index].value = parseFloat(calculatedvalue.toFixed(2));
+    }
+    console.log(updatedItems);
+
+
 
     setitems(updatedItems);
   };
@@ -176,8 +178,12 @@ function Invoice({ onInvoiceChange }) {
       ...updatedItems[index],
       name: selectedProduct.casting_name,
       hsncode: selectedProduct.casting_hsn,
-      weight: selectedProduct.casting_weight,
+      unitWeight: selectedProduct.casting_weight,
     };
+    if (updatedItems[index].quantity) {
+      updatedItems[index].weight = updatedItems[index].unitWeight * updatedItems[index].quantity;
+    }
+
     setitems(updatedItems);
   };
 
@@ -329,7 +335,7 @@ function Invoice({ onInvoiceChange }) {
                         InputProps={{
                           ...params.InputProps,
                           disableUnderline: true,
-                          sx: { fontSize: "15px" },
+                          sx: { fontSize: "15px",fontWeight:"bold" },
                         }}
                         onChange={(e) =>
                           handleInputChange(
@@ -409,7 +415,7 @@ function Invoice({ onInvoiceChange }) {
                       )
                     }
                     InputProps={{
-                      sx: { fontSize: "15px" },
+                      sx: { fontSize: "15px" ,fontWeight:"bold"},
                       disableUnderline: true,
                     }}
                   />
@@ -443,7 +449,7 @@ function Invoice({ onInvoiceChange }) {
                     InputProps={{
                       padding: "4px",
                       sx: { fontSize: "15px" },
-                      disableUnderline: true,
+                      disableUnderline: true,inputProps: { style: { fontWeight: "bold" } }
                     }}
                     value={item.value || 0}
                   />
@@ -470,12 +476,12 @@ function Invoice({ onInvoiceChange }) {
           &nbsp;
           <Typography
             variant="body1"
-            sx={{ fontSize: "1.0rem", fontWeight: "bold" }}
+            sx={{ fontSize: "1.0rem" }}
           >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total Invoice Amount in Words:
             <div>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              {totalInWords}
+             <b> {totalInWords}</b>
             </div>
           </Typography>
         </div>
@@ -489,7 +495,7 @@ function Invoice({ onInvoiceChange }) {
                 Total Amount Before Tax:{" "}
               </Typography>
             </div>
-            <div class="sub-grid-item">{totalTaxableValue}&nbsp;&nbsp;</div>
+            <div class="sub-grid-item"><b>{totalTaxableValue}</b>&nbsp;&nbsp;</div>
             <div class="sub-grid-item">
               <Typography
                 variant="body1"
@@ -522,7 +528,7 @@ function Invoice({ onInvoiceChange }) {
                 </div>
               </Typography>
             </div>
-            <div class="sub-grid-item">{cgstAmount.toFixed(2)}</div>
+            <div class="sub-grid-item"><b>{cgstAmount.toFixed(2)}</b></div>
             <div class="sub-grid-item">
               <Typography
                 variant="body1"
@@ -555,7 +561,7 @@ function Invoice({ onInvoiceChange }) {
                 </div>
               </Typography>
             </div>
-            <div class="sub-grid-item">{sgstAmount.toFixed(2)}</div>
+            <div class="sub-grid-item"><b>{sgstAmount.toFixed(2)}</b></div>
             <div class="sub-grid-item">
               <Typography
                 variant="body1"
@@ -588,7 +594,7 @@ function Invoice({ onInvoiceChange }) {
                 </div>
               </Typography>
             </div>
-            <div class="sub-grid-item">{igstAmount.toFixed(2)}&nbsp;&nbsp;</div>
+            <div class="sub-grid-item"><b>{igstAmount.toFixed(2)}</b>&nbsp;&nbsp;</div>
             <div class="sub-grid-item">
               <Typography
                 variant="body1"
@@ -617,7 +623,7 @@ function Invoice({ onInvoiceChange }) {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div class="sub-grid-item">
-              {roundedTotalGrandAmount.toFixed(2)}
+              <b>{roundedTotalGrandAmount.toFixed(2)}</b>
             </div>
           </div>
         </div>
