@@ -7,7 +7,7 @@ import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import Invoice from "../Invoice/Invoice";
 import Navbar from "../Navbar/Navbar";
-import { addnewbill, fetchgenInvoiceNumber } from "../services/bill";
+import { addnewbill, fetchgenBillNumber, fetchgenInvoiceNumber } from "../services/bill";
 import { fetchcustomer } from "../services/Customer";
 import { fetchcasting } from "../services/Casting";
 
@@ -50,9 +50,23 @@ function Home() {
   ]);
   
 
-  async function fetchInvoiceNumber() {
+  // async function fetchInvoiceNumber() {
+  //   try {
+  //     const response = await fetchgenInvoiceNumber();
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setinvoice_no(data.invoice_no);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+  // useEffect(() => {
+  //   fetchInvoiceNumber();
+  // }, []);
+  async function fetchBillNumber() {
     try {
-      const response = await fetchgenInvoiceNumber();
+      const response = await fetchgenBillNumber();
       if (response.ok) {
         const data = await response.json();
         setinvoice_no(data.invoice_no);
@@ -62,8 +76,9 @@ function Home() {
     }
   }
   useEffect(() => {
-    fetchInvoiceNumber();
+    fetchBillNumber();
   }, []);
+
   useEffect(() => {
 
     const fetchCustomerDetails = async () => {
