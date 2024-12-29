@@ -202,7 +202,7 @@ function Invoice({ onInvoiceChange }) {
                 sx={{
                   padding: "2px",
                   borderRight: "1px solid black",
-                  borderBottom: "1px solid black",
+                  borderBottom: "1.2px solid black",
                   width: "2.8%",
                   fontSize: "1rem",
                 }}
@@ -213,7 +213,7 @@ function Invoice({ onInvoiceChange }) {
                 sx={{
                   padding: "2px",
                   borderRight: "1px solid black",
-                  borderBottom: "1px solid black",
+                  borderBottom: "1.2px solid black",
                   width: "20%",
                   fontSize: "1rem",
                 }}
@@ -224,7 +224,7 @@ function Invoice({ onInvoiceChange }) {
                 sx={{
                   padding: "2px",
                   borderRight: "1px solid black",
-                  borderBottom: "1px solid black",
+                  borderBottom: "1.2px solid black",
                   width: "13.1%",
                   fontSize: "1rem",
                 }}
@@ -235,7 +235,7 @@ function Invoice({ onInvoiceChange }) {
                 sx={{
                   padding: "2px",
                   borderRight: "1px solid black",
-                  borderBottom: "1px solid black",
+                  borderBottom: "1.2px solid black",
                   width: "8%",
                   fontSize: "1rem",
                 }}
@@ -246,7 +246,7 @@ function Invoice({ onInvoiceChange }) {
                 sx={{
                   padding: "3px",
                   borderRight: "1px solid black",
-                  borderBottom: "1px solid black",
+                  borderBottom: "1.2px solid black",
                   width: "10%",
                   fontSize: "1rem",
                 }}
@@ -257,7 +257,7 @@ function Invoice({ onInvoiceChange }) {
                 sx={{
                   padding: "2px",
                   borderRight: "1px solid black",
-                  borderBottom: "1px solid black",
+                  borderBottom: "1.2px solid black",
                   width: "9%",
                   fontSize: "1rem",
                 }}
@@ -269,7 +269,7 @@ function Invoice({ onInvoiceChange }) {
                   padding: "2px",
                   width: "10%",
                   fontSize: "1rem",
-                  borderBottom: "1px solid black",
+                  borderBottom: "1.2px solid black",
                 }}
               >
                 Taxable Value
