@@ -289,6 +289,7 @@ function Invoice({ onInvoiceChange }) {
                     padding: "2.8px",
                     borderRight: "1px solid black",
                     verticalAlign: "top",
+                    borderBottom: "1.2px solid black",
                   }}
                 >
                   <TextField
@@ -317,6 +318,7 @@ function Invoice({ onInvoiceChange }) {
                     padding: "2.8px",
                     borderRight: "1px solid black",
                     verticalAlign: "top",
+                    borderBottom: "1.2px solid black",
                   }}
                 >
                   <Autocomplete
@@ -357,6 +359,7 @@ function Invoice({ onInvoiceChange }) {
                     padding: "2.8px",
                     borderRight: "1px solid black",
                     verticalAlign: "top",
+                    borderBottom: "1.2px solid black",
                   }}
                 >
                   <TextField
@@ -380,6 +383,7 @@ function Invoice({ onInvoiceChange }) {
                     padding: "2.8px",
                     borderRight: "1px solid black",
                     verticalAlign: "top",
+                    borderBottom: "1.2px solid black",
                   }}
                 >
                   <TextField
@@ -402,6 +406,7 @@ function Invoice({ onInvoiceChange }) {
                     padding: "2.8px",
                     borderRight: "1px solid black",
                     verticalAlign: "top",
+                    borderBottom: "1.2px solid black",
                   }}
                 >
                   <TextField
@@ -425,6 +430,7 @@ function Invoice({ onInvoiceChange }) {
                     padding: "2.8px",
                     borderRight: "1px solid black",
                     verticalAlign: "top",
+                    borderBottom: "1.2px solid black",
                   }}
                 >
                   <TextField
@@ -443,7 +449,7 @@ function Invoice({ onInvoiceChange }) {
                     }
                   />
                 </TableCell>
-                <TableCell sx={{ padding: "2.8px", verticalAlign: "top" }}>
+                <TableCell sx={{ padding: "2.8px", verticalAlign: "top",borderBottom: "1.2px solid black", }}>
                   <TextField
                     variant="standard"
                     InputProps={{
