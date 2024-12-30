@@ -240,7 +240,7 @@ function Invoice({ onInvoiceChange }) {
                   fontSize: "1rem",
                 }}
               >
-                Quantity(KGS)
+                Quantity(Nos)
               </TableCell>
               <TableCell
                 sx={{
@@ -251,7 +251,7 @@ function Invoice({ onInvoiceChange }) {
                   fontSize: "1rem",
                 }}
               >
-                Weight
+                Weight(KGS)
               </TableCell>
               <TableCell
                 sx={{

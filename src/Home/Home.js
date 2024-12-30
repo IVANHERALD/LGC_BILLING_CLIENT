@@ -490,7 +490,7 @@ function Home() {
                         variant="standard"
                         sx={{ width: "450px" }}
                         multiline
-                        rows={2}
+                        rows={3}
                         value={consignee_address}
                         
                         InputProps={{ disableUnderline: true }}
