@@ -84,7 +84,7 @@ p {
 }
 
 .second-inner {
-  height: 100%;
+  height: 99%;
   justify-items: center;
   display: grid;
 }
