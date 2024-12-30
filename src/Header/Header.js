@@ -14,7 +14,7 @@ function Header() {
                         <center> <h4 className='tax_invoice'><u>TAX INVOICE</u></h4>
                             <p className='Lakshmi'>LAKSHMI GRADE CASTINGS</p>
                             <p className='mrfs'>MFRS. QUALITY C.I. ROUGH CASTINGS</p></center>
-                        <p className='address'>420/2,V.K.Road,Thanneer Panthal,Peelamedu, Coimbatore - 641 004</p></div>
+                        <p className='address' sx="font-size: larger;">420/2,V.K.Road,Thanneer Panthal,Peelamedu, Coimbatore - 641 004</p></div>
                     <div className='header_right'>
                         <p>GSTIN:<b>33AVBPS2620N1ZJ</b></p>
                         <p>PAN:<b> AVBPS2620N</b></p>
