@@ -482,10 +482,14 @@ function Invoice({ onInvoiceChange }) {
           &nbsp;
           <Typography
             variant="body1"
-            sx={{ fontSize: "1.0rem" }}
+            sx={{ fontSize: "1.0rem",marginLeft:"10px" }}
           >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total Invoice Amount in Words:
-            <div>
+            <div style={{
+      marginLeft: "5px", // Matches the indentation of the top text
+      whiteSpace: "normal", // Allows the text to wrap
+      wordWrap: "break-word", // Ensures long words break if necessary
+    }}>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
              <b> {totalInWords}</b>
             </div>

@@ -99,7 +99,7 @@ function Home() {
     fetchCustomerDetails();
 }, []);
 
-  const handlePrint =async () => {
+  const handleSave =async () => {
     const billDetails={
       invoice_no,
       invoice_date,state,state_code, transport_name, vehicle_number, date_of_supply, pono_date, eway_bill_no, receiver_name, receiver_address, receiver_gstin, receiver_state, receiver_state_code, consignee_name, consignee_address, consignee_gstin, consignee_state, consignee_state_code,
@@ -127,8 +127,11 @@ function Home() {
   }
 
   // Trigger print functionality
-  window.print();
+  
   };
+  const handlePrint=async()=>{
+    window.print();
+  }
   useEffect(() => {
     const now = new Date();
   
@@ -551,6 +554,8 @@ function Home() {
 <div className="generated"> This is a Computer Generated Invoice</div>
       <center>
         <div className="print-button-container">
+        <Button variant="contained" color="primary" onClick={handleSave}>
+Submit          </Button>&nbsp;&nbsp;&nbsp;&nbsp;
           <Button variant="contained" color="primary" onClick={handlePrint}>
             Print Invoice
           </Button>
