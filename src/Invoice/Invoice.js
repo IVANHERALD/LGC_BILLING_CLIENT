@@ -613,7 +613,7 @@ function Invoice({ onInvoiceChange }) {
               >
                 RoundOff Amount:
               </Typography>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div class="sub-grid-item">
               {(() => {
