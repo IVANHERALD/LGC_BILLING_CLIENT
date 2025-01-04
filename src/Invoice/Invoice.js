@@ -10,6 +10,7 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TableFooter,
   TableHead,
   TableRow,
   TextField,
@@ -464,6 +465,8 @@ function Invoice({ onInvoiceChange }) {
               </TableRow>
             ))}
           </TableBody>
+          
+          
         </Table>
       </TableContainer>
       <div>
