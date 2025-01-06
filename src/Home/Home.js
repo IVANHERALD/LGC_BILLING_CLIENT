@@ -133,6 +133,7 @@ function Home() {
     window.print();
   }
   useEffect(() => {
+    const intervalId=setInterval(()=>{
     const now = new Date();
   
     // Format date as dd/mm/yyyy
@@ -144,7 +145,7 @@ function Home() {
     // Combine date and time
     const formattedDateTime = `${formattedDate} ${formattedTime}`;
     
-    setinvoice_date(formattedDateTime);
+    setinvoice_date(formattedDateTime);},10000);
   }, []);
   
   const handleInvoiceData = (items, cgst, sgst, igst, totaltaxablevalue,roundoffAdjustment,totalGrandAmount,totalinwords) => {

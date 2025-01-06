@@ -10,6 +10,7 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TableFooter,
   TableHead,
   TableRow,
   TextField,
@@ -417,7 +418,7 @@ function Invoice({ onInvoiceChange }) {
                       handleInputChange(
                         index,
                         "weight",
-                        parseFloat(e.target.value) || 0
+                        (e.target.value) || 0
                       )
                     }
                     InputProps={{
@@ -464,6 +465,8 @@ function Invoice({ onInvoiceChange }) {
               </TableRow>
             ))}
           </TableBody>
+          
+          
         </Table>
       </TableContainer>
       <div>
