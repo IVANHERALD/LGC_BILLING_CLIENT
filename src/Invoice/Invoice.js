@@ -418,7 +418,7 @@ function Invoice({ onInvoiceChange }) {
                       handleInputChange(
                         index,
                         "weight",
-                        parseFloat(e.target.value) || 0
+                        (e.target.value) || 0
                       )
                     }
                     InputProps={{
