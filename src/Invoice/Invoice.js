@@ -80,9 +80,13 @@ function Invoice({ onInvoiceChange }) {
     //   updatedItems[index].value = parseFloat(calculatedvalue.toFixed(2));
     // }
     if (field === "quantity" && updatedItems[index].unitWeight) {
+      console.log("quantity change")
       // Update the weight dynamically based on quantity
       updatedItems[index].weight = updatedItems[index].unitWeight * value;
       updatedItems[index].weight=parseFloat(updatedItems[index].weight.toFixed(2));
+      const calculatedvalue =
+        updatedItems[index].weight * updatedItems[index].rate;
+      updatedItems[index].value = parseFloat(calculatedvalue.toFixed(2));
     }
 
     if (field === "weight" || field === "rate") {
