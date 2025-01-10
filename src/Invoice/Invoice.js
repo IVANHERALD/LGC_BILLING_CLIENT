@@ -86,7 +86,7 @@ function Invoice({ onInvoiceChange }) {
       updatedItems[index].weight=parseFloat(updatedItems[index].weight.toFixed(2));
       const calculatedvalue =
         updatedItems[index].weight * updatedItems[index].rate;
-      updatedItems[index].value = parseFloat(calculatedvalue.toFixed(2));
+     // updatedItems[index].value = parseFloat(calculatedvalue.toFixed(2));
     }
 
     if (field === "weight" || field === "rate") {
