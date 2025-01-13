@@ -20,6 +20,7 @@ function Casting() {
         const response=await savecasting(castingDetails);
         if (response.status===201){
           console.log('Casting added');
+          alert("Casting saved successfully!");
         }
         else{
           console.error('Casting not added');

@@ -25,6 +25,7 @@ const handlecustomer=async()=>{
     const response=await savecustomer(customerDetails);
     if (response.status===201){
       console.log('Consignee added');
+      alert("Customer saved successfully!");
     }
     else{
       console.error('Customer not added');
