@@ -40,6 +40,8 @@ function Invoice({ onInvoiceChange }) {
   const toWords = new ToWords();
   const totalQuantity = items.reduce((total, item) => total + (item.quantity || 0), 0);
   const totalWeight = items.reduce((total, item) => total + (item.weight || 0), 0);
+  console.log("items",items);
+  console.log("weight",typeof totalWeight);
 
 
   const handleAddRow = (e) => {
@@ -54,6 +56,7 @@ function Invoice({ onInvoiceChange }) {
         weight: 0,
         rate: 0,
         value: 0,
+        
       },
     ]);
   };
@@ -71,7 +74,9 @@ function Invoice({ onInvoiceChange }) {
 
   const handleInputChange = (index, field, value) => {
     const updatedItems = [...items];
-    updatedItems[index] = { ...updatedItems[index], [field]: value };
+    const numericFields = ["quantity", "weight", "rate"];
+  const parsedValue = numericFields.includes(field) ? Number(value) || 0 : value;
+    updatedItems[index] = { ...updatedItems[index], [field]: parsedValue };
     console.log("update",updatedItems);
 
     // if (field === "weight" || field === "rate") {
@@ -84,9 +89,10 @@ function Invoice({ onInvoiceChange }) {
       // Update the weight dynamically based on quantity
       updatedItems[index].weight = updatedItems[index].unitWeight * value;
       updatedItems[index].weight=parseFloat(updatedItems[index].weight.toFixed(2));
+      
       const calculatedvalue =
         updatedItems[index].weight * updatedItems[index].rate;
-     // updatedItems[index].value = parseFloat(calculatedvalue.toFixed(2));
+      updatedItems[index].value = parseFloat(calculatedvalue.toFixed(2));
     }
 
     if (field === "weight" || field === "rate") {
@@ -140,6 +146,8 @@ function Invoice({ onInvoiceChange }) {
     if (onInvoiceChange) {
       onInvoiceChange(
         items,
+        totalQuantity,
+        totalWeight,
         cgst,
         sgst,
         igst,
@@ -151,6 +159,8 @@ function Invoice({ onInvoiceChange }) {
     }
   }, [
     items,
+    totalQuantity,
+    totalWeight,
     cgst,
     sgst,
     igst,
@@ -505,7 +515,9 @@ function Invoice({ onInvoiceChange }) {
                 Total :
               </TableCell>
               <TableCell sx={{ fontWeight: 'bold', borderRight: "1px solid black",paddingRight:'40px'  }}>{totalQuantity} Nos</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', borderRight: "1px solid black",paddingRight:'22px'  }}>{totalWeight.toFixed(2)} Kgs</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', borderRight: "1px solid black",paddingRight:'22px'  }}>{totalWeight.toFixed(2
+                
+              )} Kgs</TableCell>
               
             </TableRow>
           
