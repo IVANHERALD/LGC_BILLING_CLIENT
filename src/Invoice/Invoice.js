@@ -38,6 +38,11 @@ function Invoice({ onInvoiceChange }) {
   const [castingDetails, setcastingDetails] = useState([]);
 
   const toWords = new ToWords();
+  const totalQuantity = items.reduce((total, item) => total + (item.quantity || 0), 0);
+  const totalWeight = items.reduce((total, item) => total + (item.weight || 0), 0);
+  console.log("items",items);
+  console.log("weight",typeof totalWeight);
+
 
   const handleAddRow = (e) => {
     e.preventDefault();
@@ -51,6 +56,7 @@ function Invoice({ onInvoiceChange }) {
         weight: 0,
         rate: 0,
         value: 0,
+        
       },
     ]);
   };
@@ -68,7 +74,9 @@ function Invoice({ onInvoiceChange }) {
 
   const handleInputChange = (index, field, value) => {
     const updatedItems = [...items];
-    updatedItems[index] = { ...updatedItems[index], [field]: value };
+    const numericFields = ["quantity", "weight", "rate"];
+  const parsedValue = numericFields.includes(field) ? Number(value) || 0 : value;
+    updatedItems[index] = { ...updatedItems[index], [field]: parsedValue };
     console.log("update",updatedItems);
 
     // if (field === "weight" || field === "rate") {
@@ -77,9 +85,14 @@ function Invoice({ onInvoiceChange }) {
     //   updatedItems[index].value = parseFloat(calculatedvalue.toFixed(2));
     // }
     if (field === "quantity" && updatedItems[index].unitWeight) {
+      console.log("quantity change")
       // Update the weight dynamically based on quantity
       updatedItems[index].weight = updatedItems[index].unitWeight * value;
       updatedItems[index].weight=parseFloat(updatedItems[index].weight.toFixed(2));
+      
+      const calculatedvalue =
+        updatedItems[index].weight * updatedItems[index].rate;
+      updatedItems[index].value = parseFloat(calculatedvalue.toFixed(2));
     }
 
     if (field === "weight" || field === "rate") {
@@ -133,6 +146,8 @@ function Invoice({ onInvoiceChange }) {
     if (onInvoiceChange) {
       onInvoiceChange(
         items,
+        totalQuantity,
+        totalWeight,
         cgst,
         sgst,
         igst,
@@ -144,6 +159,8 @@ function Invoice({ onInvoiceChange }) {
     }
   }, [
     items,
+    totalQuantity,
+    totalWeight,
     cgst,
     sgst,
     igst,
@@ -195,7 +212,7 @@ function Invoice({ onInvoiceChange }) {
       <TableContainer
         component={Paper}
         className="tb-container"
-        sx={{ height: "550px", width: "auto" }}
+        sx={{ height: "550px", width: "auto" ,position:"relative"}}
       >
         <Table aria-label="simple table">
           <TableHead>
@@ -464,10 +481,47 @@ function Invoice({ onInvoiceChange }) {
                 </TableCell>
               </TableRow>
             ))}
-          </TableBody>
-          
+            </TableBody>
           
         </Table>
+        <div
+    style={{
+      position: "absolute",
+      bottom: "0",
+      width: "100%",
+      backgroundColor: "#fff", // To ensure it has a background color
+      padding: "0px 0", // Optional padding for spacing
+      borderTop: "1px solid black", // Optional border on top
+    }}
+  >
+    <div className="footer-content">
+      <TableRow sx={{borderTop:"1px solid black"}}>
+        
+        <TableCell colSpan={3}></TableCell>
+        <TableCell colSpan={2}></TableCell>
+        <TableCell colSpan={3}></TableCell>
+        <TableCell colSpan={2}></TableCell>
+        <TableCell colSpan={3}></TableCell>
+        <TableCell colSpan={2}></TableCell>
+        <TableCell colSpan={3}></TableCell>
+        <TableCell colSpan={2}></TableCell>
+        <TableCell colSpan={3}></TableCell>
+        <TableCell colSpan={2}></TableCell>
+        <TableCell colSpan={3}></TableCell>
+        <TableCell colSpan={2}></TableCell>
+        <TableCell colSpan={3}></TableCell>
+        <TableCell colSpan={2}></TableCell>
+              <TableCell colSpan={10} sx={{ fontWeight: 'bold', textAlign: 'right', borderRight: "1px solid black",paddingRight:'70px' }}>
+                Total :
+              </TableCell>
+              <TableCell sx={{ fontWeight: 'bold', borderRight: "1px solid black",paddingRight:'40px'  }}>{totalQuantity} Nos</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', borderRight: "1px solid black",paddingRight:'22px'  }}>{totalWeight.toFixed(2
+                
+              )} Kgs</TableCell>
+              
+            </TableRow>
+          
+          </div></div>
       </TableContainer>
       <div>
         <Button className="hide-print" onClick={handleAddRow}>

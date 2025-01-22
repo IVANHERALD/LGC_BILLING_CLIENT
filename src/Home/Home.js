@@ -33,6 +33,8 @@ function Home() {
   const [consignee_state, setconsignee_state] = useState("");
   const [consignee_state_code, setconsignee_state_code] = useState("");
   const [invoiceItems, setInvoiceItems] = useState([]);
+  const [InvoiceTotalweight,setInvoiceTotalweight]=useState(0);
+  const [InvoiceTotalquantity,setInvoiceTotalquantity]=useState(0);
   const [invoiceCgst, setInvoiceCgst] = useState(0);
   const [invoiceSgst, setInvoiceSgst] = useState(0);
   const [invoiceIgst, setInvoiceIgst] = useState(0);
@@ -70,6 +72,7 @@ function Home() {
       if (response.ok) {
         const data = await response.json();
         setinvoice_no(data.invoice_no);
+        console.log(data.invoice_no)
       }
     } catch (error) {
       console.log(error);
@@ -103,7 +106,7 @@ function Home() {
     const billDetails={
       invoice_no,
       invoice_date,state,state_code, transport_name, vehicle_number, date_of_supply, pono_date, eway_bill_no, receiver_name, receiver_address, receiver_gstin, receiver_state, receiver_state_code, consignee_name, consignee_address, consignee_gstin, consignee_state, consignee_state_code,
-      items:invoiceItems,cgst:invoiceCgst,sgst:invoiceSgst,igst:invoiceIgst,total_before_tax:invoicetotaltaxablevalue,
+      items:invoiceItems,totalquantity:InvoiceTotalquantity,totalweight:InvoiceTotalweight,cgst:invoiceCgst,sgst:invoiceSgst,igst:invoiceIgst,total_before_tax:invoicetotaltaxablevalue,
       roundoff:invoiceRounfoff, grand_total:invoicegrandtotal,grand_total_words:invoicetotalinwords
 
 
@@ -148,8 +151,10 @@ function Home() {
     setinvoice_date(formattedDateTime);},10000);
   }, []);
   
-  const handleInvoiceData = (items, cgst, sgst, igst, totaltaxablevalue,roundoffAdjustment,totalGrandAmount,totalinwords) => {
+  const handleInvoiceData = (items,totalQuantity,totalWeight,cgst, sgst, igst, totaltaxablevalue,roundoffAdjustment,totalGrandAmount,totalinwords) => {
     setInvoiceItems(items);
+    setInvoiceTotalquantity(totalQuantity);
+    setInvoiceTotalweight(totalWeight);
     setInvoiceCgst(cgst);
     setInvoiceSgst(sgst);
     setInvoiceIgst(igst);
@@ -157,6 +162,7 @@ function Home() {
     setInvoicegrandtotal(totalGrandAmount);
     setInvoicetotalinwords(totalinwords);
     setInvoiceRoundoff(roundoffAdjustment);
+
   };
 
   return (

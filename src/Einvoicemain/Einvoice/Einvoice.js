@@ -77,6 +77,16 @@ function Einvoice() {
               >
                 Quantity
               </TableCell>
+              <TableCell
+                sx={{
+                  padding: "2px",
+                  borderRight: "1px solid black",
+                  width: "8%",
+                  fontSize: "1rem"
+                }}
+              >
+                Weight
+              </TableCell>
               
               <TableCell
                 sx={{
