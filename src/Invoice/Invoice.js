@@ -101,9 +101,9 @@ function Invoice({ onInvoiceChange }) {
     setitems(updatedItems);
   };
 
-  const totalTaxableValue = items.reduce(
+  const totalTaxableValue = (items.reduce(
     (total, item) => total + (item.value || 0),
-    0
+    0)
   );
 
   const cgstAmount = (totalTaxableValue * cgst) / 100;
