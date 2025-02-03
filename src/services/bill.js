@@ -20,5 +20,15 @@ export const addnewbill=async(billDetails)=>{
     });
     return response;
 
-    }
+    };
+    export const fetchbilldetails = async() => {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/lgc/fetchbill`);
+        return response;
+      };
 
+export const deleteBill=async(invoice_no)=>{
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/lgc/deletebill/${invoice_no}`, {
+        method: 'DELETE',
+      });
+      return response;
+}
