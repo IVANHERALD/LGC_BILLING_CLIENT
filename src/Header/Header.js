@@ -18,7 +18,7 @@ function Header() {
                     <div className='header_right'>
                         <p>GSTIN:<b>33AVBPS2620N1ZJ</b></p>
                         <p>PAN:<b> AVBPS2620N</b></p>
-                        <p>Mobile:<b> 93626 96934, 93625 12210</b></p>
+                        <p>Mobile:<b> 93626 69634, 93625 12210</b></p>
                     </div>
                 </div>
 
