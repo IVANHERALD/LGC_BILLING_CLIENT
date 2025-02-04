@@ -107,16 +107,20 @@ function Invoice({ onInvoiceChange }) {
     setitems(updatedItems);
   };
 
-  const totalTaxableValue = (items.reduce(
+  const totalTaxableValue =parseFloat(items.reduce(
     (total, item) => total + (item.value || 0),
-    0)
-  );
-
-  const cgstAmount = (totalTaxableValue * cgst) / 100;
-  const sgstAmount = (totalTaxableValue * sgst) / 100;
-  const igstAmount = (totalTaxableValue * igst) / 100;
+   0 
+  ));
+  const cgstAmount = parseFloat(totalTaxableValue * cgst) / 100;
+  const sgstAmount = parseFloat(totalTaxableValue * sgst) / 100;
+  const igstAmount = parseFloat(totalTaxableValue * igst) / 100;
   const totalGrandAmount =
     totalTaxableValue + cgstAmount + sgstAmount + igstAmount;
+    console.log("total",typeof totalTaxableValue);
+    console.log("total1", typeof cgstAmount);
+    console.log("total2",typeof sgstAmount);
+    console.log("total3",typeof igstAmount);
+    console.log("total4",typeof totalGrandAmount);
 
   const roundOffAmount = (amount) => {
     const rupee = Math.floor(amount);
@@ -151,10 +155,14 @@ function Invoice({ onInvoiceChange }) {
         cgst,
         sgst,
         igst,
+        cgstAmount,
+        sgstAmount,
+        igstAmount,
         totalTaxableValue,
         roundoffAdjustment,
         totalGrandAmount,
         totalInWords
+        
       );
     }
   }, [
@@ -164,6 +172,9 @@ function Invoice({ onInvoiceChange }) {
     cgst,
     sgst,
     igst,
+    cgstAmount,
+    sgstAmount,
+    igstAmount,
     totalTaxableValue,
     roundoffAdjustment,
     totalGrandAmount,
@@ -476,7 +487,7 @@ function Invoice({ onInvoiceChange }) {
                       sx: { fontSize: "15px" },
                       disableUnderline: true,inputProps: { style: { fontWeight: "bold" } }
                     }}
-                    value={item.value || 0}
+                    value={parseFloat(item.value || 0).toFixed(2)}
                   />
                 </TableCell>
               </TableRow>
@@ -563,7 +574,7 @@ function Invoice({ onInvoiceChange }) {
                 Total Amount Before Tax:{" "}
               </Typography>
             </div>
-            <div class="sub-grid-item"><b>{totalTaxableValue}</b>&nbsp;&nbsp;</div>
+            <div class="sub-grid-item"><b>{totalTaxableValue.toFixed(2)}</b>&nbsp;&nbsp;</div>
             <div class="sub-grid-item">
               <Typography
                 variant="body1"
