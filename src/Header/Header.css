@@ -3,7 +3,7 @@
     display: flex;
     justify-content: space-between;
     padding: 18px;
-    border-bottom: 1px solid #000;
+    
     font-size: 14px;
   }
   
@@ -87,6 +87,8 @@
 }
 .header_right{
   font-size: medium;
+  
+  
 }
 .tax_invoice{
   font-size: 14px;
