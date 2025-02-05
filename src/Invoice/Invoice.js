@@ -441,7 +441,7 @@ function Invoice({ onInvoiceChange }) {
                 >
                   <TextField
                     variant="standard"
-                    value={item.weight}
+                    value={parseFloat(item.weight).toFixed(2)}
                     onChange={(e) =>
                       handleInputChange(
                         index,
