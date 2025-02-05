@@ -190,7 +190,7 @@ function Home() {
               </div>
               <div>
                 <div className="grid-container">
-                  <div className="grid-item">
+                  <div className="grid-item hlabel1">
                     <Box display={"flex"} alignItems="center" gap={5} mb={1}>
                       <Typography
                         variant="body1"
@@ -244,7 +244,7 @@ function Home() {
                       ></TextField>
                     </Box>
                   </div>
-                  <div className="grid-item">
+                  <div className="grid-item hlabel2">
                     <Box display={"flex"} alignItems="center" gap={5}>
                       <Typography
                         variant="body1"
@@ -313,13 +313,13 @@ function Home() {
                       ></TextField>
                     </Box>
                   </div>
-                  <div className="grid-item">
+                  <div className="grid-item hlabel3">
                     <h5>Details of Receiver/Billed To</h5>
                   </div>
-                  <div className="grid-item">
+                  <div className="grid-item hlabel4">
                     <h5>Details of Consignee/Shipped To</h5>
                   </div>
-                  <div className="grid-item">
+                  <div className="grid-item hlabel5">
                     <Box display={"flex"} alignItems="center" gap={5} mt={0}>
                       <Typography
                         variant="body1"
@@ -439,7 +439,7 @@ function Home() {
                       ></TextField>
                     </Box>
                   </div>
-                  <div className="grid-item">
+                  <div className="grid-item hlabel6">
                     <Box display={"flex"} alignItems="center" gap={5} mt={0}>
                       <Typography
                         variant="body1"

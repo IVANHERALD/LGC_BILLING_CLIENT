@@ -28,6 +28,8 @@
     
     .main-column {
       border: 1px solid #070707;
+    border-right: 0px;
+    border-bottom: 0px;
       
     }
   
@@ -36,6 +38,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      
     }
     
     .sub-grid {
@@ -87,4 +90,32 @@
 }
 .css-60g2r2-MuiPaper-root-MuiTableContainer-root {
   border-left: 1px solid black !important;
+  --Paper-shadow:0px !important;
+}
+
+.label1,.label3,.label5,.label7,.label9{
+  border-bottom: 0px;
+  
+
+}
+.label2,.label4,.label6,.label8,.label10
+{
+  border-bottom: 0px;
+  border-left: 0px;
+
+}
+.label12{
+  border-left: 0px;
+}
+@media print{
+  .main-column,
+  .label1,
+  .label2 {
+    border-top: 0px !important; /* Remove the top border when printing */
+  }
+
+}
+.label1,.label3,.label5,.label7,.label9,.label11
+{
+margin-right: -30px;
 }
