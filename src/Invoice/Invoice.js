@@ -107,16 +107,20 @@ function Invoice({ onInvoiceChange }) {
     setitems(updatedItems);
   };
 
-  const totalTaxableValue = items.reduce(
+  const totalTaxableValue =parseFloat(items.reduce(
     (total, item) => total + (item.value || 0),
-    0
-  );
-
-  const cgstAmount = (totalTaxableValue * cgst) / 100;
-  const sgstAmount = (totalTaxableValue * sgst) / 100;
-  const igstAmount = (totalTaxableValue * igst) / 100;
+   0 
+  ));
+  const cgstAmount = parseFloat(totalTaxableValue * cgst) / 100;
+  const sgstAmount = parseFloat(totalTaxableValue * sgst) / 100;
+  const igstAmount = parseFloat(totalTaxableValue * igst) / 100;
   const totalGrandAmount =
     totalTaxableValue + cgstAmount + sgstAmount + igstAmount;
+    console.log("total",typeof totalTaxableValue);
+    console.log("total1", typeof cgstAmount);
+    console.log("total2",typeof sgstAmount);
+    console.log("total3",typeof igstAmount);
+    console.log("total4",typeof totalGrandAmount);
 
   const roundOffAmount = (amount) => {
     const rupee = Math.floor(amount);
@@ -151,10 +155,14 @@ function Invoice({ onInvoiceChange }) {
         cgst,
         sgst,
         igst,
+        cgstAmount,
+        sgstAmount,
+        igstAmount,
         totalTaxableValue,
         roundoffAdjustment,
         totalGrandAmount,
         totalInWords
+        
       );
     }
   }, [
@@ -164,6 +172,9 @@ function Invoice({ onInvoiceChange }) {
     cgst,
     sgst,
     igst,
+    cgstAmount,
+    sgstAmount,
+    igstAmount,
     totalTaxableValue,
     roundoffAdjustment,
     totalGrandAmount,
@@ -429,7 +440,7 @@ function Invoice({ onInvoiceChange }) {
                 >
                   <TextField
                     variant="standard"
-                    value={item.weight}
+                    value={parseFloat(item.weight).toFixed(2)}
                     onChange={(e) =>
                       handleInputChange(
                         index,
@@ -467,15 +478,15 @@ function Invoice({ onInvoiceChange }) {
                     }
                   />
                 </TableCell>
-                <TableCell sx={{ padding: "2.8px", verticalAlign: "top",borderBottom: "1.2px solid black", }}>
+                <TableCell sx={{ padding: "2.8px", verticalAlign: "top",borderBottom: "1.2px solid black" }}>
                   <TextField
                     variant="standard"
                     InputProps={{
                       padding: "4px",
-                      sx: { fontSize: "15px" },
-                      disableUnderline: true,inputProps: { style: { fontWeight: "bold" } }
+                      sx: { fontSize: "15px" ,textAlign:"right"},
+                      disableUnderline: true,inputProps: { style: { fontWeight: "bold",textAlign:"right",paddingRight:"15px" } }
                     }}
-                    value={item.value || 0}
+                    value={parseFloat(item.value || 0).toFixed(2)}
                   />
                 </TableCell>
               </TableRow>
@@ -552,18 +563,22 @@ function Invoice({ onInvoiceChange }) {
             </div>
           </Typography>
         </div>
+        
         <div class="second-column">
           <div class="sub-grid">
-            <div class="sub-grid-item">
+            <div class="sub-grid-item label1" >
+            
               <Typography
                 variant="body1"
                 sx={{ fontSize: "0.95rem", fontWeight: "bold" }}
               >
-                Total Amount Before Tax:{" "}
+                Total Amount Before Tax:
+               
               </Typography>
+              
             </div>
-            <div class="sub-grid-item"><b>{totalTaxableValue}</b>&nbsp;&nbsp;</div>
-            <div class="sub-grid-item">
+            <div class="sub-grid-item label2" style={{display:"flex",justifyContent:"flex-end",paddingRight:"10px"}}><b>{totalTaxableValue.toFixed(2)}</b>&nbsp;&nbsp;</div>
+            <div class="sub-grid-item label3">
               <Typography
                 variant="body1"
                 sx={{
@@ -595,8 +610,8 @@ function Invoice({ onInvoiceChange }) {
                 </div>
               </Typography>
             </div>
-            <div class="sub-grid-item"><b>{cgstAmount.toFixed(2)}</b></div>
-            <div class="sub-grid-item">
+            <div class="sub-grid-item label4" style={{display:"flex",justifyContent:"flex-end",paddingRight:"20px"}}><b>{cgstAmount.toFixed(2)}</b></div>
+            <div class="sub-grid-item label5">
               <Typography
                 variant="body1"
                 sx={{
@@ -628,8 +643,8 @@ function Invoice({ onInvoiceChange }) {
                 </div>
               </Typography>
             </div>
-            <div class="sub-grid-item"><b>{sgstAmount.toFixed(2)}</b></div>
-            <div class="sub-grid-item">
+            <div class="sub-grid-item label6" style={{display:"flex",justifyContent:"flex-end",paddingRight:"20px"}}><b>{sgstAmount.toFixed(2)}</b></div>
+            <div class="sub-grid-item label7">
               <Typography
                 variant="body1"
                 sx={{
@@ -661,8 +676,8 @@ function Invoice({ onInvoiceChange }) {
                 </div>
               </Typography>
             </div>
-            <div class="sub-grid-item"><b>{igstAmount.toFixed(2)}</b>&nbsp;&nbsp;</div>
-            <div class="sub-grid-item">
+            <div class="sub-grid-item label8" style={{display:"flex",justifyContent:"flex-end",paddingRight:"10px"}}><b>{igstAmount.toFixed(2)}</b>&nbsp;&nbsp;</div>
+            <div class="sub-grid-item label9" >
               <Typography
                 variant="body1"
                 sx={{ fontSize: "0.99rem", fontWeight: "bold" }}
@@ -671,7 +686,7 @@ function Invoice({ onInvoiceChange }) {
               </Typography>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
-            <div class="sub-grid-item">
+            <div class="sub-grid-item label10" style={{display:"flex",justifyContent:"flex-end",paddingRight:"10px",fontSize: "0.99rem", fontWeight: "bold"}}>
               {(() => {
                 const prefix = parseFloat(roundoffAdjustment) > 0 ? "+" : "";
 
@@ -680,7 +695,7 @@ function Invoice({ onInvoiceChange }) {
               })()}
               &nbsp;&nbsp;
             </div>
-            <div class="sub-grid-item">
+            <div class="sub-grid-item label11">
               <Typography
                 variant="body1"
                 sx={{ fontSize: "0.99rem", fontWeight: "bold" }}
@@ -689,7 +704,7 @@ function Invoice({ onInvoiceChange }) {
               </Typography>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
-            <div class="sub-grid-item">
+            <div class="sub-grid-item label12" style={{display:"flex",justifyContent:"flex-end",paddingRight:"20px"}}>
               <b>{roundedTotalGrandAmount.toFixed(2)}</b>
             </div>
           </div>

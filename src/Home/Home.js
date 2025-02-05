@@ -38,6 +38,9 @@ function Home() {
   const [invoiceCgst, setInvoiceCgst] = useState(0);
   const [invoiceSgst, setInvoiceSgst] = useState(0);
   const [invoiceIgst, setInvoiceIgst] = useState(0);
+  const [invoiceCgstAmount, setInvoiceCgstAmount] = useState(0);
+  const [invoiceSgstAmount, setInvoiceSgstAmount] = useState(0);
+  const [invoiceIgstAmount, setInvoiceIgstAmount] = useState(0);
   const [invoicetotaltaxablevalue, setInvoicetotaltaxablevalue] = useState(0);
   const [invoicegrandtotal, setInvoicegrandtotal] = useState(0);
   const [invoicetotalinwords, setInvoicetotalinwords] = useState(0);
@@ -100,7 +103,7 @@ function Home() {
     const billDetails={
       invoice_no,
       invoice_date,state,state_code, transport_name, vehicle_number, date_of_supply, pono_date, eway_bill_no, receiver_name, receiver_address, receiver_gstin, receiver_state, receiver_state_code, consignee_name, consignee_address, consignee_gstin, consignee_state, consignee_state_code,
-      items:invoiceItems,totalquantity:InvoiceTotalquantity,totalweight:InvoiceTotalweight,cgst:invoiceCgst,sgst:invoiceSgst,igst:invoiceIgst,total_before_tax:invoicetotaltaxablevalue,
+      items:invoiceItems,totalquantity:InvoiceTotalquantity,totalweight:InvoiceTotalweight,cgst:invoiceCgst,sgst:invoiceSgst,igst:invoiceIgst,cgstamount:invoiceCgstAmount,sgstamount:invoiceSgstAmount,igstamount:invoiceIgstAmount,total_before_tax:invoicetotaltaxablevalue,
       roundoff:invoiceRounfoff, grand_total:invoicegrandtotal,grand_total_words:invoicetotalinwords
 
 
@@ -148,17 +151,22 @@ function Home() {
     setinvoice_date(formattedDateTime);},10000);
   }, []);
   
-  const handleInvoiceData = (items,totalQuantity,totalWeight,cgst, sgst, igst, totaltaxablevalue,roundoffAdjustment,totalGrandAmount,totalinwords) => {
+  const handleInvoiceData = (items,totalQuantity,totalWeight,cgst, sgst, igst,cgstAmount,sgstAmount,igstAmount, totaltaxablevalue,roundoffAdjustment,totalGrandAmount,totalinwords) => {
     setInvoiceItems(items);
     setInvoiceTotalquantity(totalQuantity);
     setInvoiceTotalweight(totalWeight);
     setInvoiceCgst(cgst);
     setInvoiceSgst(sgst);
     setInvoiceIgst(igst);
+    setInvoiceCgstAmount(cgstAmount);
+    setInvoiceSgstAmount(sgstAmount);
+    setInvoiceIgstAmount(igstAmount);
     setInvoicetotaltaxablevalue(totaltaxablevalue);
     setInvoicegrandtotal(totalGrandAmount);
     setInvoicetotalinwords(totalinwords);
     setInvoiceRoundoff(roundoffAdjustment);
+    
+    
 
   };
 
@@ -181,7 +189,7 @@ function Home() {
               </div>
               <div>
                 <div className="grid-container">
-                  <div className="grid-item">
+                  <div className="grid-item hlabel1">
                     <Box display={"flex"} alignItems="center" gap={5} mb={1}>
                       <Typography
                         variant="body1"
@@ -235,7 +243,7 @@ function Home() {
                       ></TextField>
                     </Box>
                   </div>
-                  <div className="grid-item">
+                  <div className="grid-item hlabel2">
                     <Box display={"flex"} alignItems="center" gap={5}>
                       <Typography
                         variant="body1"
@@ -304,13 +312,13 @@ function Home() {
                       ></TextField>
                     </Box>
                   </div>
-                  <div className="grid-item">
+                  <div className="grid-item hlabel3">
                     <h5>Details of Receiver/Billed To</h5>
                   </div>
-                  <div className="grid-item">
+                  <div className="grid-item hlabel4">
                     <h5>Details of Consignee/Shipped To</h5>
                   </div>
-                  <div className="grid-item">
+                  <div className="grid-item hlabel5">
                     <Box display={"flex"} alignItems="center" gap={5} mt={0}>
                       <Typography
                         variant="body1"
@@ -430,7 +438,7 @@ function Home() {
                       ></TextField>
                     </Box>
                   </div>
-                  <div className="grid-item">
+                  <div className="grid-item hlabel6">
                     <Box display={"flex"} alignItems="center" gap={5} mt={0}>
                       <Typography
                         variant="body1"
