@@ -212,3 +212,10 @@ h5 {
   align-items: center;
   text-align: center;
 }
+.hlabel1,.hlabel2,.hlabel3,.hlabel4{
+  border-bottom: 0px;
+
+}
+.hlabel1,.hlabel3,.hlabel5{
+  border-right: 0px;
+}
