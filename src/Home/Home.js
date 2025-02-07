@@ -1,7 +1,7 @@
 import "../../src/Home/Home.css";
 
 import { Autocomplete, Box, Button, TextField, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
@@ -47,12 +47,6 @@ function Home() {
   const [customerDetails, setcustomerDetails] = useState([]);
   const [invoiceRounfoff,setInvoiceRoundoff]=useState(0);
   
-  const [copyLabels] = useState([
-    "Original for Recipient",
-    "Duplicate Copy for Transporter",
-    "Triplicate Copy",
-    "Duplicate Copy",
-  ]);
   
 
   // async function fetchInvoiceNumber() {
@@ -135,7 +129,10 @@ function Home() {
   // Trigger print functionality
   
   };
-  const handlePrint=async()=>{
+  const printRef = useRef();
+  const handlePrint=()=>{
+  
+    
     window.print();
   }
   useEffect(() => {
@@ -184,7 +181,9 @@ function Home() {
         <div className="watermark-container">
           <div className="watermark">Lakshmi Grade Casting</div>
           <div className="segment">
+
             <div className="invoice-container">
+              
               <div className="header-container">
                 <Header />
               </div>

@@ -8,6 +8,7 @@
     width: 70px; 
     transition: width 1s;
     overflow: hidden;
+    padding-top: 75px;
   }
   
   .navbar:hover {

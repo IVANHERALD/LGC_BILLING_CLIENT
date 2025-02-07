@@ -381,7 +381,6 @@ function Invoice({ onInvoiceChange }) {
                     popupIcon={null} // Hides dropdown arrow
     disableClearable
     forcePopupIcon={false}
-    
                   />
                 </TableCell>
                 <TableCell
