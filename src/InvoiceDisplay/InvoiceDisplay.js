@@ -1,7 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import '../InvoiceDisplay/InvoiceDisplay.css'
 import Navbar from '../Navbar/Navbar';
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField} from '@mui/material'
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField,Typography} from '@mui/material'
 import {Delete,Create} from '@mui/icons-material';
 import { deleteBill, fetchbilldetails } from '../services/bill';
 function InvoiceDisplay() {
@@ -175,16 +175,44 @@ function InvoiceDisplay() {
 </Table>
         </TableContainer>
         <div>
-            <Dialog open={openDialog}>
-                <DialogTitle>Delete Invoice</DialogTitle>
-                To delete the Invoice {deleteinvoice},type the invoice number to <br/>confirm
+            <Dialog open={openDialog} PaperProps={{
+        sx: {
+          borderRadius: 3,
+          padding: 2,
+          width: 400,
+          boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
+        },
+      }}>
+                <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold', flexGrow: 1, textAlign: 'center' }}>Delete Invoice</Typography>
+                    
+                </DialogTitle>
+                <Typography sx={{ px: 3, fontSize: 24, mb: 1 }}>
+        To delete the invoice <strong>{deleteinvoice}</strong>, type the invoice number to confirm:
+      </Typography>
                 <DialogContent>
-                    <TextField variant='outlined' onChange={handleInvoiceChange}></TextField>
+                    <TextField variant='outlined' onChange={handleInvoiceChange} size="larger" sx={{
+            width: '90%',
+            '& .MuiOutlinedInput-root': {
+              borderRadius: 2,
+              fontSize:25
+            },
+          }}></TextField>
 
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCancel} color='primary'>Cancel</Button>
-                    <Button color='secondary'onClick={()=>handleConfirmDelete(deleteinvoice)} disabled={!isDeleteEnabled}> Delete</Button>
+                    <Button onClick={handleCancel} color='secondary' sx={{
+            borderRadius: 2,
+            textTransform: 'none',
+            px: 3,
+            fontSize:20
+          }}>Cancel</Button>
+                    <Button color='error'onClick={()=>handleConfirmDelete(deleteinvoice)} disabled={!isDeleteEnabled} sx={{
+            borderRadius: 2,
+            textTransform: 'none',
+            px: 3,
+                        fontSize:20
+          }}> Delete</Button>
                 </DialogActions>
 
             </Dialog>
