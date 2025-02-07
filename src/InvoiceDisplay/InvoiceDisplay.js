@@ -143,7 +143,14 @@ function InvoiceDisplay() {
                   color: 'white', // White text
                   fontWeight: 'bold', // Bold font for readability
                 }}>
-        Amount
+        Amount(Before Tax)
+    </TableCell>
+    
+    <TableCell sx={{
+                  color: 'white', // White text
+                  fontWeight: 'bold', // Bold font for readability
+                }}>
+        Amount(After Tax)
     </TableCell>
     <TableCell  sx={{
                   color: 'white', // White text
@@ -162,6 +169,7 @@ function InvoiceDisplay() {
             <TableCell>{bill.consignee_name}</TableCell>
             <TableCell>{bill.totalquantity}</TableCell>
             <TableCell>{bill.totalweight}</TableCell>
+            <TableCell>{bill.total_before_tax}</TableCell>
             <TableCell>{bill.grand_total}</TableCell>
             <TableCell>
             <IconButton onClick={()=>handleEdit(index,bill)}><Create sx={{color:'green'}}/></IconButton>
