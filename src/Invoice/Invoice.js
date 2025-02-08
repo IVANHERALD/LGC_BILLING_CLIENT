@@ -39,7 +39,7 @@ function Invoice({ onInvoiceChange }) {
 
   const toWords = new ToWords();
   const totalQuantity = items.reduce((total, item) => total + (item.quantity || 0), 0);
-  const totalWeight = items.reduce((total, item) => total + (item.weight || 0), 0);
+  const totalWeight =parseFloat((items.reduce((total, item) => total + (item.weight || 0), 0)).toFixed(2));
   console.log("items",items);
   console.log("weight",typeof totalWeight);
 
@@ -115,7 +115,7 @@ function Invoice({ onInvoiceChange }) {
   const sgstAmount = parseFloat(totalTaxableValue * sgst) / 100;
   const igstAmount = parseFloat(totalTaxableValue * igst) / 100;
   const totalGrandAmount =
-    totalTaxableValue + cgstAmount + sgstAmount + igstAmount;
+    parseFloat((totalTaxableValue + cgstAmount + sgstAmount + igstAmount).toFixed(2));
     console.log("total",typeof totalTaxableValue);
     console.log("total1", typeof cgstAmount);
     console.log("total2",typeof sgstAmount);
@@ -381,7 +381,6 @@ function Invoice({ onInvoiceChange }) {
                     popupIcon={null} // Hides dropdown arrow
     disableClearable
     forcePopupIcon={false}
-    
                   />
                 </TableCell>
                 <TableCell
