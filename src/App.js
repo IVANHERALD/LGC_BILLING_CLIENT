@@ -7,6 +7,8 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Casting from './Casting/Casting.js';
 import Einvoice from './Einvoicemain/Einvoice/Einvoice.js';
 import InvoiceDisplay from './InvoiceDisplay/InvoiceDisplay.js';
+import CastingDisplay from './CastingDisplay/CastingDisplay.js';
+import CustomerDisplay from './CustomerDisplay/CustomerDisplay.js';
 
 
 function App() {
@@ -18,6 +20,9 @@ function App() {
       <Route path="/customers" element={<Customer />} />
       <Route path="/casting" element={<Casting />} />
       <Route path="/invoices" element={<InvoiceDisplay/>}/>
+      <Route path='/castingdisplay' element={<CastingDisplay/>}/>
+      <Route path='/customerdisplay' element={<CustomerDisplay/>}/>
+      
       </Routes>
       
       </Router>

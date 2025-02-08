@@ -1,4 +1,6 @@
 import React,{useEffect,useState} from 'react'
+import { useNavigate } from 'react-router-dom';
+
 import '../InvoiceDisplay/InvoiceDisplay.css'
 import Navbar from '../Navbar/Navbar';
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField,Typography} from '@mui/material'
@@ -10,6 +12,7 @@ function InvoiceDisplay() {
     const [deleteinvoice,setdeleteinvoice]=useState();
     const [isDeleteEnabled, setIsDeleteEnabled] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
+    const history=useNavigate();
      useEffect(() => {
     
         const fetchbill = async () => {
@@ -75,6 +78,7 @@ function InvoiceDisplay() {
         }
 
     }
+    
   return (
     
     <div className='invoice_display'>
@@ -103,8 +107,19 @@ function InvoiceDisplay() {
           {successMessage}
         </div>
       )}
-
-        
+      <div className='table_container'>   
+      <div className="table-actions">
+            <Button variant="contained" color="primary" sx={{ fontSize: 16 }} onClick={()=>history('/invoices')} >
+                 Invoices
+            </Button>
+            <Button variant="contained" color="secondary" sx={{ fontSize: 16, ml: 2 }} onClick={()=>history('/customerdisplay')} >
+                Customer
+            </Button>
+            <Button variant="contained" color="secondary" sx={{ fontSize: 16, ml: 2 }} onClick={()=>history('/castingdisplay')}>
+                Casting
+            </Button>
+            
+        </div>    
         <TableContainer>
             <Table>
 <TableHead>
@@ -168,9 +183,9 @@ function InvoiceDisplay() {
             <TableCell>{bill.receiver_name}</TableCell>
             <TableCell>{bill.consignee_name}</TableCell>
             <TableCell>{bill.totalquantity}</TableCell>
-            <TableCell>{bill.totalweight}</TableCell>
-            <TableCell>{bill.total_before_tax}</TableCell>
-            <TableCell>{bill.grand_total}</TableCell>
+            <TableCell>{(parseFloat(bill.totalweight)).toFixed(2)}</TableCell>
+            <TableCell>{parseFloat(bill.total_before_tax).toFixed(2)}</TableCell>
+            <TableCell>{parseFloat(bill.grand_total).toFixed(2)}</TableCell>
             <TableCell>
             <IconButton onClick={()=>handleEdit(index,bill)}><Create sx={{color:'green'}}/></IconButton>
                 <IconButton onClick={()=>handledelete(index,bill)}><Delete sx={{color:'red'}}/></IconButton>
@@ -225,7 +240,8 @@ function InvoiceDisplay() {
 
             </Dialog>
         </div>
-
+        </div>
+ 
     </div>
   )
 }
