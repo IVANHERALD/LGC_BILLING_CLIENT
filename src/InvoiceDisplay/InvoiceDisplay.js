@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import '../InvoiceDisplay/InvoiceDisplay.css'
 import Navbar from '../Navbar/Navbar';
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField,Typography} from '@mui/material'
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField,Typography,TablePagination,Pagination} from '@mui/material'
 import {Delete,Create} from '@mui/icons-material';
 import { deleteBill, fetchbilldetails } from '../services/bill';
 function InvoiceDisplay() {
@@ -12,6 +12,8 @@ function InvoiceDisplay() {
     const [deleteinvoice,setdeleteinvoice]=useState();
     const [isDeleteEnabled, setIsDeleteEnabled] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
     const history=useNavigate();
      useEffect(() => {
     
@@ -78,7 +80,15 @@ function InvoiceDisplay() {
         }
 
     }
-    
+    const handlePageChange = (event, value) => {
+      setCurrentPage(value);
+    };
+  
+    // Pagination logic
+    const reversedBills=[...billDetails].reverse()
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentBills = reversedBills.slice(indexOfFirstItem, indexOfLastItem);
   return (
     
     <div className='invoice_display'>
@@ -177,7 +187,7 @@ function InvoiceDisplay() {
 </TableRow>
 </TableHead>
 <TableBody>
-    {billDetails.map((bill,index)=>(
+    {currentBills.map((bill,index)=>(
         <TableRow key={index} >
             <TableCell>{bill.invoice_no}</TableCell>
             <TableCell>{bill.receiver_name}</TableCell>
@@ -197,6 +207,14 @@ function InvoiceDisplay() {
 </TableBody>
 </Table>
         </TableContainer>
+        <div style={{ display: "flex", justifyContent: "center", margin: "20px 0" }}>
+          <Pagination
+            count={Math.ceil(billDetails.length / itemsPerPage)}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+          />
+        </div>
         <div>
             <Dialog open={openDialog} PaperProps={{
         sx: {
