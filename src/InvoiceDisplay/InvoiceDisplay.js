@@ -183,9 +183,9 @@ function InvoiceDisplay() {
             <TableCell>{bill.receiver_name}</TableCell>
             <TableCell>{bill.consignee_name}</TableCell>
             <TableCell>{bill.totalquantity}</TableCell>
-            <TableCell>{bill.totalweight}</TableCell>
-            <TableCell>{bill.total_before_tax}</TableCell>
-            <TableCell>{bill.grand_total}</TableCell>
+            <TableCell>{(parseFloat(bill.totalweight)).toFixed(2)}</TableCell>
+            <TableCell>{parseFloat(bill.total_before_tax).toFixed(2)}</TableCell>
+            <TableCell>{parseFloat(bill.grand_total).toFixed(2)}</TableCell>
             <TableCell>
             <IconButton onClick={()=>handleEdit(index,bill)}><Create sx={{color:'green'}}/></IconButton>
                 <IconButton onClick={()=>handledelete(index,bill)}><Delete sx={{color:'red'}}/></IconButton>
