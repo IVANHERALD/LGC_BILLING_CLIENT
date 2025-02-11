@@ -12,3 +12,9 @@ export const savecasting=async(castingDetails)=>{
         const response = await fetch(`${process.env.REACT_APP_API_URL}/lgc/fetchcasting`);
         return response;
       };
+      export const deleteCasting=async(casting_name)=>{
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/lgc/deletecasting/${casting_name}`, {
+            method: 'DELETE',
+          });
+          return response;
+    }
