@@ -140,6 +140,12 @@ function InvoiceDisplay() {
                 }}>
         Invoice.No
     </TableCell>
+    <TableCell  sx={{
+                  color: 'white', // White text
+                  fontWeight: 'bold', // Bold font for readability
+                }}>
+Date    </TableCell>
+    
     <TableCell sx={{
                   color: 'white', // White text
                   fontWeight: 'bold', // Bold font for readability
@@ -190,6 +196,7 @@ function InvoiceDisplay() {
     {currentBills.map((bill,index)=>(
         <TableRow key={index} >
             <TableCell>{bill.invoice_no}</TableCell>
+            <TableCell>{bill.invoice_date}</TableCell>
             <TableCell>{bill.receiver_name}</TableCell>
             <TableCell>{bill.consignee_name}</TableCell>
             <TableCell>{bill.totalquantity}</TableCell>

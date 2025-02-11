@@ -525,7 +525,7 @@ function Invoice({ onInvoiceChange }) {
                 Total :
               </TableCell>
               <TableCell sx={{ fontWeight: 'bold', borderRight: "1px solid black",paddingRight:'40px'  }}>{totalQuantity} Nos</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', borderRight: "1px solid black",paddingRight:'22px'  }}>{totalWeight.toFixed(2
+              <TableCell sx={{ fontWeight: 'bold', borderRight: "1px solid black",paddingRight:'14px' }}>{totalWeight.toFixed(2
                 
               )} Kgs</TableCell>
               

@@ -3,9 +3,9 @@
     width: 100%;
 }
 @media print {
-    .MuiTableCell-root:last-child, /* Hides last table cell (Action column) */
-    .MuiTableCell-head:last-child, /* Hides last table header (Action column) */
-    .MuiIconButton-root { /* Hides the icons inside the last column */
+    .invoice_display .MuiTableCell-root:last-child, /* Hides last table cell (Action column) */
+    .invoice_display .MuiTableCell-head:last-child, /* Hides last table header (Action column) */
+    .invoice_display .MuiIconButton-root { /* Hides the icons inside the last column */
       display: none !important;
     }
     .table-actions{
@@ -13,10 +13,9 @@
     }
   }
  .table_container{
-    width:95%
+    width: 100%
  }
-.table-actions{
-    display: flex;
-    
+ .invoice_display .table-actions{
+    display: flex; 
     gap: 10px;
 }
