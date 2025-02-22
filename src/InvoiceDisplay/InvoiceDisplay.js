@@ -245,7 +245,7 @@ Date    </TableCell>
         </TableContainer>
         <div style={{ display: "flex", justifyContent: "center", margin: "20px 0" }}>
           <Pagination
-            count={Math.ceil(currentBills.length / itemsPerPage)}
+            count={Math.ceil(reversedBills.length / itemsPerPage)}
             page={currentPage}
             onChange={handlePageChange}
             color="primary"
