@@ -9,6 +9,7 @@ import Einvoice from './Einvoicemain/Einvoice/Einvoice.js';
 import InvoiceDisplay from './InvoiceDisplay/InvoiceDisplay.js';
 import CastingDisplay from './CastingDisplay/CastingDisplay.js';
 import CustomerDisplay from './CustomerDisplay/CustomerDisplay.js';
+import Dashboard from './Dashboard/Dashboard.js';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
       <Router>
       <Routes>
       <Route path="/" element={<Home />} />
+      <Route path='/dashboard' element={<Dashboard/>}/>
       <Route path="/customers" element={<Customer />} />
       <Route path="/casting" element={<Casting />} />
       <Route path="/invoices" element={<InvoiceDisplay/>}/>
