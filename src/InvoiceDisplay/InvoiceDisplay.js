@@ -105,7 +105,7 @@ function InvoiceDisplay() {
     };
   
     // Pagination logic
-    const reversedBills=[...billDetails].reverse()
+    const reversedBills=[...filteredBillDetails].reverse()
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentBills = reversedBills.slice(indexOfFirstItem, indexOfLastItem);
