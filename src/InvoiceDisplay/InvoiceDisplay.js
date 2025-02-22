@@ -105,7 +105,7 @@ function InvoiceDisplay() {
     };
   
     // Pagination logic
-    const reversedBills=[...filteredBillDetails].reverse()
+    const reversedBills=[...billDetails].reverse()
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentBills = reversedBills.slice(indexOfFirstItem, indexOfLastItem);
@@ -245,7 +245,7 @@ Date    </TableCell>
         </TableContainer>
         <div style={{ display: "flex", justifyContent: "center", margin: "20px 0" }}>
           <Pagination
-            count={Math.ceil(currentBills.length / itemsPerPage)}
+            count={Math.ceil(reversedBills.length / itemsPerPage)}
             page={currentPage}
             onChange={handlePageChange}
             color="primary"
