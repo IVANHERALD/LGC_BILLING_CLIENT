@@ -47,11 +47,12 @@ function Dashboard() {
     
     <div className='dashboard_container'>
       <div>
-        <Navbar/>
-      </div>
+        <Navbar/></div>
+      <div className="dashboard">
         <h2>Total Sales without tax: ₹{Totalsalesbefore}</h2><br/>
         <h2>Total Sales with tax: ₹{TotalSales}</h2><br/>
-        <h3>Total GST Collected: ₹{TotalGST}</h3><br/>
+        <h2>Total GST Collected: ₹{TotalGST}</h2><br/>
+    </div>
     </div>
   )
 }
