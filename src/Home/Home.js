@@ -131,7 +131,7 @@ function Home() {
   };
   const printRef = useRef();
   const handlePrint=()=>{
-  
+    
     
     window.print();
   }
@@ -183,7 +183,6 @@ function Home() {
           <div className="segment">
 
             <div className="invoice-container">
-              
               <div className="header-container">
                 <Header />
               </div>

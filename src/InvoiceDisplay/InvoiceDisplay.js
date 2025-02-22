@@ -13,7 +13,9 @@ function InvoiceDisplay() {
     const [isDeleteEnabled, setIsDeleteEnabled] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+    const [searchQuery, setSearchQuery] = useState("");
+    const [filteredBillDetails, setFilteredBillDetails] = useState([]);
+    const itemsPerPage = 10;
     const history=useNavigate();
      useEffect(() => {
     
@@ -26,6 +28,7 @@ function InvoiceDisplay() {
                 const data = await response.json();
                 console.log("fetch bill details" ,data.Bill);
                 setbillDetails(data.Bill);
+                setFilteredBillDetails(data.Bill);
                 
             } catch (error) {
                 console.log(error.message);
@@ -83,9 +86,26 @@ function InvoiceDisplay() {
     const handlePageChange = (event, value) => {
       setCurrentPage(value);
     };
+    const handleSearch = (query) => {
+      setSearchQuery(query); // ✅ Store the search query
+    
+      if (query.trim() === '') {
+        setFilteredBillDetails(billDetails); // ✅ Reset to full list when empty
+      } else {
+        const filteredData = billDetails.filter((bill) =>{
+          const matchesInvoice = bill.invoice_no.toString().toLowerCase().startsWith(query.toLowerCase());
+      
+      // ✅ Partial match for consignee name (can be anywhere in the text)
+      const matchesConsignee = bill.consignee_name.toLowerCase().includes(query.toLowerCase());
+
+      return matchesInvoice || matchesConsignee;
+    });
+        setFilteredBillDetails(filteredData);
+      }
+    };
   
     // Pagination logic
-    const reversedBills=[...billDetails].reverse()
+    const reversedBills=[...filteredBillDetails].reverse()
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentBills = reversedBills.slice(indexOfFirstItem, indexOfLastItem);
@@ -128,7 +148,16 @@ function InvoiceDisplay() {
             <Button variant="contained" color="secondary" sx={{ fontSize: 16, ml: 2 }} onClick={()=>history('/castingdisplay')}>
                 Casting
             </Button>
-            
+            <TextField
+  placeholder="Search by Invoice No. or Consignee Name"
+  variant="outlined"
+  
+  value={searchQuery}
+  onChange={(e) => handleSearch(e.target.value)}
+  sx={{  width: 300, backgroundColor: 'white', borderRadius: 1 }}
+  size='small'
+/>
+
         </div>    
         <TableContainer>
             <Table>
@@ -216,7 +245,7 @@ Date    </TableCell>
         </TableContainer>
         <div style={{ display: "flex", justifyContent: "center", margin: "20px 0" }}>
           <Pagination
-            count={Math.ceil(billDetails.length / itemsPerPage)}
+            count={Math.ceil(currentBills.length / itemsPerPage)}
             page={currentPage}
             onChange={handlePageChange}
             color="primary"

@@ -16,6 +16,9 @@ function CastingDisplay() {
   const [filteredCastingDetails, setFilteredCastingDetails] = useState([]); // Holds filtered data
   const [searchQuery, setSearchQuery] = useState('');
    const [currentPage, setCurrentPage] = useState(1);
+   const [selectedIndex, setSelectedIndex] = useState(null); // Store selected casting index
+const [userInputIndex, setUserInputIndex] = useState(""); // Track user input for confirmation
+
     const itemsPerPage = 10;
   
     
@@ -56,6 +59,28 @@ function CastingDisplay() {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentCasting = filteredCastingDetails.slice(indexOfFirstItem, indexOfLastItem);
+    const handleDeleteClick = (index) => {
+      setSelectedIndex(index); // Store the selected row index
+      setOpenDialog(true); // Open the confirmation dialog
+    };
+    const handleIndexChange = (e) => {
+      const input = e.target.value;
+      setUserInputIndex(input);
+    
+      // Enable delete button only if input matches the selected index
+      setIsDeleteEnabled(input === selectedIndex.toString());
+    };
+    const handleConfirmDelete = () => {
+      if (selectedIndex !== null) {
+        console.log(`Deleting casting at index: ${selectedIndex}`);
+        setOpenDialog(false);
+        setSelectedIndex(null); // Reset selection
+        setUserInputIndex(""); // Reset input field
+        setIsDeleteEnabled(false); // Disable delete button
+      }
+    };
+    
+    
   return (
     <div className="castingdisplay">
       <div><Navbar/></div><div className='table_container'>   
@@ -117,13 +142,13 @@ Casting HSNCODE    </TableCell>
 <TableBody>
     {currentCasting.map((casting,index)=>(
         <TableRow key={index} >
-            <TableCell>{index+1}</TableCell>
+            <TableCell>{indexOfFirstItem+index+1}</TableCell>
             <TableCell>{casting.casting_name}</TableCell>
             <TableCell>{casting.casting_weight}</TableCell>
             <TableCell>{casting.casting_hsn}</TableCell>
                         <TableCell>
             <IconButton ><Create sx={{color:'green'}}/></IconButton>
-                <IconButton ><Delete sx={{color:'red'}}/></IconButton>
+                <IconButton onClick={()=>handleDeleteClick(indexOfFirstItem+index+1)}><Delete sx={{color:'red'}}/></IconButton>
             
             </TableCell>
             
@@ -143,47 +168,43 @@ Casting HSNCODE    </TableCell>
                 
         
         <div>
-            <Dialog open={openDialog} PaperProps={{
-        sx: {
-          borderRadius: 3,
-          padding: 2,
-          width: 400,
-          boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
-        },
-      }}>
-                <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography variant="h6" sx={{ fontWeight: 'bold', flexGrow: 1, textAlign: 'center' }}>Delete Invoice</Typography>
-                    
-                </DialogTitle>
-                <Typography sx={{ px: 3, fontSize: 24, mb: 1 }}>
-        To delete the invoice <strong>{}</strong>, type the invoice number to confirm:
-      </Typography>
-                <DialogContent>
-                    <TextField variant='outlined' size="larger" sx={{
-            width: '90%',
-            '& .MuiOutlinedInput-root': {
-              borderRadius: 2,
-              fontSize:25
-            },
-          }}></TextField>
+        <Dialog open={openDialog} PaperProps={{
+  sx: { borderRadius: 3, padding: 2, width: 400, boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)' }
+}}>
+  <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <Typography variant="h6" sx={{ fontWeight: 'bold', flexGrow: 1, textAlign: 'center' }}>
+      Delete Casting
+    </Typography>
+  </DialogTitle>
+  
+  <Typography sx={{ px: 3, fontSize: 24, mb: 1 }}>
+    To delete casting at index <strong>{selectedIndex}</strong>, type the index to confirm:
+  </Typography>
 
-                </DialogContent>
-                <DialogActions>
-                    <Button  color='secondary' sx={{
-            borderRadius: 2,
-            textTransform: 'none',
-            px: 3,
-            fontSize:20
-          }}>Cancel</Button>
-                    <Button color='error' disabled={!isDeleteEnabled} sx={{
-            borderRadius: 2,
-            textTransform: 'none',
-            px: 3,
-                        fontSize:20
-          }}> Delete</Button>
-                </DialogActions>
+  <DialogContent>
+    <TextField
+      variant="outlined"
+      size="larger"
+      value={userInputIndex}
+      onChange={handleIndexChange}
+      sx={{ width: '90%', '& .MuiOutlinedInput-root': { borderRadius: 2, fontSize: 25 } }}
+    />
+  </DialogContent>
 
-            </Dialog>
+  <DialogActions>
+    <Button onClick={() => setOpenDialog(false)} color='secondary' sx={{
+      borderRadius: 2, textTransform: 'none', px: 3, fontSize: 20
+    }}>
+      Cancel
+    </Button>
+    
+    <Button color='error' onClick={handleConfirmDelete} disabled={!isDeleteEnabled} sx={{
+      borderRadius: 2, textTransform: 'none', px: 3, fontSize: 20
+    }}>
+      Delete
+    </Button>
+  </DialogActions>
+</Dialog>
         </div></div></div>
   )
 }

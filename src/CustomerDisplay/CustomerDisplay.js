@@ -10,9 +10,13 @@ import {Delete,Create} from '@mui/icons-material';
 
 function CustomerDisplay() {
   const [customerDetails, setcustomerDetails] = useState([]);
+  const [filteredCustomerDetails, setFilteredCustomerDetails] = useState([]); 
+  const [searchQuery, setSearchQuery] = useState('');
   const [openDialog,setOpenDialog]=useState(false);
-      const [deleteinvoice,setdeleteinvoice]=useState();
-      const [isDeleteEnabled, setIsDeleteEnabled] = useState(false);
+  const [deleteinvoice,setdeleteinvoice]=useState();
+  const [isDeleteEnabled, setIsDeleteEnabled] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 10; 
       
   const history=useNavigate();
    useEffect(() => {
@@ -26,6 +30,7 @@ function CustomerDisplay() {
               const data = await response.json();
               console.log("fetch customer details" ,data.customers);
               setcustomerDetails(data.customers);
+              setFilteredCustomerDetails(data.customers)
               console.log("console",data.customers);
           } catch (error) {
               console.log(error.message);
@@ -34,8 +39,26 @@ function CustomerDisplay() {
   
       fetchCustomerDetails();
   }, []);
-  
-   
+  const handleSearchChange = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+
+    if (query ==='') {
+        setFilteredCustomerDetails(customerDetails);
+    } else {
+      const filteredData = customerDetails.filter((customer) =>
+        customer.consignee_name.toLowerCase().includes(query)
+      );
+      setFilteredCustomerDetails(filteredData);
+    }
+  };
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentCustomers = filteredCustomerDetails.slice(indexOfFirstItem, indexOfLastItem);
   
   return (
     <div className='customerdisplay'>
@@ -50,7 +73,14 @@ function CustomerDisplay() {
             <Button variant="contained" color="secondary" sx={{ fontSize: 16, ml: 2 }} onClick={()=>history('/castingdisplay')}>
                 Casting
             </Button>
-            
+            <TextField 
+            variant="outlined"
+            placeholder="Search by Consignee Name..."
+            size="small"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            sx={{ marginLeft: 'auto', width: 300, backgroundColor: 'white', borderRadius: 1 }}
+          />
         </div>    
         <TableContainer>
             <Table>
@@ -101,7 +131,7 @@ Consignee GSTIN    </TableCell>
 </TableRow>
 </TableHead>
 <TableBody>
-    {customerDetails.map((customer,index)=>(
+    {currentCustomers.map((customer,index)=>(
         <TableRow key={index} >
             <TableCell>{index+1}</TableCell>
             <TableCell>{customer.consignee_name}</TableCell>
@@ -121,6 +151,14 @@ Consignee GSTIN    </TableCell>
 </TableBody>
 </Table>
         </TableContainer>
+        <div style={{ display: "flex", justifyContent: "center", margin: "20px 0" }}>
+          <Pagination
+            count={Math.ceil(filteredCustomerDetails.length / itemsPerPage)}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+          />
+        </div>
         
         <div>
             <Dialog open={openDialog} PaperProps={{
