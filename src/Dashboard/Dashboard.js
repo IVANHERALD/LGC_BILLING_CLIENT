@@ -49,9 +49,9 @@ function Dashboard() {
       <div>
         <Navbar/>
       </div>
-        <h2>Total Sales without tax: ₹{Totalsalesbefore}</h2>
-        <h2>Total Sales with tax: ₹{TotalSales}</h2>
-        <h3>Total GST Collected: ₹{TotalGST}</h3>
+        <h2>Total Sales without tax: ₹{Totalsalesbefore}</h2><br/>
+        <h2>Total Sales with tax: ₹{TotalSales}</h2><br/>
+        <h3>Total GST Collected: ₹{TotalGST}</h3><br/>
     </div>
   )
 }
