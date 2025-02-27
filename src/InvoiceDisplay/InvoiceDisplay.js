@@ -1,6 +1,8 @@
 import React,{useEffect,useState} from 'react'
 import { useNavigate } from 'react-router-dom';
-
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 import '../InvoiceDisplay/InvoiceDisplay.css'
 import Navbar from '../Navbar/Navbar';
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField,Typography,TablePagination,Pagination} from '@mui/material'
@@ -15,6 +17,9 @@ function InvoiceDisplay() {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredBillDetails, setFilteredBillDetails] = useState([]);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
+
     const itemsPerPage = 10;
     const history=useNavigate();
      useEffect(() => {
@@ -122,6 +127,28 @@ function InvoiceDisplay() {
       );
   };
   const { totalQuantity, totalWeight, totalBeforeTax, totalGrandTotal } = calculatePageTotals();
+  const handleDateFilter = (start, end) => {
+    setStartDate(start);
+    setEndDate(end);
+
+    if (!start || !end) {
+        setFilteredBillDetails(billDetails); // Show all invoices if no date is selected
+        return;
+    }
+
+    const filteredData = billDetails.filter((bill) => {
+        const invoiceDate = dayjs(bill.invoice_date, "DD-MM-YYYY"); // Convert to Date object
+        return invoiceDate.isAfter(dayjs(start).subtract(1, 'day')) && invoiceDate.isBefore(dayjs(end).add(1, 'day'));
+    });
+
+    setFilteredBillDetails(filteredData);
+};
+const handleClearFilters = () => {
+  setStartDate(null);
+  setEndDate(null);
+  setFilteredBillDetails(billDetails); // Reset invoice list
+};
+
     
   return (
     
@@ -171,6 +198,28 @@ function InvoiceDisplay() {
   sx={{  width: 300, backgroundColor: 'white', borderRadius: 1 }}
   size='small'
 />
+<LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
+            label="Start Date"
+            value={startDate}
+            onChange={(newValue) => handleDateFilter(newValue, endDate)}
+            renderInput={(params) => <TextField {...params} size="small" sx={{ width: 160, ml: 2, backgroundColor: 'white' }} />}
+        />
+        <DatePicker
+            label="End Date"
+            value={endDate}
+            onChange={(newValue) => handleDateFilter(startDate, newValue)}
+            renderInput={(params) => <TextField {...params} size="small" sx={{ width: 160, ml: 2, backgroundColor: 'white' }} />}
+        />
+    </LocalizationProvider>
+    <Button
+        variant="contained"
+        color="error"
+        onClick={handleClearFilters}
+        sx={{ ml: 2, textTransform: 'none' }}
+    >
+        X
+    </Button>
 
         </div>    
         <TableContainer>
