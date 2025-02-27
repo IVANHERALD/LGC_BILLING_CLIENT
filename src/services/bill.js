@@ -25,7 +25,17 @@ export const addnewbill=async(billDetails)=>{
         const response = await fetch(`${process.env.REACT_APP_API_URL}/lgc/fetchbill`);
         return response;
       };
-
+      export const updateBill = async (invoice_no, updatedBill) => {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/lgc/updatebill/${invoice_no}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedBill),
+        });
+        return response;
+    };
+    
 export const deleteBill=async(invoice_no)=>{
     const response = await fetch(`${process.env.REACT_APP_API_URL}/lgc/deletebill/${invoice_no}`, {
         method: 'DELETE',

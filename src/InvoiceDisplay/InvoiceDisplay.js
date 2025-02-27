@@ -109,6 +109,20 @@ function InvoiceDisplay() {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentBills = reversedBills.slice(indexOfFirstItem, indexOfLastItem);
+    const calculatePageTotals = () => {
+      return currentBills.reduce(
+          (totals, bill) => {
+              totals.totalQuantity += parseFloat(bill.totalquantity) || 0;
+              totals.totalWeight += parseFloat(bill.totalweight) || 0;
+              totals.totalBeforeTax += parseFloat(bill.total_before_tax) || 0;
+              totals.totalGrandTotal += parseFloat(bill.grand_total) || 0;
+              return totals;
+          },
+          { totalQuantity: 0, totalWeight: 0, totalBeforeTax: 0, totalGrandTotal: 0 }
+      );
+  };
+  const { totalQuantity, totalWeight, totalBeforeTax, totalGrandTotal } = calculatePageTotals();
+    
   return (
     
     <div className='invoice_display'>
@@ -240,6 +254,14 @@ Date    </TableCell>
             
         </TableRow>
     ))}
+     <TableRow sx={{ backgroundColor: "#f5f5f5", fontWeight: "bold" }}>
+        <TableCell colSpan={4} sx={{ fontWeight: "bold", textAlign: "right" }}>Total:</TableCell>
+        <TableCell sx={{ fontWeight: "bold" }}>{totalQuantity}</TableCell>
+        <TableCell sx={{ fontWeight: "bold" }}>{totalWeight.toFixed(2)}</TableCell>
+        <TableCell sx={{ fontWeight: "bold" }}>{totalBeforeTax.toFixed(2)}</TableCell>
+        <TableCell sx={{ fontWeight: "bold" }}>{totalGrandTotal.toFixed(2)}</TableCell>
+        <TableCell></TableCell>
+    </TableRow>
 </TableBody>
 </Table>
         </TableContainer>
