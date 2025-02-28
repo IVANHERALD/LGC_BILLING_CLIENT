@@ -160,7 +160,7 @@ function Invoice({ onInvoiceChange }) {
         igstAmount,
         totalTaxableValue,
         roundoffAdjustment,
-        totalGrandAmount,
+        roundedTotalGrandAmount,
         totalInWords
         
       );
