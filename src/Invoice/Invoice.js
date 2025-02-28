@@ -166,7 +166,7 @@ function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
         igstAmount,
         totalTaxableValue,
         roundoffAdjustment,
-        totalGrandAmount,
+        roundedTotalGrandAmount,
         totalInWords
         
       );
