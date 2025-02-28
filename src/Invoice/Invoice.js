@@ -698,12 +698,15 @@ function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div class="sub-grid-item label10" style={{display:"flex",justifyContent:"flex-end",paddingRight:"10px",fontSize: "0.99rem", fontWeight: "bold"}}>
-              {(() => {
-                const prefix = parseFloat(roundoffAdjustment) > 0 ? "+" : "";
+            {(() => {
+    const value = isViewMode 
+      ? parseFloat(invoiceViewDetails?.roundoff || 0).toFixed(2) 
+      : (parseFloat(roundoffAdjustment).toFixed(2));
+    
+    const prefix = parseFloat(value) > 0 ? "+" : ""; // Ensure + is displayed for positive numbers
 
-                // Return formatted value with prefix
-                return `${prefix}${isViewMode?(parseFloat(invoiceViewDetails.roundoff).toFixed(2)):roundoffAdjustment}`;
-              })()}
+    return `${prefix}${value}`;
+  })()}
               &nbsp;&nbsp;
             </div>
             <div class="sub-grid-item label11">
