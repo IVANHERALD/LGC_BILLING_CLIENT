@@ -1,8 +1,7 @@
 import "../../src/Home/Home.css";
-
 import { Autocomplete, Box, Button, TextField, Typography } from "@mui/material";
-import React, { useEffect, useState,useRef } from "react";
-
+import React, { useEffect, useState, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import Invoice from "../Invoice/Invoice";
@@ -12,6 +11,10 @@ import { fetchcustomer } from "../services/Customer";
 import { fetchcasting } from "../services/Casting";
 
 function Home() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const billData = location.state?.bill || null;
+  const isViewMode = location.pathname.includes("/") && location.search.includes("mode=view")?true:location.pathname.includes("/") && location.search.includes("mode=edit")?false:false;
   const [invoice_no, setinvoice_no] = useState("");
   const [invoice_date, setinvoice_date] = useState("");
   const [state, setstate] = useState("TamilNadu");
@@ -19,7 +22,6 @@ function Home() {
   const [transport_name, settransport_name] = useState("");
   const [vehicle_number, setvehicle_number] = useState("");
   const [date_of_supply, setdate_of_supply] = useState("");
-
   const [pono_date, setpono_date] = useState("");
   const [eway_bill_no, seteway_bill_no] = useState("");
   const [receiver_name, setreceiver_name] = useState("");
@@ -33,8 +35,8 @@ function Home() {
   const [consignee_state, setconsignee_state] = useState("");
   const [consignee_state_code, setconsignee_state_code] = useState("");
   const [invoiceItems, setInvoiceItems] = useState([]);
-  const [InvoiceTotalweight,setInvoiceTotalweight]=useState(0);
-  const [InvoiceTotalquantity,setInvoiceTotalquantity]=useState(0);
+  const [InvoiceTotalweight, setInvoiceTotalweight] = useState(0);
+  const [InvoiceTotalquantity, setInvoiceTotalquantity] = useState(0);
   const [invoiceCgst, setInvoiceCgst] = useState(0);
   const [invoiceSgst, setInvoiceSgst] = useState(0);
   const [invoiceIgst, setInvoiceIgst] = useState(0);
@@ -45,9 +47,27 @@ function Home() {
   const [invoicegrandtotal, setInvoicegrandtotal] = useState(0);
   const [invoicetotalinwords, setInvoicetotalinwords] = useState(0);
   const [customerDetails, setcustomerDetails] = useState([]);
-  const [invoiceRounfoff,setInvoiceRoundoff]=useState(0);
+  const [invoiceRounfoff, setInvoiceRoundoff] = useState(0);
+  const [viewitems,setviewitems]=useState([]);
+  console.log("Vieew",isViewMode);
+  const [invoiceViewDetails, setInvoiceViewDetails] = useState({
+    invoice_no: billData?.invoice_no || "",
+    invoice_date: billData?.invoice_date || "",
+    state: billData?.state || "Tamil Nadu",
+    state_code: billData?.state_code || "33",
+    consignee_name: billData?.consignee_name || "",
+    consignee_address: billData?.consignee_address || "",
+    consignee_gstin: billData?.consignee_gstin || "",
+    items: billData?.items || [],
+  });
   
-  
+
+  useEffect(() => {
+    if (billData) {
+      setInvoiceViewDetails(billData);
+    }
+  }, [billData]);
+
 
   // async function fetchInvoiceNumber() {
   //   try {
@@ -82,29 +102,44 @@ function Home() {
   useEffect(() => {
 
     const fetchCustomerDetails = async () => {
-        try {
-            const response = await fetchcustomer();
-            if (!response) {
-                throw new Error('Failed to fetch data');
-            }
-            const data = await response.json();
-            console.log("fetch customer details" ,data.customers);
-            setcustomerDetails(data.customers);
-            console.log("console",data.customers);
-        } catch (error) {
-            console.log(error.message);
+      try {
+        const response = await fetchcustomer();
+        if (!response) {
+          throw new Error('Failed to fetch data');
         }
+        const data = await response.json();
+        console.log("fetch customer details", data.customers);
+        setcustomerDetails(data.customers);
+        console.log("console", data.customers);
+      } catch (error) {
+        console.log(error.message);
+      }
     };
 
     fetchCustomerDetails();
-}, []);
-
-  const handleSave =async () => {
-    const billDetails={
+  }, []);
+  useEffect(() => {
+    if (isViewMode && invoiceViewDetails) {
+      setreceiver_name(invoiceViewDetails.receiver_name || "");
+      setreceiver_gstin(invoiceViewDetails.receiver_gstin || "");
+      setreceiver_address(invoiceViewDetails.receiver_address || "");
+      setreceiver_state(invoiceViewDetails.receiver_state || "");
+      setreceiver_state_code(invoiceViewDetails.receiver_state_code || "");
+      setconsignee_name(invoiceViewDetails.consignee_name || "");
+      setconsignee_gstin(invoiceViewDetails.consignee_gstin || "");
+      setconsignee_address(invoiceViewDetails.consignee_address || "");
+      setconsignee_state(invoiceViewDetails.consignee_state || "");
+      setconsignee_state_code(invoiceViewDetails.consignee_state_code || "");
+      setviewitems(invoiceViewDetails.items);
+    }
+  }, [isViewMode, invoiceViewDetails]); 
+  console.log("set",viewitems);
+  const handleSave = async () => {
+    const billDetails = {
       invoice_no,
-      invoice_date,state,state_code, transport_name, vehicle_number, date_of_supply, pono_date, eway_bill_no, receiver_name, receiver_address, receiver_gstin, receiver_state, receiver_state_code, consignee_name, consignee_address, consignee_gstin, consignee_state, consignee_state_code,
-      items:invoiceItems,totalquantity:InvoiceTotalquantity,totalweight:InvoiceTotalweight,cgst:invoiceCgst,sgst:invoiceSgst,igst:invoiceIgst,cgstamount:invoiceCgstAmount,sgstamount:invoiceSgstAmount,igstamount:invoiceIgstAmount,total_before_tax:invoicetotaltaxablevalue,
-      roundoff:invoiceRounfoff, grand_total:invoicegrandtotal,grand_total_words:invoicetotalinwords
+      invoice_date, state, state_code, transport_name, vehicle_number, date_of_supply, pono_date, eway_bill_no, receiver_name, receiver_address, receiver_gstin, receiver_state, receiver_state_code, consignee_name, consignee_address, consignee_gstin, consignee_state, consignee_state_code,
+      items: invoiceItems, totalquantity: InvoiceTotalquantity, totalweight: InvoiceTotalweight, cgst: invoiceCgst, sgst: invoiceSgst, igst: invoiceIgst, cgstamount: invoiceCgstAmount, sgstamount: invoiceSgstAmount, igstamount: invoiceIgstAmount, total_before_tax: invoicetotaltaxablevalue,
+      roundoff: invoiceRounfoff, grand_total: invoicegrandtotal, grand_total_words: invoicetotalinwords
 
 
     };
@@ -113,45 +148,46 @@ function Home() {
       const response = await addnewbill(billDetails);
       console.log(invoiceItems);
       if (response.ok) {
-          const data = await response.json();
-          console.log("Bill Saved Successfully:", data);
-          alert("Bill saved successfully!");
+        const data = await response.json();
+        console.log("Bill Saved Successfully:", data);
+        alert("Bill saved successfully!");
       } else {
-          const errorData = await response.json();
-          console.error("Error saving bill:", errorData);
-          alert(`Error: ${errorData.message || 'Failed to save the bill'}`);
+        const errorData = await response.json();
+        console.error("Error saving bill:", errorData);
+        alert(`Error: ${errorData.message || 'Failed to save the bill'}`);
       }
-  } catch (error) {
+    } catch (error) {
       console.error("Error during saving bill:", error);
       alert("An unexpected error occurred while saving the bill.");
-  }
+    }
 
-  // Trigger print functionality
-  
+    // Trigger print functionality
+
   };
   const printRef = useRef();
-  const handlePrint=()=>{
-    
-    
+  const handlePrint = () => {
+
+
     window.print();
   }
   useEffect(() => {
-    const intervalId=setInterval(()=>{
-    const now = new Date();
-  
-    // Format date as dd/mm/yyyy
-    const formattedDate = `${String(now.getDate()).padStart(2, "0")}/${String(now.getMonth() + 1).padStart(2, "0")}/${now.getFullYear()}`;
-  
-    // Format time as hh:mm:ss
-    const formattedTime = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(now.getSeconds()).padStart(2, "0")}`;
-  
-    // Combine date and time
-    const formattedDateTime = `${formattedDate} ${formattedTime}`;
-    
-    setinvoice_date(formattedDateTime);},10000);
+    const intervalId = setInterval(() => {
+      const now = new Date();
+
+      // Format date as dd/mm/yyyy
+      const formattedDate = `${String(now.getDate()).padStart(2, "0")}/${String(now.getMonth() + 1).padStart(2, "0")}/${now.getFullYear()}`;
+
+      // Format time as hh:mm:ss
+      const formattedTime = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(now.getSeconds()).padStart(2, "0")}`;
+
+      // Combine date and time
+      const formattedDateTime = `${formattedDate} ${formattedTime}`;
+
+      setinvoice_date(formattedDateTime);
+    }, 10000);
   }, []);
-  
-  const handleInvoiceData = (items,totalQuantity,totalWeight,cgst, sgst, igst,cgstAmount,sgstAmount,igstAmount, totaltaxablevalue,roundoffAdjustment,totalGrandAmount,totalinwords) => {
+
+  const handleInvoiceData = (items, totalQuantity, totalWeight, cgst, sgst, igst, cgstAmount, sgstAmount, igstAmount, totaltaxablevalue, roundoffAdjustment, totalGrandAmount, totalinwords) => {
     setInvoiceItems(items);
     setInvoiceTotalquantity(totalQuantity);
     setInvoiceTotalweight(totalWeight);
@@ -165,8 +201,8 @@ function Home() {
     setInvoicegrandtotal(totalGrandAmount);
     setInvoicetotalinwords(totalinwords);
     setInvoiceRoundoff(roundoffAdjustment);
-    
-    
+
+
 
   };
 
@@ -198,9 +234,9 @@ function Home() {
                       </Typography>
                       <TextField
                         variant="standard"
-                        value={invoice_no}
+                        value={isViewMode? invoiceViewDetails.invoice_no ||"":invoice_no}
                         onChange={(e) => setinvoice_no(e.target.value)}
-                        InputProps={{ disableUnderline: true,inputProps: { style: { fontWeight: "bold" } } }}
+                        InputProps={{ disableUnderline: true, inputProps: { style: { fontWeight: "bold" } } }}
                       ></TextField>
                     </Box>
                     <Box display={"flex"} alignItems="center" gap={5}>
@@ -212,8 +248,8 @@ function Home() {
                       </Typography>
                       <TextField
                         variant="standard"
-                        value={invoice_date}
-                        InputProps={{ disableUnderline: true,inputProps: { style: { fontWeight: "bold" } } }}
+                        value={isViewMode? invoiceViewDetails.invoice_date || "":invoice_date}
+                        InputProps={{ disableUnderline: true, inputProps: { style: { fontWeight: "bold" } } }}
                       ></TextField>
                     </Box>
                     <Box display={"flex"} alignItems="center" gap={5}>
@@ -225,7 +261,7 @@ function Home() {
                       </Typography>
                       <TextField
                         variant="standard"
-                        value={state}
+                        value={isViewMode? invoiceViewDetails.state || "":state}
                         sx={{ width: "180px" }}
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
@@ -237,7 +273,7 @@ function Home() {
                       </Typography>
                       <TextField
                         variant="standard"
-                        value={state_code}
+                        value={isViewMode? invoiceViewDetails.state_code || "":state_code}
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
                     </Box>
@@ -266,8 +302,9 @@ function Home() {
                       </Typography>
                       <TextField
                         variant="standard"
+                        value={isViewMode? invoiceViewDetails.vehicle_number || "":vehicle_number}
                         onChange={(e) => setvehicle_number(e.target.value)}
-                        InputProps={{ disableUnderline: true ,inputProps: { style: { fontWeight: "bold" } }}}
+                        InputProps={{ disableUnderline: true, inputProps: { style: { fontWeight: "bold" } } }}
                       ></TextField>
                     </Box>
                     <Box display={"flex"} alignItems="center" gap={5}>
@@ -307,7 +344,7 @@ function Home() {
                       <TextField
                         variant="standard"
                         onChange={(e) => seteway_bill_no(e.target.value)}
-                        InputProps={{ disableUnderline: true ,inputProps: { style: { fontWeight: "bold" } }}}
+                        InputProps={{ disableUnderline: true, inputProps: { style: { fontWeight: "bold" } } }}
                       ></TextField>
                     </Box>
                   </div>
@@ -326,54 +363,58 @@ function Home() {
                         Name:
                       </Typography>
                       <Autocomplete
-    options={customerDetails}
-    getOptionLabel={(option) => option.consignee_name || ""} // Display GSTIN
-    filterOptions={(options, { inputValue }) =>
-      options.filter((option) =>
-        option.consignee_name
-          .toLowerCase()
-          .includes(inputValue.toLowerCase()) // Search GSTIN
-      )
-    }
-    value={
-      customerDetails.find((customer) => customer.consignee_name === receiver_name) || null
-    }
-    onChange={(event, newValue) => {
-      if (newValue) {
-        // Autofill details based on GSTIN
-        setreceiver_name(newValue.consignee_name);
-        setreceiver_gstin(newValue.consignee_gstin);
-        setreceiver_address(newValue.consignee_address);
-        setreceiver_state(newValue.consignee_state);
-        setreceiver_state_code(newValue.consignee_state_code);
-      } else {
-        // Clear fields when no value selected
-        setreceiver_gstin("");
-        setreceiver_name("");
-        setreceiver_address("");
-        setreceiver_state("");
-        setreceiver_state_code("");
-      }
-    }}
-    renderInput={(params) => (
-      <TextField
-        {...params}
-        variant="standard"
-        
-        sx={{ width: "350px","& .MuiInputBase-input": {
-          fontWeight: "bold",},}}
-        InputProps={{
-          ...params.InputProps,
-          disableUnderline: true,
-          style: { padding: 0 }, // Clean appearance
-        }}
-      />
-    )}
-    popupIcon={null} // Hides dropdown arrow
-    disableClearable
-    forcePopupIcon={false} // Ensures no arrow icon appears
-  />
-                     
+                        options={customerDetails}
+                        getOptionLabel={(option) => option.consignee_name || ""} // Display GSTIN
+                        filterOptions={(options, { inputValue }) =>
+                          options.filter((option) =>
+                            option.consignee_name
+                              .toLowerCase()
+                              .includes(inputValue.toLowerCase()) // Search GSTIN
+                          )
+                        }
+                        value={isViewMode ? {consignee_name:invoiceViewDetails.receiver_name || ""} :
+                          customerDetails.find((customer) => customer.consignee_name === receiver_name) || null
+                          
+                        }
+                        onChange={(event, newValue) => {
+                          if (newValue) {
+                            // Autofill details based on GSTIN
+                            setreceiver_name(newValue.consignee_name);
+                            setreceiver_gstin(newValue.consignee_gstin);
+                            setreceiver_address(newValue.consignee_address);
+                            setreceiver_state(newValue.consignee_state);
+                            setreceiver_state_code(newValue.consignee_state_code);
+                          } else {
+                            // Clear fields when no value selected
+                            setreceiver_gstin("");
+                            setreceiver_name("");
+                            setreceiver_address("");
+                            setreceiver_state("");
+                            setreceiver_state_code("");
+                          }
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="standard"
+
+                            sx={{
+                              width: "350px", "& .MuiInputBase-input": {
+                                fontWeight: "bold",
+                              },
+                            }}
+                            InputProps={{
+                              ...params.InputProps,
+                              disableUnderline: true,
+                              style: { padding: 0 }, // Clean appearance
+                            }}
+                          />
+                        )}
+                        popupIcon={null} // Hides dropdown arrow
+                        disableClearable
+                        forcePopupIcon={false} // Ensures no arrow icon appears
+                      />
+
                     </Box>
                     <Box display={"flex"} alignItems="center" gap={3} mt={0}>
                       <Typography
@@ -387,10 +428,10 @@ function Home() {
                         sx={{ width: "450px" }}
                         multiline
                         rows={3}
-                       
+
                         value={receiver_address}
-                        
-                                                InputProps={{ disableUnderline: true }}
+
+                        InputProps={{ disableUnderline: true }}
                       ></TextField>
                     </Box>
                     <br />{" "}
@@ -407,8 +448,8 @@ function Home() {
                         value={receiver_gstin}
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
-    
-                      
+
+
                     </Box>
                     <Box display={"flex"} alignItems="center" gap={5} mt={0}>
                       <Typography
@@ -432,7 +473,7 @@ function Home() {
                       <TextField
                         variant="standard"
                         sx={{ width: "100px" }}
-                       value={receiver_state_code}
+                        value={receiver_state_code}
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
                     </Box>
@@ -446,54 +487,57 @@ function Home() {
                         Name:
                       </Typography>
                       <Autocomplete
-    options={customerDetails}
-    getOptionLabel={(option) => option.consignee_name || ""} // Display GSTIN
-    filterOptions={(options, { inputValue }) =>
-      options.filter((option) =>
-        option.consignee_name
-          .toLowerCase()
-          .includes(inputValue.toLowerCase()) // Search GSTIN
-      )
-    }
-    value={
-      customerDetails.find((customer) => customer.consignee_name === consignee_name) || null
-    }
-    onChange={(event, newValue) => {
-      if (newValue) {
-        // Autofill details based on GSTIN
-        setconsignee_name(newValue.consignee_name);
-        setconsignee_address(newValue.consignee_address);
-        setconsignee_gstin(newValue.consignee_gstin);
-        setconsignee_state(newValue.consignee_state);
-        setconsignee_state_code(newValue.consignee_state_code);
-      } else {
-        // Clear fields when no value selected
-        setconsignee_gstin("");
-        setconsignee_name("");
-        setconsignee_address("");
-        setconsignee_state("");
-        setconsignee_state_code("");
-      }
-    }}
-    renderInput={(params) => (
-      <TextField
-        {...params}
-        variant="standard"
-        
-        sx={{ width: "350px","& .MuiInputBase-input": {
-          fontWeight: "bold",}, }}
-        InputProps={{
-          ...params.InputProps,
-          disableUnderline: true,
-          style: { padding: 0 }, // Clean appearance
-        }}
-      />
-    )}
-    popupIcon={null} // Hides dropdown arrow
-    disableClearable
-    forcePopupIcon={false} // Ensures no arrow icon appears
-  />
-                      
+                        options={customerDetails}
+                        getOptionLabel={(option) => option.consignee_name || ""} // Display GSTIN
+                        filterOptions={(options, { inputValue }) =>
+                          options.filter((option) =>
+                            option.consignee_name
+                              .toLowerCase()
+                              .includes(inputValue.toLowerCase()) // Search GSTIN
+                          )
+                        }
+                        value={ isViewMode? {consignee_name:invoiceViewDetails.consignee_name || ""}:
+                          customerDetails.find((customer) => customer.consignee_name === consignee_name) || null
+                        }
+                        onChange={(event, newValue) => {
+                          if ( newValue) {
+                            // Autofill details based on GSTIN
+                            setconsignee_name(newValue.consignee_name);
+                            setconsignee_address(newValue.consignee_address);
+                            setconsignee_gstin(newValue.consignee_gstin);
+                            setconsignee_state(newValue.consignee_state);
+                            setconsignee_state_code(newValue.consignee_state_code);
+                          } else {
+                            // Clear fields when no value selected
+                            setconsignee_gstin("");
+                            setconsignee_name("");
+                            setconsignee_address("");
+                            setconsignee_state("");
+                            setconsignee_state_code("");
+                          }
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            variant="standard"
+
+                            sx={{
+                              width: "350px", "& .MuiInputBase-input": {
+                                fontWeight: "bold",
+                              },
+                            }}
+                            InputProps={{
+                              ...params.InputProps,
+                              disableUnderline: true,
+                              style: { padding: 0 }, // Clean appearance
+                            }}
+                          />
+                        )}
+                        popupIcon={null} // Hides dropdown arrow
+                        disableClearable
+                        forcePopupIcon={false} // Ensures no arrow icon appears
+                      />
+
                     </Box>
                     <Box display={"flex"} alignItems="center" gap={3} mt={0}>
                       <Typography
@@ -508,7 +552,7 @@ function Home() {
                         multiline
                         rows={3}
                         value={consignee_address}
-                        
+
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
                     </Box>
@@ -520,11 +564,11 @@ function Home() {
                       >
                         GSTIN:
                       </Typography>
-                     
+
                       <TextField
                         variant="standard"
                         sx={{ width: "250px" }}
-                        value={consignee_gstin}                       InputProps={{ disableUnderline: true }}
+                        value={consignee_gstin} InputProps={{ disableUnderline: true }}
                       ></TextField>
 
                     </Box>
@@ -557,18 +601,18 @@ function Home() {
                   </div>
                 </div>
 
-                <Invoice onInvoiceChange={handleInvoiceData} />
+                <Invoice invoiceViewDetails={invoiceViewDetails} viewitems={viewitems} isViewMode={isViewMode} onInvoiceChange={handleInvoiceData} />
               </div>
               <Footer />
             </div>
           </div>
         </div>
       </div>
-<div className="generated"> This is a Computer Generated Invoice</div>
+      <div className="generated"> This is a Computer Generated Invoice</div>
       <center>
         <div className="print-button-container">
-        <Button variant="contained" color="primary" onClick={handleSave}>
-Submit          </Button>&nbsp;&nbsp;&nbsp;&nbsp;
+          <Button variant="contained" color="primary" onClick={handleSave}>
+            Submit          </Button>&nbsp;&nbsp;&nbsp;&nbsp;
           <Button variant="contained" color="primary" onClick={handlePrint}>
             Print Invoice
           </Button>
@@ -582,7 +626,7 @@ Submit          </Button>&nbsp;&nbsp;&nbsp;&nbsp;
           </Button>
         </div>
       </center>
-      
+
     </div>
   );
 }
