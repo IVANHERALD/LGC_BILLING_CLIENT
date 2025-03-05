@@ -29,7 +29,7 @@ function Dashboard() {
                     totalsalesbefore+=parseFloat(bill.total_before_tax);
                     totalSales += parseFloat(bill.grand_total);
                     totalGST += parseFloat(bill.grand_total) - parseFloat(bill.total_before_tax);
-                    totalquantity+=parseFloat(bill.totalquantity);
+                    totalquantity+=isNaN(parseFloat(bill.totalquantity))?0:parseFloat(bill.totalquantity);
 
           
                     // Group sales by month
