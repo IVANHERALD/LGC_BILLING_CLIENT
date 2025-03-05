@@ -7,7 +7,7 @@ function Dashboard() {
   const [TotalSales, setTotalSales] = useState([]);
   const [TotalGST, setTotalGST] = useState([]);
   const [Totalsalesbefore, setTotalsalesbefore] = useState([]);
-  const [TotalQuantity,SetTotalQuantity]=useState([]);
+  const [TotalWeight,SetTotalWeight]=useState([]);
   useEffect(() => {
       
           const fetchbill = async () => {
@@ -23,13 +23,13 @@ function Dashboard() {
                   let totalSales = 0;
                   let totalsalesbefore=0;
                   let totalGST = 0;
-                  let totalquantity=0;
+                  let totalweight=0;
                   let monthlySales = {};
                   data.Bill.forEach((bill) => {
                     totalsalesbefore+=parseFloat(bill.total_before_tax);
                     totalSales += parseFloat(bill.grand_total);
                     totalGST += parseFloat(bill.grand_total) - parseFloat(bill.total_before_tax);
-                    totalquantity+=isNaN(parseFloat(bill.totalquantity))?0:parseFloat(bill.totalquantity);
+                    totalweight+=isNaN(parseFloat(bill.totalweight))?0:parseFloat(bill.totalweight);
 
           
                     // Group sales by month
@@ -38,7 +38,7 @@ function Dashboard() {
                   setTotalSales(totalSales.toFixed(2));
                   setTotalGST(totalGST.toFixed(2));
                   setTotalsalesbefore(totalsalesbefore.toFixed(2));
-                  SetTotalQuantity(totalquantity.toFixed(2))
+                  SetTotalWeight(totalweight.toFixed(2))
 
                   
               } catch (error) {
@@ -57,7 +57,7 @@ function Dashboard() {
         <h2>Total Sales without tax: ₹{Totalsalesbefore}</h2><br/>
         <h2>Total Sales with tax: ₹{TotalSales}</h2><br/>
         <h2>Total GST Collected: ₹{TotalGST}</h2><br/>
-        <h2>Total Quantity Billed:{TotalQuantity}Kgs</h2>
+        <h2>Total Quantity Billed:{TotalWeight}Kgs</h2>
     </div>
     </div>
   )
