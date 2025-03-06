@@ -119,7 +119,8 @@ const [IsSavedEnabled,setIsSavedEnabled]=useState(false);
   };
   const updateCastingDetails=async()=>{
     try {
-      const response = await updateCasting(OriginalCasting.casting_name, selectedCasting);
+      const encodedcastingName=encodeURIComponent(OriginalCasting.casting_name);
+      const response = await updateCasting(encodedcastingName, selectedCasting);
       
       if (response.ok) {
           console.log("Casting updated successfully");
