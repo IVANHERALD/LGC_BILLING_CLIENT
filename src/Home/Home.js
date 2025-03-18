@@ -10,6 +10,7 @@ import { addnewbill, fetchgenBillNumber, fetchgenInvoiceNumber } from "../servic
 import { fetchcustomer } from "../services/Customer";
 import { fetchcasting } from "../services/Casting";
 
+
 function Home() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ function Home() {
   const [customerDetails, setcustomerDetails] = useState([]);
   const [invoiceRounfoff, setInvoiceRoundoff] = useState(0);
   const [viewitems,setviewitems]=useState([]);
+  const history=useNavigate();
   console.log("Vieew",isViewMode);
   const [invoiceViewDetails, setInvoiceViewDetails] = useState({
     invoice_no: billData?.invoice_no || "",
@@ -146,11 +148,11 @@ function Home() {
     try {
       // Call the addnewbill service to save the bill details
       const response = await addnewbill(billDetails);
-      console.log(invoiceItems);
       if (response.ok) {
         const data = await response.json();
         console.log("Bill Saved Successfully:", data);
         alert("Bill saved successfully!");
+        history(`/?mode=view`, { state: { bill:billDetails } })
       } else {
         const errorData = await response.json();
         console.error("Error saving bill:", errorData);
@@ -611,11 +613,17 @@ function Home() {
       <div className="generated"> This is a Computer Generated Invoice</div>
       <center>
         <div className="print-button-container">
-          <Button variant="contained" color="primary" onClick={handleSave}>
-            Submit          </Button>&nbsp;&nbsp;&nbsp;&nbsp;
+          {isViewMode?(<>
           <Button variant="contained" color="primary" onClick={handlePrint}>
             Print Invoice
+          </Button>&nbsp;&nbsp;&nbsp;&nbsp;
+          <Button variant="contained" color="error" onClick={handlePrint}>
+            Exit
           </Button>
+          
+          </>):(<>
+            <Button variant="contained" color="primary" onClick={handleSave}>
+            Submit          </Button>
           &nbsp;&nbsp;&nbsp;&nbsp;
           <Button variant="contained" color="success" onClick={handlePrint}>
             Review Invoice
@@ -624,6 +632,8 @@ function Home() {
           <Button variant="contained" color="error" onClick={handlePrint}>
             Exit
           </Button>
+          </>
+          )}
         </div>
       </center>
 
