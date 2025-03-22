@@ -42,40 +42,40 @@ export const deleteBill=async(invoice_no)=>{
       });
       return response;
 }
-export const generateInvoiceNumber = (latestInvoice) => {
-    const today = new Date();
-    const currentYear = today.getFullYear();
-    const currentMonth = today.getMonth() + 1; // January is 0
+// export const generateInvoiceNumber = (latestInvoice) => {
+//     const today = new Date();
+//     const currentYear = today.getFullYear();
+//     const currentMonth = today.getMonth() + 1; // January is 0
 
-    let fyStartYear, fyEndYear;
+//     let fyStartYear, fyEndYear;
 
-    // If it's before April, financial year is previousYear - currentYear
-    if (currentMonth < 4) {
-        fyStartYear = currentYear - 1;
-        fyEndYear = currentYear;
-    } else {
-        fyStartYear = currentYear;
-        fyEndYear = currentYear + 1;
-    }
+//     // If it's before April, financial year is previousYear - currentYear
+//     if (currentMonth < 4) {
+//         fyStartYear = currentYear - 1;
+//         fyEndYear = currentYear;
+//     } else {
+//         fyStartYear = currentYear;
+//         fyEndYear = currentYear + 1;
+//     }
 
-    // Format financial year as (YY-YY)
-    const formattedYear = `${fyStartYear.toString().slice(-2)}-${fyEndYear.toString().slice(-2)}`;
+//     // Format financial year as (YY-YY)
+//     const formattedYear = `${fyStartYear.toString().slice(-2)}-${fyEndYear.toString().slice(-2)}`;
 
-    let newBillNo = "001"; // Default first invoice
+//     let newBillNo = "001"; // Default first invoice
 
-    if (latestInvoice&&latestInvoice.invoice_no) {
-        const latestInvoiceNo = latestInvoice.invoice_no; // e.g., "LGC(24-25)0001"
-        const latestYear = latestInvoiceNo.match(/\d{2}-\d{2}/)[0]; // Extract "24-25"
-        const latestSerialNo = parseInt(latestInvoiceNo.slice(-4)); // Get "0001" as number
+//     if (latestInvoice) {
+//         const latestInvoiceNo = latestInvoice; // e.g., "LGC(24-25)0001"
+//         const latestYear = latestInvoiceNo.match(/\d{2}-\d{2}/)[0]; // Extract "24-25"
+//         const latestSerialNo = parseInt(latestInvoiceNo.slice(-3)); // Get "0001" as number
 
-        // If same financial year, increment the bill number
-        if (latestYear === formattedYear) {
-            newBillNo = (latestSerialNo + 1).toString().padStart(4, "0");
-        }
-    }
+//         // If same financial year, increment the bill number
+//         if (latestYear === formattedYear) {
+//             newBillNo = (latestSerialNo).toString().padStart(3, "0");
+//         }
+//     }
 
-    // Generate new invoice number
-    const newInvoiceNo = `LGC(${formattedYear})${newBillNo}`;
+//     // Generate new invoice number
+//     const newInvoiceNo = `LGC(${formattedYear})${newBillNo}`;
 
-    return newInvoiceNo;
-};
+//     return newInvoiceNo;
+// };

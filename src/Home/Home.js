@@ -101,6 +101,8 @@ function Home() {
   // useEffect(() => {
   //   fetchBillNumber();
   // }, []);
+  //const lastest=generateInvoiceNumber(invoice_no);
+  //console.log("hey",lastest,"yes",invoice_no);
 
   useEffect(() => {
 
