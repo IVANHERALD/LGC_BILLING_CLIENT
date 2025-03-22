@@ -51,7 +51,8 @@ function InvoiceDisplay() {
         
 
      }
-     const handleEdit=()=>{
+     const handleEdit=(index,bill)=>{
+      history(`/?mode=edit`, { state: { bill } })
 
      }
      const handleCancel=()=>{
@@ -287,7 +288,8 @@ Date    </TableCell>
 <TableBody>
     {currentBills.map((bill,index)=>(
         <TableRow key={index} >
-            <TableCell>{bill.invoice_no}</TableCell>
+            <TableCell sx={{ cursor: "pointer" }} 
+  onClick={() => history(`/?mode=view`, { state: { bill } })}>{bill.invoice_no}</TableCell>
             <TableCell>{bill.invoice_date}</TableCell>
             <TableCell>{bill.receiver_name}</TableCell>
             <TableCell>{bill.consignee_name}</TableCell>
