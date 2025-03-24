@@ -20,7 +20,7 @@ import React, { useState, useEffect } from "react";
 import { ToWords } from "to-words";
 
 function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
-  console.log("inviw",invoiceViewDetails);
+  
   
   const [items, setitems] = useState([
     {
@@ -42,10 +42,7 @@ function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
   const toWords = new ToWords();
   const totalQuantity = items.reduce((total, item) => total + (item.quantity || 0), 0);
   const totalWeight =parseFloat((items.reduce((total, item) => total + (item.weight || 0), 0)).toFixed(2));
-  console.log("items",items);
   
-  console.log("weight",typeof totalWeight);
-
 
   const handleAddRow = (e) => {
     e.preventDefault();
@@ -80,7 +77,7 @@ function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
     const numericFields = ["quantity", "weight", "rate"];
   const parsedValue = numericFields.includes(field) ? Number(value) || 0 : value;
     updatedItems[index] = { ...updatedItems[index], [field]: parsedValue };
-    console.log("update",updatedItems);
+    
 
     // if (field === "weight" || field === "rate") {
     //   const calculatedvalue =
@@ -88,7 +85,7 @@ function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
     //   updatedItems[index].value = parseFloat(calculatedvalue.toFixed(2));
     // }
     if (field === "quantity" && updatedItems[index].unitWeight) {
-      console.log("quantity change")
+     
       // Update the weight dynamically based on quantity
       updatedItems[index].weight = updatedItems[index].unitWeight * value;
       updatedItems[index].weight=parseFloat(updatedItems[index].weight.toFixed(2));
@@ -103,7 +100,7 @@ function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
         updatedItems[index].weight * updatedItems[index].rate;
       updatedItems[index].value = parseFloat(calculatedvalue.toFixed(2));
     }
-    console.log(updatedItems);
+    
 
 
 
@@ -119,12 +116,6 @@ function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
   const igstAmount = parseFloat(totalTaxableValue * igst) / 100;
   const totalGrandAmount =
     parseFloat((totalTaxableValue + cgstAmount + sgstAmount + igstAmount).toFixed(2));
-    console.log("total",typeof totalTaxableValue);
-    console.log("total1", typeof cgstAmount);
-    console.log("total2",typeof sgstAmount);
-    console.log("total3",typeof igstAmount);
-    console.log("total4",typeof totalGrandAmount);
-    
 
   const roundOffAmount = (amount) => {
     const rupee = Math.floor(amount);
@@ -138,8 +129,6 @@ function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
   };
 
   const roundedTotalGrandAmount = roundOffAmount(totalGrandAmount);
-  console.log("total",totalGrandAmount)
-  console.log("totalround",roundedTotalGrandAmount)
   const roundoffAdjustment = (
     roundedTotalGrandAmount - totalGrandAmount
   ).toFixed(2);
@@ -197,7 +186,7 @@ function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
         const data = await response.json();
         console.log("fetch casting details", data.casting);
         setcastingDetails(data.casting);
-        console.log("console", data.casting);
+        
       } catch (error) {
         console.log(error.message);
       }
@@ -209,7 +198,7 @@ function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
     if (!selectedProduct) return;
 
     const updatedItems = [...items];
-    console.log("select", selectedProduct);
+    
     updatedItems[index] = {
       ...updatedItems[index],
       name: selectedProduct.casting_name,
