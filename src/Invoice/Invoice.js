@@ -19,7 +19,9 @@ import {
 import React, { useState, useEffect } from "react";
 import { ToWords } from "to-words";
 
-function Invoice({ onInvoiceChange }) {
+function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
+  
+  
   const [items, setitems] = useState([
     {
       si_no: 1,
@@ -40,9 +42,7 @@ function Invoice({ onInvoiceChange }) {
   const toWords = new ToWords();
   const totalQuantity = items.reduce((total, item) => total + (item.quantity || 0), 0);
   const totalWeight =parseFloat((items.reduce((total, item) => total + (item.weight || 0), 0)).toFixed(2));
-  console.log("items",items);
-  console.log("weight",typeof totalWeight);
-
+  
 
   const handleAddRow = (e) => {
     e.preventDefault();
@@ -77,7 +77,7 @@ function Invoice({ onInvoiceChange }) {
     const numericFields = ["quantity", "weight", "rate"];
   const parsedValue = numericFields.includes(field) ? Number(value) || 0 : value;
     updatedItems[index] = { ...updatedItems[index], [field]: parsedValue };
-    console.log("update",updatedItems);
+    
 
     // if (field === "weight" || field === "rate") {
     //   const calculatedvalue =
@@ -85,7 +85,7 @@ function Invoice({ onInvoiceChange }) {
     //   updatedItems[index].value = parseFloat(calculatedvalue.toFixed(2));
     // }
     if (field === "quantity" && updatedItems[index].unitWeight) {
-      console.log("quantity change")
+     
       // Update the weight dynamically based on quantity
       updatedItems[index].weight = updatedItems[index].unitWeight * value;
       updatedItems[index].weight=parseFloat(updatedItems[index].weight.toFixed(2));
@@ -100,7 +100,7 @@ function Invoice({ onInvoiceChange }) {
         updatedItems[index].weight * updatedItems[index].rate;
       updatedItems[index].value = parseFloat(calculatedvalue.toFixed(2));
     }
-    console.log(updatedItems);
+    
 
 
 
@@ -116,11 +116,6 @@ function Invoice({ onInvoiceChange }) {
   const igstAmount = parseFloat(totalTaxableValue * igst) / 100;
   const totalGrandAmount =
     parseFloat((totalTaxableValue + cgstAmount + sgstAmount + igstAmount).toFixed(2));
-    console.log("total",typeof totalTaxableValue);
-    console.log("total1", typeof cgstAmount);
-    console.log("total2",typeof sgstAmount);
-    console.log("total3",typeof igstAmount);
-    console.log("total4",typeof totalGrandAmount);
 
   const roundOffAmount = (amount) => {
     const rupee = Math.floor(amount);
@@ -191,7 +186,7 @@ function Invoice({ onInvoiceChange }) {
         const data = await response.json();
         console.log("fetch casting details", data.casting);
         setcastingDetails(data.casting);
-        console.log("console", data.casting);
+        
       } catch (error) {
         console.log(error.message);
       }
@@ -203,7 +198,7 @@ function Invoice({ onInvoiceChange }) {
     if (!selectedProduct) return;
 
     const updatedItems = [...items];
-    console.log("select", selectedProduct);
+    
     updatedItems[index] = {
       ...updatedItems[index],
       name: selectedProduct.casting_name,
@@ -307,7 +302,7 @@ function Invoice({ onInvoiceChange }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {items.map((item, index) => (
+            {(isViewMode?viewitems:items).map((item, index) => (
               <TableRow
                 key={index}
                 sx={{
@@ -355,6 +350,11 @@ function Invoice({ onInvoiceChange }) {
                   freeSolo
                     options={castingDetails}
                     getOptionLabel={(option) => option.casting_name || ""}
+                    value={
+                      isViewMode
+                        ? { casting_name: viewitems[index]?.name || "" } // ✅ Show stored name in view mode
+                        : castingDetails.find((item) => item.casting_name === items[index]?.name) || null
+                    }
                     onChange={(e, selectedProduct) =>
                       handleAutocompleteChange(index, selectedProduct)
                     }
@@ -417,6 +417,7 @@ function Invoice({ onInvoiceChange }) {
                 >
                   <TextField
                     variant="standard"
+                    value={isViewMode ? viewitems[index]?.quantity || 0 : items[index]?.quantity || 0}
                     InputProps={{
                       sx: { fontSize: "15px" },
                       disableUnderline: true,
@@ -464,6 +465,7 @@ function Invoice({ onInvoiceChange }) {
                 >
                   <TextField
                     variant="standard"
+                    value={isViewMode ? viewitems[index]?.rate || 0 : items[index]?.rate || 0}
                     sx={{ width: "40px" }}
                     InputProps={{
                       sx: { fontSize: "15px" },
@@ -524,10 +526,8 @@ function Invoice({ onInvoiceChange }) {
               <TableCell colSpan={10} sx={{ fontWeight: 'bold', textAlign: 'right', borderRight: "1px solid black",paddingRight:'70px' }}>
                 Total :
               </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', borderRight: "1px solid black",paddingRight:'40px'  }}>{totalQuantity} Nos</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', borderRight: "1px solid black",paddingRight:'14px' }}>{totalWeight.toFixed(2
-                
-              )} Kgs</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', borderRight: "1px solid black",paddingRight:'40px'  }}>{isViewMode?invoiceViewDetails.totalquantity:totalQuantity} Nos</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', borderRight: "1px solid black",paddingRight:'14px' }}>{isViewMode?(parseFloat(invoiceViewDetails.totalweight|| 0).toFixed(2)):totalWeight.toFixed(2)} Kgs</TableCell>
               
             </TableRow>
           
@@ -559,7 +559,7 @@ function Invoice({ onInvoiceChange }) {
       wordWrap: "break-word", // Ensures long words break if necessary
     }}>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-             <b> {totalInWords}</b>
+             <b> {isViewMode?invoiceViewDetails.grand_total_words:totalInWords}</b>
             </div>
           </Typography>
         </div>
@@ -577,7 +577,7 @@ function Invoice({ onInvoiceChange }) {
               </Typography>
               
             </div>
-            <div class="sub-grid-item label2" style={{display:"flex",justifyContent:"flex-end",paddingRight:"10px"}}><b>{totalTaxableValue.toFixed(2)}</b>&nbsp;&nbsp;</div>
+            <div class="sub-grid-item label2" style={{display:"flex",justifyContent:"flex-end",paddingRight:"10px"}}><b>{isViewMode?(parseFloat(invoiceViewDetails.total_before_tax).toFixed(2)):totalTaxableValue.toFixed(2)}</b>&nbsp;&nbsp;</div>
             <div class="sub-grid-item label3">
               <Typography
                 variant="body1"
@@ -601,7 +601,7 @@ function Invoice({ onInvoiceChange }) {
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <TextField
                     variant="standard"
-                    value={cgst}
+                    value={isViewMode?invoiceViewDetails.cgst:cgst}
                     onChange={(e) => setCgst(parseFloat(e.target.value) || 0)}
                     sx={{ flex: "0 0 auto", width: "30px" }}
                     InputProps={{ disableUnderline: true }}
@@ -610,7 +610,7 @@ function Invoice({ onInvoiceChange }) {
                 </div>
               </Typography>
             </div>
-            <div class="sub-grid-item label4" style={{display:"flex",justifyContent:"flex-end",paddingRight:"20px"}}><b>{cgstAmount.toFixed(2)}</b></div>
+            <div class="sub-grid-item label4" style={{display:"flex",justifyContent:"flex-end",paddingRight:"20px"}}><b>{isViewMode?(parseFloat(invoiceViewDetails.cgstamount).toFixed(2)):cgstAmount.toFixed(2)}</b></div>
             <div class="sub-grid-item label5">
               <Typography
                 variant="body1"
@@ -634,7 +634,7 @@ function Invoice({ onInvoiceChange }) {
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <TextField
                     variant="standard"
-                    value={sgst}
+                    value={isViewMode?invoiceViewDetails.sgst:sgst}
                     onChange={(e) => setSgst(parseFloat(e.target.value) || 0)}
                     sx={{ flex: "0 0 auto", width: "30px" }}
                     InputProps={{ disableUnderline: true }}
@@ -643,7 +643,7 @@ function Invoice({ onInvoiceChange }) {
                 </div>
               </Typography>
             </div>
-            <div class="sub-grid-item label6" style={{display:"flex",justifyContent:"flex-end",paddingRight:"20px"}}><b>{sgstAmount.toFixed(2)}</b></div>
+            <div class="sub-grid-item label6" style={{display:"flex",justifyContent:"flex-end",paddingRight:"20px"}}><b>{isViewMode?(parseFloat(invoiceViewDetails.sgstamount).toFixed(2)):sgstAmount.toFixed(2)}</b></div>
             <div class="sub-grid-item label7">
               <Typography
                 variant="body1"
@@ -667,7 +667,7 @@ function Invoice({ onInvoiceChange }) {
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <TextField
                     variant="standard"
-                    value={igst}
+                    value={isViewMode?invoiceViewDetails.igst:igst}
                     onChange={(e) => setIgst(parseFloat(e.target.value) || 0)}
                     sx={{ flex: "0 0 auto", width: "30px" }}
                     InputProps={{ disableUnderline: true }}
@@ -676,7 +676,7 @@ function Invoice({ onInvoiceChange }) {
                 </div>
               </Typography>
             </div>
-            <div class="sub-grid-item label8" style={{display:"flex",justifyContent:"flex-end",paddingRight:"10px"}}><b>{igstAmount.toFixed(2)}</b>&nbsp;&nbsp;</div>
+            <div class="sub-grid-item label8" style={{display:"flex",justifyContent:"flex-end",paddingRight:"10px"}}><b>{isViewMode?(parseFloat(invoiceViewDetails.igstamount).toFixed(2)):igstAmount.toFixed(2)}</b>&nbsp;&nbsp;</div>
             <div class="sub-grid-item label9" >
               <Typography
                 variant="body1"
@@ -687,12 +687,15 @@ function Invoice({ onInvoiceChange }) {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div class="sub-grid-item label10" style={{display:"flex",justifyContent:"flex-end",paddingRight:"10px",fontSize: "0.99rem", fontWeight: "bold"}}>
-              {(() => {
-                const prefix = parseFloat(roundoffAdjustment) > 0 ? "+" : "";
+            {(() => {
+    const value = isViewMode 
+      ? parseFloat(invoiceViewDetails?.roundoff || 0).toFixed(2) 
+      : (parseFloat(roundoffAdjustment).toFixed(2));
+    
+    const prefix = parseFloat(value) > 0 ? "+" : ""; // Ensure + is displayed for positive numbers
 
-                // Return formatted value with prefix
-                return `${prefix}${roundoffAdjustment}`;
-              })()}
+    return `${prefix}${value}`;
+  })()}
               &nbsp;&nbsp;
             </div>
             <div class="sub-grid-item label11">
@@ -705,7 +708,7 @@ function Invoice({ onInvoiceChange }) {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div class="sub-grid-item label12" style={{display:"flex",justifyContent:"flex-end",paddingRight:"20px"}}>
-              <b>{roundedTotalGrandAmount.toFixed(2)}</b>
+              <b>{isViewMode?(parseFloat(invoiceViewDetails.grand_total).toFixed(2)):roundedTotalGrandAmount.toFixed(2)}</b>
             </div>
           </div>
         </div>
