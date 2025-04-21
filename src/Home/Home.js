@@ -255,7 +255,7 @@ function Home() {
       // Combine date and time
       const formattedDateTime = `${formattedDate} ${formattedTime}`;
 
-      setinvoice_date(formattedDateTime);
+      //setinvoice_date(formattedDateTime);
     });
   }, []);
 
