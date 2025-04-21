@@ -24,7 +24,7 @@ function Home() {
   const billData = location.state?.bill || null;
   const isViewMode = location.pathname.includes("/") && location.search.includes("mode=view") ? true : location.pathname.includes("/") && location.search.includes("mode=edit") ? false : false;
   const [invoice_no, setinvoice_no] = useState("");
-  const [invoice_date, setinvoice_date] = useState("");
+  const [invoice_date, setinvoice_date] = useState("17/04/2025 13:07:08");
   const [state, setstate] = useState("TamilNadu");
   const [state_code, setstate_code] = useState("33");
   const [transport_name, settransport_name] = useState("");
@@ -256,7 +256,7 @@ function Home() {
       const formattedDateTime = `${formattedDate} ${formattedTime}`;
 
       setinvoice_date(formattedDateTime);
-    }, 10000);
+    });
   }, []);
 
   const handleInvoiceData = (items, totalQuantity, totalWeight, cgst, sgst, igst, cgstAmount, sgstAmount, igstAmount, totaltaxablevalue, roundoffAdjustment, totalGrandAmount, totalinwords) => {
