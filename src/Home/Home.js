@@ -9,13 +9,20 @@ import Navbar from "../Navbar/Navbar";
 import { addnewbill, fetchgenBillNumber, fetchgenInvoiceNumber, generateInvoiceNumber } from "../services/bill";
 import { fetchcustomer } from "../services/Customer";
 import { fetchcasting } from "../services/Casting";
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+
+
+
 
 
 function Home() {
   const location = useLocation();
   const navigate = useNavigate();
   const billData = location.state?.bill || null;
-  const isViewMode = location.pathname.includes("/") && location.search.includes("mode=view")?true:location.pathname.includes("/") && location.search.includes("mode=edit")?false:false;
+  const isViewMode = location.pathname.includes("/") && location.search.includes("mode=view") ? true : location.pathname.includes("/") && location.search.includes("mode=edit") ? false : false;
   const [invoice_no, setinvoice_no] = useState("");
   const [invoice_date, setinvoice_date] = useState("");
   const [state, setstate] = useState("TamilNadu");
@@ -49,9 +56,11 @@ function Home() {
   const [invoicetotalinwords, setInvoicetotalinwords] = useState(0);
   const [customerDetails, setcustomerDetails] = useState([]);
   const [invoiceRounfoff, setInvoiceRoundoff] = useState(0);
-  const [viewitems,setviewitems]=useState([]);
-  const history=useNavigate();
-  console.log("Vieew",isViewMode);
+  const [viewitems, setviewitems] = useState([]);
+  const [openErrorDialog, setOpenErrorDialog] = useState(false);
+  const [errorMessages, setErrorMessages] = useState([]);
+  const handleDialogClose = () => setOpenErrorDialog(false);
+  const history = useNavigate();
   const [invoiceViewDetails, setInvoiceViewDetails] = useState({
     invoice_no: billData?.invoice_no || "",
     invoice_date: billData?.invoice_date || "",
@@ -62,7 +71,7 @@ function Home() {
     consignee_gstin: billData?.consignee_gstin || "",
     items: billData?.items || [],
   });
-  
+
 
   useEffect(() => {
     if (billData) {
@@ -71,21 +80,21 @@ function Home() {
   }, [billData]);
 
 
-   async function fetchInvoiceNumber() {
-     try {
-       const response = await fetchgenInvoiceNumber();
-       if (response.ok) {
-         const data = await response.json();
-         setinvoice_no(data.invoice_no);
-         
-       }
-     } catch (error) {
-       console.log(error);
-     }
-   }
-   useEffect(() => {
-     fetchInvoiceNumber();
-   }, []);
+  async function fetchInvoiceNumber() {
+    try {
+      const response = await fetchgenInvoiceNumber();
+      if (response.ok) {
+        const data = await response.json();
+        setinvoice_no(data.invoice_no);
+
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    fetchInvoiceNumber();
+  }, []);
   // async function fetchBillNumber() {
   //   try {
   //     const response = await fetchgenBillNumber();
@@ -137,9 +146,67 @@ function Home() {
       setconsignee_state_code(invoiceViewDetails.consignee_state_code || "");
       setviewitems(invoiceViewDetails.items);
     }
-  }, [isViewMode, invoiceViewDetails]); 
-  console.log("set",viewitems);
+  }, [isViewMode, invoiceViewDetails]);
+  const validateBillDetails = () => {
+    const errors = [];
+
+    if (!invoice_no) errors.push("Invoice Number");
+    if (!invoice_date) errors.push("Invoice Date");
+    if (!state) errors.push("State");
+    if (!state_code) errors.push("State Code");
+    if (!vehicle_number) errors.push("Vehicle Number");
+    if (!receiver_name) errors.push("Receiver Name");
+    if (!receiver_address) errors.push("Receiver Address");
+    if (!receiver_gstin) errors.push("Receiver GSTIN");
+    if (!receiver_state) errors.push("Receiver State");
+    if (!receiver_state_code) errors.push("Receiver State Code");
+    if (!consignee_name) errors.push("Consignee Name");
+    if (!consignee_address) errors.push("Consignee Address");
+    if (!consignee_gstin) errors.push("Consignee GSTIN");
+    if (!consignee_state) errors.push("Consignee State");
+    if (!consignee_state_code) errors.push("Consignee State Code");
+    
+      
+
+
+    // Validate each item
+    invoiceItems.forEach((item, idx) => {
+      console.log(idx+1)
+      console.log(item)
+      if (!item.name || !item.hsncode || item.quantity == 0 || item.weight == 0 || item.rate == 0 || item.value == 0) {
+        errors.push(`Item ${idx + 1} has incomplete details`);
+      }
+    });
+
+    if (InvoiceTotalquantity == null) errors.push("Total Quantity");
+    if (InvoiceTotalweight == null) errors.push("Total Weight");
+    if (invoicetotaltaxablevalue == null) errors.push("Taxable Value");
+    if (invoiceCgst == null) errors.push("CGST %");
+    if (invoiceSgst == null) errors.push("SGST %");
+    if (invoiceIgst == null) errors.push("IGST %");
+    if (invoiceCgstAmount == null) errors.push("CGST Amount");
+    if (invoiceSgstAmount == null) errors.push("SGST Amount");
+    if (invoiceIgstAmount == null) errors.push("IGST Amount");
+    if (invoiceRounfoff == null) errors.push("Round Off");
+    if (invoicegrandtotal == null) errors.push("Grand Total");
+    if (!invoicetotalinwords) errors.push("Total in Words");
+
+    // ✅ Conditionally check eWay bill
+    if (invoicegrandtotal > 100000 && !eway_bill_no) {
+      errors.push("E-Way Bill (Required for Grand Total > ₹1,00,000)");
+    }
+
+    return errors;
+  };
+
   const handleSave = async () => {
+    const errors = validateBillDetails();
+
+  if (errors.length > 0) {
+    setErrorMessages(errors);
+    setOpenErrorDialog(true);
+    return;
+  }
     const billDetails = {
       invoice_no,
       invoice_date, state, state_code, transport_name, vehicle_number, date_of_supply, pono_date, eway_bill_no, receiver_name, receiver_address, receiver_gstin, receiver_state, receiver_state_code, consignee_name, consignee_address, consignee_gstin, consignee_state, consignee_state_code,
@@ -155,7 +222,7 @@ function Home() {
         const data = await response.json();
         console.log("Bill Saved Successfully:", data);
         alert("Bill saved successfully!");
-        history(`/?mode=view`, { state: { bill:billDetails } })
+        history(`/?mode=view`, { state: { bill: billDetails } })
       } else {
         const errorData = await response.json();
         console.error("Error saving bill:", errorData);
@@ -224,6 +291,22 @@ function Home() {
           <div className="segment">
 
             <div className="invoice-container">
+              <div className="error_message">
+              <Dialog open={openErrorDialog} onClose={handleDialogClose}>
+  <DialogTitle>Missing Required Fields</DialogTitle>
+  <DialogContent>
+    <ul>
+      {errorMessages.map((msg, idx) => (
+        <li key={idx}>{msg}</li>
+      ))}
+    </ul>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={handleDialogClose} autoFocus>OK</Button>
+  </DialogActions>
+</Dialog>
+
+              </div>
               <div className="header-container">
                 <Header />
               </div>
@@ -239,7 +322,7 @@ function Home() {
                       </Typography>
                       <TextField
                         variant="standard"
-                        value={isViewMode? invoiceViewDetails.invoice_no ||"":invoice_no}
+                        value={isViewMode ? invoiceViewDetails.invoice_no || "" : invoice_no}
                         onChange={(e) => setinvoice_no(e.target.value)}
                         InputProps={{ disableUnderline: true, inputProps: { style: { fontWeight: "bold" } } }}
                       ></TextField>
@@ -253,7 +336,7 @@ function Home() {
                       </Typography>
                       <TextField
                         variant="standard"
-                        value={isViewMode? invoiceViewDetails.invoice_date || "":invoice_date}
+                        value={isViewMode ? invoiceViewDetails.invoice_date || "" : invoice_date}
                         InputProps={{ disableUnderline: true, inputProps: { style: { fontWeight: "bold" } } }}
                       ></TextField>
                     </Box>
@@ -266,7 +349,7 @@ function Home() {
                       </Typography>
                       <TextField
                         variant="standard"
-                        value={isViewMode? invoiceViewDetails.state || "":state}
+                        value={isViewMode ? invoiceViewDetails.state || "" : state}
                         sx={{ width: "180px" }}
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
@@ -278,7 +361,7 @@ function Home() {
                       </Typography>
                       <TextField
                         variant="standard"
-                        value={isViewMode? invoiceViewDetails.state_code || "":state_code}
+                        value={isViewMode ? invoiceViewDetails.state_code || "" : state_code}
                         InputProps={{ disableUnderline: true }}
                       ></TextField>
                     </Box>
@@ -307,7 +390,7 @@ function Home() {
                       </Typography>
                       <TextField
                         variant="standard"
-                        value={isViewMode? invoiceViewDetails.vehicle_number || "":vehicle_number}
+                        value={isViewMode ? invoiceViewDetails.vehicle_number || "" : vehicle_number}
                         onChange={(e) => setvehicle_number(e.target.value)}
                         InputProps={{ disableUnderline: true, inputProps: { style: { fontWeight: "bold" } } }}
                       ></TextField>
@@ -377,9 +460,9 @@ function Home() {
                               .includes(inputValue.toLowerCase()) // Search GSTIN
                           )
                         }
-                        value={isViewMode ? {consignee_name:invoiceViewDetails.receiver_name || ""} :
+                        value={isViewMode ? { consignee_name: invoiceViewDetails.receiver_name || "" } :
                           customerDetails.find((customer) => customer.consignee_name === receiver_name) || null
-                          
+
                         }
                         onChange={(event, newValue) => {
                           if (newValue) {
@@ -501,11 +584,11 @@ function Home() {
                               .includes(inputValue.toLowerCase()) // Search GSTIN
                           )
                         }
-                        value={ isViewMode? {consignee_name:invoiceViewDetails.consignee_name || ""}:
+                        value={isViewMode ? { consignee_name: invoiceViewDetails.consignee_name || "" } :
                           customerDetails.find((customer) => customer.consignee_name === consignee_name) || null
                         }
                         onChange={(event, newValue) => {
-                          if ( newValue) {
+                          if (newValue) {
                             // Autofill details based on GSTIN
                             setconsignee_name(newValue.consignee_name);
                             setconsignee_address(newValue.consignee_address);
@@ -616,25 +699,25 @@ function Home() {
       <div className="generated"> This is a Computer Generated Invoice</div>
       <center>
         <div className="print-button-container">
-          {isViewMode?(<>
-          <Button variant="contained" color="primary" onClick={handlePrint}>
-            Print Invoice
-          </Button>&nbsp;&nbsp;&nbsp;&nbsp;
-          <Button variant="contained" color="error" onClick={handlePrint}>
-            Exit
-          </Button>
-          
-          </>):(<>
+          {isViewMode ? (<>
+            <Button variant="contained" color="primary" onClick={handlePrint}>
+              Print Invoice
+            </Button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <Button variant="contained" color="error" onClick={handlePrint}>
+              Exit
+            </Button>
+
+          </>) : (<>
             <Button variant="contained" color="primary" onClick={handleSave}>
-            Submit          </Button>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          <Button variant="contained" color="success" onClick={handlePrint}>
-            Review Invoice
-          </Button>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          <Button variant="contained" color="error" onClick={handlePrint}>
-            Exit
-          </Button>
+              Submit          </Button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <Button variant="contained" color="success" onClick={handlePrint}>
+              Review Invoice
+            </Button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <Button variant="contained" color="error" onClick={handlePrint}>
+              Exit
+            </Button>
           </>
           )}
         </div>
