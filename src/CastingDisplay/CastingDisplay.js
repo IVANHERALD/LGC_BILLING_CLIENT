@@ -72,9 +72,10 @@ const [IsSavedEnabled,setIsSavedEnabled]=useState(false);
     };
     const handleIndexChange = (e) => {
       const input =e.target.value;
+      console.log("hey",input);
       setUserInputIndex(input);
       // Enable delete button only if input matches the selected index
-      setIsDeleteEnabled(input === selectedIndex.toString());
+      setIsDeleteEnabled(input === deletecasting);
           };
     const handleConfirmDelete =async () => {
       if (selectedIndex !== null) {
@@ -253,7 +254,7 @@ Casting HSNCODE    </TableCell>
   </DialogTitle>
   
   <Typography sx={{ px: 3, fontSize: 24, mb: 1 }}>
-    To delete casting at index <strong>{selectedIndex}-{deletecasting}</strong>, type the index to confirm:
+    To delete casting at index {selectedIndex}-<strong>{deletecasting}</strong>, type the index to confirm:
   </Typography>
 
   <DialogContent>
