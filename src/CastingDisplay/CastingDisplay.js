@@ -90,10 +90,10 @@ const [IsSavedEnabled,setIsSavedEnabled]=useState(false);
             setUserInputIndex("");
             setIsDeleteEnabled(false);
             setSuccessMessage("Casting Deleted sucessfully");
-            //  setTimeout(()=>{
-            //   setSuccessMessage("");
-            //  window.location.reload();
-            //  },5000);
+              setTimeout(()=>{
+               setSuccessMessage("");
+              window.location.reload();
+              },5000);
           }else{
             console.error("Error deleting casting");
 
