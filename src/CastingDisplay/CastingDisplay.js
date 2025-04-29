@@ -80,18 +80,20 @@ const [IsSavedEnabled,setIsSavedEnabled]=useState(false);
     const handleConfirmDelete =async () => {
       if (selectedIndex !== null) {
         try{
-          const response= await deleteCasting(deletecasting);
-          if(response){
+          const encodeddeletecastingName=encodeURIComponent(deletecasting);
+          const response= await deleteCasting(encodeddeletecastingName);
+          console.log(response);
+          if(response.ok){
             console.log(`Casting Deleted Sucessfully:${deletecasting}`);
             setOpenDialog(false);
             setSelectedIndex(null);
             setUserInputIndex("");
             setIsDeleteEnabled(false);
             setSuccessMessage("Casting Deleted sucessfully");
-             setTimeout(()=>{
-              setSuccessMessage("");
-             window.location.reload();
-             },5000);
+              setTimeout(()=>{
+               setSuccessMessage("");
+              window.location.reload();
+              },5000);
           }else{
             console.error("Error deleting casting");
 
