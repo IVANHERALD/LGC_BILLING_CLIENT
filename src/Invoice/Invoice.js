@@ -45,11 +45,14 @@ function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
   
 
   const handleAddRow = (e) => {
+   console.log(...items);
     e.preventDefault();
+    const lastSiNo = items.length > 0 ? parseInt(items[items.length - 1].si_no) : 0;
+  
     setitems([
       ...items,
       {
-        si_no: 0,
+        si_no:lastSiNo+1 ,
         name: "",
         hsncode: 0,
         quantity: 0,
