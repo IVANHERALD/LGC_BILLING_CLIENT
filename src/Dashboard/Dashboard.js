@@ -1,8 +1,11 @@
 import React,{useState,useEffect} from 'react'
+import { useNavigate } from 'react-router-dom';
 import { fetchbilldetails } from '../services/bill';
 import Navbar from '../Navbar/Navbar';
 import '../Dashboard/Dashboard.css'
+import {Button} from '@mui/material'
 function Dashboard() {
+  const history=useNavigate();
   const [billDetails, setbillDetails] = useState([]);
   const [TotalSales, setTotalSales] = useState([]);
   const [TotalGST, setTotalGST] = useState([]);
@@ -54,6 +57,8 @@ function Dashboard() {
       <div>
         <Navbar/></div>
       <div className="dashboard">
+        <Button variant="contained"  sx={{ fontSize: 16, ml: 2,backgroundColor: '#FF7043', '&:hover': { backgroundColor: '#F4511E' } }} onClick={()=>history('/dashboard')}>Sales DashBoard</Button>
+        <Button variant="contained"  sx={{ fontSize: 16, ml: 2,backgroundColor: '#66BB6A', '&:hover': { backgroundColor: '#43A047' } }} onClick={()=>history('/purchasedashboard')}>Purchase DashBoard</Button>
         <h2>Total Sales without tax: ₹{Totalsalesbefore}</h2><br/>
         <h2>Total Sales with tax: ₹{TotalSales}</h2><br/>
         <h2>Total GST Collected: ₹{TotalGST}</h2><br/>

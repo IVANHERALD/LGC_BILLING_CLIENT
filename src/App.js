@@ -10,6 +10,9 @@ import InvoiceDisplay from './InvoiceDisplay/InvoiceDisplay.js';
 import CastingDisplay from './CastingDisplay/CastingDisplay.js';
 import CustomerDisplay from './CustomerDisplay/CustomerDisplay.js';
 import Dashboard from './Dashboard/Dashboard.js';
+import PurchaseDashBoard from './PurchaseDashBoard/PurchaseDashBoard.js'
+import AddPurchase from './AddPurchase/AddPurchase.js';
+import AddPayment from './AddPayment/AddPayment.js';
 
 
 function App() {
@@ -24,6 +27,9 @@ function App() {
       <Route path="/invoices" element={<InvoiceDisplay/>}/>
       <Route path='/castingdisplay' element={<CastingDisplay/>}/>
       <Route path='/customerdisplay' element={<CustomerDisplay/>}/>
+      <Route path='/purchasedashboard' element={<PurchaseDashBoard/>}/>
+      <Route path='/addpurchase' element={<AddPurchase/>}/>
+      <Route path='/addpayment' element={<AddPayment/>}/>
       
       </Routes>
       
