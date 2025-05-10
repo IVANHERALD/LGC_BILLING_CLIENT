@@ -1,0 +1,43 @@
+/* AddVendor.css */
+
+.add-vendor-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 40px auto;
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .step-content {
+    margin-top: 30px;
+  }
+  
+  .step-content .MuiTypography-h6 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .step-buttons {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .step-buttons button {
+    min-width: 100px;
+  }
+  
+  .MuiTextField-root {
+    margin-bottom: 20px !important;
+  }
+  
+  @media (max-width: 600px) {
+    .add-vendor-container {
+      padding: 20px;
+    }
+  }
+  

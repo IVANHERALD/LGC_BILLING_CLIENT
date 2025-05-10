@@ -14,6 +14,7 @@ import PurchaseDashBoard from './PurchaseDashBoard/PurchaseDashBoard.js'
 import AddPurchase from './AddPurchase/AddPurchase.js';
 import AddPayment from './AddPayment/AddPayment.js';
 import PurchaseVendorDisplay from './PurchaseVendorDisplay/PurchaseVendorDisplay.js';
+import Vendor from './Vendor/Vendor.js';
 
 
 function App() {
@@ -31,7 +32,8 @@ function App() {
       <Route path='/purchasedashboard' element={<PurchaseDashBoard/>}/>
       <Route path='/addpurchase' element={<AddPurchase/>}/>
       <Route path='/addpayment' element={<AddPayment/>}/>
-      <Route path='purchasevendordisplay' element={<PurchaseVendorDisplay/>}/>
+      <Route path='/purchasevendordisplay' element={<PurchaseVendorDisplay/>}/>
+      <Route path='/vendor' element={<Vendor/>}/>
       </Routes>
       
       </Router>
