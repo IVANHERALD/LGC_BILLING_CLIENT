@@ -3,6 +3,7 @@ import {
   Box, Stepper, Step, StepLabel, TextField, Button, Typography, Grid
 } from '@mui/material';
 import '../Vendor/Vendor.css'
+import { savevendor } from '../services/Vendor';
 const steps = ['Basic Info', 'Contact', 'Address', 'Bank Details'];
 
 function Vendor() {
@@ -10,8 +11,8 @@ function Vendor() {
     const [formData, setFormData] = useState({
       name: '', gstin: '',
       phone: '', email: '',
-      address: '', city: '', state: '', pincode: '',
-      bankName: '', accountNumber: '', ifsc: '',
+      address: '', city: '', state: '', pincode: '',holdername:'',
+       accountNumber: '',bankname:'', ifsc: '',branchname:''
     });
   
     const handleNext = () => setActiveStep(prev => prev + 1);
@@ -21,9 +22,41 @@ function Vendor() {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     };
   
-    const handleSubmit = () => {
-      console.log("Form Submitted: ", formData);
-      alert('Vendor added successfully!');
+    const handleVendorSave =async () => {
+      const vendorDetails = {
+        vendor_name: formData.name,
+        vendor_gstin: formData.gstin,
+        vendor_contact:formData.phone,
+        vendor_email:formData.email,
+        vendor_address: formData.address,
+        vendor_city:formData.city,
+        vendor_state: formData.state,
+        vendor_pin_code: formData.pincode,
+        vendor_account_holder_name:formData.holdername,
+        vendor_account_number:formData.accountNumber,
+        vendor_bank_name:formData.bankname,
+        vendor_ifsc_code:formData.ifsc,
+        vendor_branch_name:formData.branchname
+
+
+
+
+        
+      };
+    
+      try {
+        const response = await savevendor(vendorDetails);
+        if (response.status === 201) {
+          console.log('Vendor added');
+          alert('Vendor saved successfully!');
+        } else {
+          console.error('Vendor not added');
+          alert('Failed to save vendor.');
+        }
+      } catch (error) {
+        console.error('Error while saving vendor:', error);
+        alert('An error occurred while saving vendor.');
+      }
     };
      
     const renderStepContent = (step) => {
@@ -65,11 +98,18 @@ function Vendor() {
         case 3:
           return (
             <Box>
+              
               <Typography variant="h6">Bank Details</Typography>
-              <TextField fullWidth label="Bank Name" name="bankName" value={formData.bankName} onChange={handleChange} margin="normal" />
+
+              <TextField fullWidth label="Account Holder Name" name="holdername" value={formData.holdername} onChange={handleChange} margin="normal" />
+
               
               <TextField fullWidth label="Account Number" name="accountNumber" value={formData.accountNumber} onChange={handleChange} margin="normal" />
-              <TextField fullWidth label="IFSC Code" name="ifsc" value={formData.ifsc} onChange={handleChange} margin="normal" />
+              
+              <TextField fullWidth label="Bank Name" name="bankname" value={formData.bankname} onChange={handleChange} margin="normal" />
+              
+                           <TextField fullWidth label="IFSC Code" name="ifsc" value={formData.ifsc} onChange={handleChange} margin="normal" />
+                           <TextField fullWidth label="Branch Name" name="branchname" value={formData.branchname} onChange={handleChange} margin="normal" />
             </Box>
           );
         default:
@@ -90,7 +130,7 @@ function Vendor() {
         <Box className="step-buttons"  sx={{ mt: 3, display: 'flex', justifyContent: 'space-between' }}>
           <Button disabled={activeStep === 0} onClick={handleBack}>Back</Button>
           {activeStep === steps.length - 1 ? (
-            <Button variant="contained" onClick={handleSubmit}>Save</Button>
+            <Button variant="contained" onClick={handleVendorSave}>Save</Button>
           ) : (
             <Button variant="contained" onClick={handleNext}>Next</Button>
           )}
