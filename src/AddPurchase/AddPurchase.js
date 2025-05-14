@@ -1,9 +1,9 @@
-import { Select, TableCell, TableContainer, TableHead, TableRow, TextField, Typography,Table,Paper, TableBody, Button, MenuItem } from '@mui/material'
+import { Select, TableCell, TableContainer, TableHead, TableRow, TextField, Typography,Table,Paper, TableBody, Button, MenuItem,Box,Grid } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import React,{useState,useEffect} from 'react'
 import '../AddPurchase/AddPurchase.css'
-
+import AddIcon from '@mui/icons-material/Add';
 function AddPurchase() {
   const [items, setitems] = useState([
       {
@@ -47,22 +47,27 @@ function AddPurchase() {
   return (
 
     <div>
-        <div>
-            <h1>New Purchase Entry</h1>
-        </div>
-        <div className='purchase_main'>
-        <label>Vendor</label><br/>
-          <Select>
-
-          </Select>
-          <Typography>Purchase Date</Typography>
+        <Box classname="purchase_main" p={3}>
+        <Typography variant="h6" gutterBottom>New Purchase Entry</Typography>
+        <Grid   container spacing={2} mb={3}>
+        <Grid item xs={12} md={4}>
+          <Typography variant="subtitle2">Vendor</Typography>
+          <Select fullWidth defaultValue=""><MenuItem value="ABC">ABC Supplies</MenuItem></Select>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Typography variant="subtitle2">Purchase Date</Typography>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker></DatePicker></LocalizationProvider>
-          <Typography>Invoice/Reference No</Typography>
-          <TextField variant='outlined'></TextField>
-        </div>
+            <DatePicker slotProps={{ textField: { fullWidth: true } }} />
+          </LocalizationProvider>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Typography variant="subtitle2">Invoice/Reference No.</Typography>
+          <TextField fullWidth variant="outlined" />
+        </Grid>
+      </Grid>
+        
         <div>
-          <h3>Items</h3>
+        <Typography variant="subtitle1" mb={1}>Items</Typography>
           <TableContainer component={Paper}>
             <Table>
               <TableHead sx={{fontWeight:'20px'}}>
@@ -80,7 +85,7 @@ function AddPurchase() {
               
                 <TableRow key={index}>
                   <TableCell>
-                    <TextField variant='standard' InputProps={{disableUnderline:true}} onChange={(e) => handleInputChange( index,'si_no', e.target.value)}></TextField>
+                    <TextField variant='standard' InputProps={{disableUnderline:true}} onChange={(e) => handleInputChange( index,'si_no', e.target.value)} value={item.si_no}></TextField>
                   </TableCell>
                   <TableCell>
                     <TextField variant='standard' InputProps={{disableUnderline:true}} onChange={(e) => handleInputChange( index,'name', e.target.value)}></TextField>
@@ -103,32 +108,56 @@ function AddPurchase() {
 
             </Table>
           </TableContainer>
-          <div>          <Button onClick={handleAddRow}>+</Button>
-          <h4>Subtotal:<TextField variant='standard' InputProps={{disableUnderline:true}}/></h4>
-          <h4>Tax:<TextField variant='standard' InputProps={{disableUnderline:true}}/></h4>
-          <h2>Total:<TextField variant='standard' InputProps={{disableUnderline:true}}/></h2></div>
+          <Box display="flex" alignItems="center" mt={2}>
+        <Button startIcon={<AddIcon />} onClick={handleAddRow}>Add Item</Button>
+      </Box>
 
-<div>
-  <label>Payment Terms</label>
-  <Select>
-    <MenuItem>Credit - 30 days</MenuItem>
-    <MenuItem>Credit - 60 days</MenuItem>
-    <MenuItem>Credit - 90 days</MenuItem>
-    <MenuItem>Paid</MenuItem>
-  </Select>
-  <Typography>Purchase Date</Typography>
+      <Box className="subtotals">
+  <Grid container spacing={1} justifyContent="flex-end" mt={3}>
+    <Grid item xs={12} md={4}>
+      <Box display="flex" justifyContent="space-between">
+        <Typography>Subtotal:</Typography>
+           </Box>
+      <Box display="flex" justifyContent="space-between" mt={1}>
+        <Typography>Tax:</Typography>
+              </Box>
+      <Box display="flex" justifyContent="space-between" mt={1}>
+        <Typography variant="h6" fontWeight="bold">Total:</Typography>
+        
+      </Box>
+    </Grid>
+  </Grid>
+</Box>
+
+      <Grid container spacing={2} mt={3}>
+        <Grid item xs={12} md={4}>
+          <Typography>Payment Terms</Typography>
+          <Select fullWidth>
+            <MenuItem value="30">Credit - 30 days</MenuItem>
+            <MenuItem value="60">Credit - 60 days</MenuItem>
+            <MenuItem value="paid">Paid</MenuItem>
+          </Select>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Typography>Due Date</Typography>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker></DatePicker></LocalizationProvider>
-</div>
-<div>
-  <label><TextField variant='outlined'/></label>
-  <Button variant='outlined'>Cancel</Button>
-  <Button variant='contained'>Save</Button>
-</div>
+            <DatePicker slotProps={{ textField: { fullWidth: true } }} />
+          </LocalizationProvider>
+        </Grid>
+      </Grid>
+      <Box className="notes-field" mt={2}>
+        <TextField fullWidth placeholder="Add notes about this purchase..." />
+      </Box>
+      <Box className="footer-buttons" mt={3} display="flex" justifyContent="flex-end" gap={2}>
+        <Button variant="outlined">Cancel</Button>
+        <Button variant="contained">Save</Button>
+      </Box>
 
 
 
         </div>
+        </Box>
+
     </div>
   )
 }
