@@ -119,6 +119,8 @@ function Vendor() {
   
     return (
       <Box className="add-vendor-container" sx={{ width: '80%', mx: 'auto', mt: 5 }}>
+        <div className='exit_button'>      <Button className='' variant='contained' color='error'>x</Button></div>
+  
         <Stepper activeStep={activeStep} alternativeLabel>
           {steps.map(label => (
             <Step key={label}><StepLabel>{label}</StepLabel></Step>

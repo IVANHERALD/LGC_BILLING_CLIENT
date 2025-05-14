@@ -1,0 +1,39 @@
+.dashboard-container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .search-filter {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .add-vendor-button {
+    background-color: #007bff;
+    color: white;
+    text-transform: none;
+  }
+  
+  .vendor-table {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .pagination {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+  }
+  
