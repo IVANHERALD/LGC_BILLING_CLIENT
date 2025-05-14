@@ -8,3 +8,7 @@ export const savevendor=async(VendorDetails)=>{
     });
     return response;
     };
+    export const fetchVendor = async() => {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/lgc/fetchvendor`);
+        return response;
+      };
