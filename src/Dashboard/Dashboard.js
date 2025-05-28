@@ -122,22 +122,25 @@ function Dashboard() {
       </div>
       <div className="dashboard">
         <h3>Overall Sales</h3>
+        <div className="analytics-section">
         <p>Sales Without Tax: ₹{overall.beforeTax?.toFixed(2)}</p>
         <p>Sales With Tax: ₹{overall.total?.toFixed(2)}</p>
         <p>Total GST: ₹{overall.gst?.toFixed(2)}</p>
-        <p>Total Weight: {overall.weight?.toFixed(2)} Kgs</p>
+        <p>Total Weight: {overall.weight?.toFixed(2)} Kgs</p></div>
 
         <h3>Current Financial Year</h3>
+        <div className="analytics-section">
         <p>Sales Without Tax: ₹{currentFY.beforeTax?.toFixed(2)}</p>
         <p>Sales With Tax: ₹{currentFY.total?.toFixed(2)}</p>
         <p>Total GST: ₹{currentFY.gst?.toFixed(2)}</p>
-        <p>Total Weight: {currentFY.weight?.toFixed(2)} Kgs</p>
+        <p>Total Weight: {currentFY.weight?.toFixed(2)} Kgs</p></div>
 
         <h3>Previous Financial Year</h3>
+        <div className="analytics-section">
         <p>Sales Without Tax: ₹{previousFY.beforeTax?.toFixed(2)}</p>
         <p>Sales With Tax: ₹{previousFY.total?.toFixed(2)}</p>
         <p>Total GST: ₹{previousFY.gst?.toFixed(2)}</p>
-        <p>Total Weight: {previousFY.weight?.toFixed(2)} Kgs</p>
+        <p>Total Weight: {previousFY.weight?.toFixed(2)} Kgs</p></div>
 
         <h3>Monthly Sales</h3>
         <div style={{ marginBottom: '1rem' }}>
@@ -157,10 +160,11 @@ function Dashboard() {
         {selectedMonth && monthlySales[selectedMonth] && (
           <div>
             <strong>{selectedMonth}</strong>
+            <div className="analytics-section">
             <p>Without Tax: ₹{monthlySales[selectedMonth].beforeTax.toFixed(2)}</p>
             <p>With Tax: ₹{monthlySales[selectedMonth].total.toFixed(2)}</p>
             <p>GST: ₹{monthlySales[selectedMonth].gst.toFixed(2)}</p>
-            <p>Weight: {monthlySales[selectedMonth].weight.toFixed(2)} Kgs</p>
+            <p>Weight: {monthlySales[selectedMonth].weight.toFixed(2)} Kgs</p></div>
           </div>
         )}
       </div>
