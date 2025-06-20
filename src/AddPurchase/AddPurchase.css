@@ -1,6 +1,130 @@
-.purchase_main{
-    display: flex;
-}
+
 .css-1orzuox-MuiTableCell-root{
     font-weight: 600 !important;
 }
+/* General container styling */
+.purchase_main {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  /* Headings */
+  h1, h3, h4 {
+    margin: 0 0 16px 0;
+    font-weight: 600;
+  }
+  
+  h1 {
+    font-size: 20px;
+  }
+  
+  h3 {
+    font-size: 18px;
+  }
+  
+  h4 {
+    font-size: 16px;
+  }
+  
+  /* Table Styling */
+  .MuiTableHead-root {
+    background-color: #f5f5f5;
+  }
+  
+  .MuiTableCell-head {
+    font-weight: 600;
+  }
+  
+  .MuiTableCell-root {
+    padding: 12px;
+  }
+  
+  /* Add Item Button */
+  .MuiButton-root {
+    text-transform: none;
+    font-weight: 500;
+  }
+  
+  .MuiButton-contained {
+    background-color: #007bff;
+    color: white;
+    padding: 6px 24px;
+  }
+  
+  .MuiButton-contained:hover {
+    background-color: #0056b3;
+  }
+  
+  .MuiButton-outlined {
+    border-color: #6c757d;
+    color: #6c757d;
+  }
+  
+  .MuiButton-outlined:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Form Controls */
+  .MuiTextField-root,
+  .MuiSelect-root {
+    background-color: #fff;
+    border-radius: 4px;
+  }
+  
+  .MuiInputBase-root {
+    font-size: 14px;
+  }
+  
+  .MuiTypography-subtitle2 {
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  
+  /* Subtotal, Tax, Total */
+  .subtotals {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 16px;
+    
+  }
+  
+  .subtotals h4,
+  .subtotals h2 {
+    margin: 4px 0;
+  }
+  
+  .total-line {
+    font-weight: 600;
+    font-size: 18px;
+  }
+  
+  /* Footer buttons */
+  .footer-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 24px;
+    gap: 12px;
+  }
+  
+  /* Notes field */
+  .notes-field {
+    margin-top: 16px;
+  }
+  .subtotals {
+    margin-top: 24px;
+    font-size: 14px;
+  }
+  
+  .subtotals .MuiTypography-root {
+    font-weight: 500;
+  }
+  
+  .subtotals .MuiTypography-h6 {
+    color: #000;
+    font-size: 16px;
+  }
+  
