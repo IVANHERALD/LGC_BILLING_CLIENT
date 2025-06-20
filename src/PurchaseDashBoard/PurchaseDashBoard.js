@@ -8,7 +8,8 @@ import '../../src/PurchaseDashBoard/PurchaseDashBoard.css'
 function PurchaseDashBoard() {
   const history = useNavigate();
   return (
-    <div><div className='dashboard_container'>
+    <div >
+      <div className='dashboard_container'>
       <div>
         <Navbar /></div>
       <div className="dashboard">

@@ -1,0 +1,27 @@
+.payment-container {
+    padding: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .payment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  
+  .invoice-table {
+    margin-top: 16px;
+  }
+  
+  .action-buttons {
+    margin-top: 24px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+  }
+  

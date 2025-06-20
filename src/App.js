@@ -15,6 +15,7 @@ import AddPurchase from './AddPurchase/AddPurchase.js';
 import AddPayment from './AddPayment/AddPayment.js';
 import PurchaseVendorDisplay from './PurchaseVendorDisplay/PurchaseVendorDisplay.js';
 import Vendor from './Vendor/Vendor.js';
+import VendorDashBoard from './VendorDashBoard/VendorDashBoard.js';
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
       <Route path='/addpayment' element={<AddPayment/>}/>
       <Route path='/purchasevendordisplay' element={<PurchaseVendorDisplay/>}/>
       <Route path='/vendor' element={<Vendor/>}/>
+      <Route path='/vendordashboard' element={<VendorDashBoard/>}/>
       </Routes>
       
       </Router>

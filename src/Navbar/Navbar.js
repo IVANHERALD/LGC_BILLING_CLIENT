@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../Navbar/Navbar.css'
+import vendorimg from '../assest/vendor.png' 
 
 const Navbar = () => {
   
@@ -37,6 +38,25 @@ const Navbar = () => {
       <a href="/casting" className="nav-link">
       <svg xmlns="https://www.flaticon.com/free-icons/metallurgy" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
         <span className="link-text">Casting</span>
+      </a>
+    </li>
+    <li className="nav-item" id="themeButton">
+      <a href="/vendordashboard" className="nav-link">
+      
+    <img
+      src={vendorimg}
+      alt="Vendor Icon"
+      width="24"
+      height="24"
+      style={{
+        marginRight: '8px',
+        verticalAlign: 'middle',  // aligns better with text/icons
+        filter: 'invert(20%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)'
+        // You can adjust this filter to match color tone if needed
+      }}
+    />
+    <span className="link-text">Vendor</span>
+  
       </a>
     </li>
 
