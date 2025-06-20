@@ -37,7 +37,8 @@ export const addnewbill=async(billDetails)=>{
     };
     
 export const deleteBill=async(invoice_no)=>{
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/lgc/deletebill/${invoice_no}`, {
+     const encodedInvoiceNo = encodeURIComponent(invoice_no);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/lgc/deletebill/${encodedInvoiceNo}`, {
         method: 'DELETE',
       });
       return response;
