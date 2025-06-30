@@ -19,6 +19,7 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { fetchVendor } from '../services/Vendor';
+import { fetchPurchasebilldetails } from '../services/PurchaseBill';
 
 function AddPayment() {
   const [vendor, setVendor] = useState('');
@@ -28,7 +29,7 @@ function AddPayment() {
   const [payNow, setPayNow] = useState({ 0: 21320, 1: 3180 });
   const [vendordetails,setvendordetails]=useState([]);
   const [selectedVendor,setSelectedVendor]=useState();
-
+  const [PurchasebillDetails,setPurchasebillDetails]=useState([]);
 
   const invoices = [
     {
@@ -62,7 +63,26 @@ function AddPayment() {
         console.log(error.message);
       }
     };
+            const fetchPurchasebill = async () => {
+                try {
+                    const response = await fetchPurchasebilldetails();
+                    if (!response) {
+                        throw new Error('Failed to fetch data');
+                    }
+                    const data = await response.json();
+                    console.log("fetch Purchasebill details" ,data.getPurchaseBill );
+                    setPurchasebillDetails(data.getPurchaseBill);
+                    
+                    
+                } catch (error) {
+                    console.log(error.message);
+                }
+            };
+        
+            
+        
     fetchVendorDetails();
+    fetchPurchasebill();
   }, []);
 
   return (
@@ -135,16 +155,16 @@ function AddPayment() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {invoices.map((invoice, index) => {
+            {PurchasebillDetails.map((invoice, index) => {
               const balance = invoice.totalAmount - invoice.paidAmount;
               return (
                 <TableRow key={index}>
-                  <TableCell>{invoice.invoiceNo}</TableCell>
-                  <TableCell>{invoice.date}</TableCell>
-                  <TableCell>{invoice.dueDate}</TableCell>
-                  <TableCell>₹{invoice.totalAmount.toLocaleString()}</TableCell>
-                  <TableCell>₹{invoice.paidAmount.toLocaleString()}</TableCell>
-                  <TableCell>₹{balance.toLocaleString()}</TableCell>
+                  <TableCell>{invoice.invoice_no}</TableCell>
+                  <TableCell>{invoice.purchase_date}</TableCell>
+                  <TableCell>{invoice.purchase_due_date}</TableCell>
+                  <TableCell>₹{invoice.total}</TableCell>
+                  <TableCell>₹{invoice.paidAmount}</TableCell>
+                  <TableCell>₹{balance}</TableCell>
                   <TableCell>
                     <TextField
                       variant="outlined"
