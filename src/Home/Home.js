@@ -66,6 +66,10 @@ function Home() {
     invoice_date: billData?.invoice_date || "",
     state: billData?.state || "Tamil Nadu",
     state_code: billData?.state_code || "33",
+    eway_bill_no: billData?.eway_bill_no || "", 
+    transport_name: billData?.transport_name || "",
+    vehicle_number: billData?.vehicle_number || "",
+    date_of_supply: billData?.date_of_supply || "",
     consignee_name: billData?.consignee_name || "",
     consignee_address: billData?.consignee_address || "",
     consignee_gstin: billData?.consignee_gstin || "",
@@ -431,6 +435,8 @@ function Home() {
                       </Typography>
                       <TextField
                         variant="standard"
+                        value={isViewMode ? invoiceViewDetails.eway_bill_no || "" : eway_bill_no}
+                        
                         onChange={(e) => seteway_bill_no(e.target.value)}
                         InputProps={{ disableUnderline: true, inputProps: { style: { fontWeight: "bold" } } }}
                       ></TextField>
