@@ -20,33 +20,18 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { fetchVendor } from '../services/Vendor';
 import { fetchPurchasebilldetails } from '../services/PurchaseBill';
-
+import { fetchTotalPaidAmount } from '../services/Purchasepayment';
 function AddPayment() {
   const [vendor, setVendor] = useState('');
   const [paymentDate, setPaymentDate] = useState(dayjs());
   const [paymentMethod, setPaymentMethod] = useState('');
   const [referenceNo, setReferenceNo] = useState('');
-  const [payNow, setPayNow] = useState({ 0: 21320, 1: 3180 });
+  const [payNow, setPayNow] = useState();
   const [vendordetails,setvendordetails]=useState([]);
   const [selectedVendor,setSelectedVendor]=useState();
   const [PurchasebillDetails,setPurchasebillDetails]=useState([]);
-
-  const invoices = [
-    {
-      invoiceNo: 'INV-2025042',
-      date: '15/04/2025',
-      dueDate: '15/05/2025',
-      totalAmount: 21320,
-      paidAmount: 0,
-    },
-    {
-      invoiceNo: 'INV-2025038',
-      date: '05/04/2025',
-      dueDate: '05/05/2025',
-      totalAmount: 8500,
-      paidAmount: 5320,
-    },
-  ];
+const [totalPaidMap, setTotalPaidMap] = useState({});
+ 
   useEffect(() => {
     
     const fetchVendorDetails = async () => {
@@ -78,11 +63,28 @@ function AddPayment() {
                     console.log(error.message);
                 }
             };
+            const fetchPaidAmounts = async () => {
+      try {
+        const response = await fetchTotalPaidAmount();
+        if (!response.ok) throw new Error('Failed to fetch total paid data');
+        const data = await response.json();
+
+        // 🔸 Create a map of invoice_id → totalPaid
+        const paidMap = {};
+        data.forEach(entry => {
+          paidMap[entry.invoice_id] = entry.totalPaid;
+        });
+        setTotalPaidMap(paidMap);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
         
             
         
     fetchVendorDetails();
     fetchPurchasebill();
+    fetchPaidAmounts();
   }, []);
 
   return (
@@ -156,23 +158,23 @@ function AddPayment() {
           </TableHead>
           <TableBody>
             {PurchasebillDetails.map((invoice, index) => {
-              const balance = invoice.totalAmount - invoice.paidAmount;
+              const paidAmount = totalPaidMap[invoice.invoice_no] ?? 0;
+              const balance=totalPaidMap[invoice.invoice_no]??0;
+             
+              
               return (
                 <TableRow key={index}>
                   <TableCell>{invoice.invoice_no}</TableCell>
                   <TableCell>{invoice.purchase_date}</TableCell>
                   <TableCell>{invoice.purchase_due_date}</TableCell>
                   <TableCell>₹{invoice.total}</TableCell>
-                  <TableCell>₹{invoice.paidAmount}</TableCell>
+                  <TableCell>₹{paidAmount}</TableCell>
                   <TableCell>₹{balance}</TableCell>
                   <TableCell>
                     <TextField
                       variant="outlined"
                       fullWidth
-                      value={payNow[index]}
-                      onChange={(e) =>
-                        setPayNow({ ...payNow, [index]: Number(e.target.value) || 0 })
-                      }
+                                          
                     />
                   </TableCell>
                 </TableRow>
@@ -192,7 +194,7 @@ function AddPayment() {
         />
         <Box textAlign="right">
           <Typography variant="h6">
-            Total Payment: ₹24,500
+           
           </Typography>
           <Box mt={1}>
             <Button variant="outlined" sx={{ mr: 2 }}>
