@@ -6,6 +6,9 @@ import Navbar from '../Navbar/Navbar';
 import { Button,TableContainer,Table,TableHead,TableRow,TableCell,TableBody,TextField,DialogActions,DialogTitle,DialogContent,Typography ,IconButton,Pagination,Dialog} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import {Delete,Create} from '@mui/icons-material';
+import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 function CastingDisplay() {
   
@@ -137,6 +140,39 @@ const [IsSavedEnabled,setIsSavedEnabled]=useState(false);
   }
 
     }
+    const handleDownloadCastingDetails = () => {
+  const selectedData = castingDetails.map((item, index) => ({
+    "S.No": index + 1,
+    "Casting Name": item.casting_name || '',
+    "Casting Weight in Kgs": item.casting_weight || ''
+  }));
+
+  // Create worksheet
+  const worksheet = XLSX.utils.json_to_sheet(selectedData, { origin: "A2",header: [], skipHeader: true });
+
+  // Set header row
+  const header = ["S.No", "Casting Name", "Casting Weight in Kgs"];
+  XLSX.utils.sheet_add_aoa(worksheet, [header], { origin: "A1" });
+
+  // Style header row (background color)
+  const headerStyle = {
+    fill: { patternType: "solid", fgColor: { rgb: "D9D9D9" } }, // Light grey
+    font: { bold: true }
+  };
+
+  header.forEach((_, colIndex) => {
+    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: colIndex });
+    worksheet[cellAddress].s = headerStyle;
+  });
+
+  // Create workbook and download
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Casting Details");
+
+  // Apply style support (only works in xlsx-style-aware viewers)
+  XLSX.writeFile(workbook, "Casting_Details.xlsx", { cellStyles: true });
+};
+
   
     
   return (
@@ -213,6 +249,19 @@ Casting HSNCODE    </TableCell>
                   fontWeight: 'bold', // Bold font for readability
                 }}>
         Action
+    </TableCell>
+    <TableCell  sx={{
+                  color: 'white', // White text
+                  fontWeight: 'bold', // Bold font for readability
+                }}>
+        <Button variant="contained"  onClick={handleDownloadCastingDetails}
+    startIcon={<DownloadOutlinedIcon />} sx={{fontSize: 16,
+      backgroundColor: '#333',
+      color: '#fff',
+      '&:hover': {
+        backgroundColor: '#fff',
+        color: '#333',
+        border: '1px solid #333'},}}></Button>
     </TableCell>
 
 </TableRow>
