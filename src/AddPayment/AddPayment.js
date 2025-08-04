@@ -20,17 +20,19 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import { fetchVendor } from '../services/Vendor';
 import { fetchPurchasebilldetails } from '../services/PurchaseBill';
-import { fetchTotalPaidAmount } from '../services/Purchasepayment';
+import { fetchTotalPaidAmount, recordVendorPayment } from '../services/Purchasepayment';
 function AddPayment() {
   const [vendor, setVendor] = useState('');
   const [paymentDate, setPaymentDate] = useState(dayjs());
   const [paymentMethod, setPaymentMethod] = useState('');
   const [referenceNo, setReferenceNo] = useState('');
-  const [payNow, setPayNow] = useState();
+  const [PayNow, setPayNow] = useState();
   const [vendordetails,setvendordetails]=useState([]);
   const [selectedVendor,setSelectedVendor]=useState();
   const [PurchasebillDetails,setPurchasebillDetails]=useState([]);
 const [totalPaidMap, setTotalPaidMap] = useState({});
+const [selectedInvoice, setSelectedInvoice] = useState();
+
  
   useEffect(() => {
     
@@ -75,6 +77,7 @@ const [totalPaidMap, setTotalPaidMap] = useState({});
           paidMap[entry.invoice_id] = entry.totalPaid;
         });
         setTotalPaidMap(paidMap);
+        console.log("Total Paid Map:", paidMap);
       } catch (error) {
         console.log(error.message);
       }
@@ -86,6 +89,37 @@ const [totalPaidMap, setTotalPaidMap] = useState({});
     fetchPurchasebill();
     fetchPaidAmounts();
   }, []);
+  const handlepay = async() => {
+    console.log("Paying for invoice:", selectedInvoice);
+     const paymentData = {
+    
+    //vendor_id: invoice.vendor_id, // You’ll need to resolve this from `vendor_name`
+      date: paymentDate.format("DD/MM/YYYY"),
+      method: paymentMethod,
+      reference_no: referenceNo,
+      amount_paid: parseFloat(PayNow), // Validate before sending
+      payment_note: "payment ui" 
+    // Implement payment logic here
+  }
+  console.log("Payment Data:", paymentData);
+  console.log("Selected Invoice:", selectedInvoice);
+  try {
+    const response = await recordVendorPayment({ invoice_id: selectedInvoice, payment: paymentData });
+
+    if (response.ok) {
+      alert('Payment recorded successfully');
+    } else {
+      alert('Error: ' + response.message);
+    }
+  } catch (error) {
+    console.error('Payment error:', error);
+  }
+  console.log("Payment Data:", paymentData);
+}
+
+
+
+
 
   return (
     <Box p={3} component={Paper} elevation={3}>
@@ -174,7 +208,8 @@ const [totalPaidMap, setTotalPaidMap] = useState({});
                     <TextField
                       variant="outlined"
                       fullWidth
-                                          
+                           onClick={() =>setSelectedInvoice(invoice.invoice_no)}     
+            onChange={(e) => setPayNow(e.target.value)}          
                     />
                   </TableCell>
                 </TableRow>
@@ -200,7 +235,7 @@ const [totalPaidMap, setTotalPaidMap] = useState({});
             <Button variant="outlined" sx={{ mr: 2 }}>
               Cancel
             </Button>
-            <Button variant="contained">Pay</Button>
+            <Button variant="contained" onClick={handlepay} >Pay</Button>
           </Box>
         </Box>
       </Box>
