@@ -1,26 +1,28 @@
-import React, { useState,useEffect } from 'react';
 import {
   Box,
-  Grid,
-  Typography,
-  Select,
-  MenuItem,
-  TextField,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  Paper,
   Button,
-  TableContainer
+  Grid,
+  MenuItem,
+  Paper,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography
 } from '@mui/material';
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import React, { useEffect, useState } from 'react';
+import { fetchTotalPaidAmount, recordVendorPayment } from '../services/Purchasepayment';
+
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
-import { fetchVendor } from '../services/Vendor';
 import { fetchPurchasebilldetails } from '../services/PurchaseBill';
-import { fetchTotalPaidAmount, recordVendorPayment } from '../services/Purchasepayment';
+import { fetchVendor } from '../services/Vendor';
+
 function AddPayment() {
   const [vendor, setVendor] = useState('');
   const [paymentDate, setPaymentDate] = useState(dayjs());
@@ -70,11 +72,13 @@ const [selectedInvoice, setSelectedInvoice] = useState();
         const response = await fetchTotalPaidAmount();
         if (!response.ok) throw new Error('Failed to fetch total paid data');
         const data = await response.json();
+        console.log(data);
 
         // 🔸 Create a map of invoice_id → totalPaid
         const paidMap = {};
         data.forEach(entry => {
-          paidMap[entry.invoice_id] = entry.totalPaid;
+          paidMap[entry.invoice_no] = entry.totalPaid;
+          
         });
         setTotalPaidMap(paidMap);
         console.log("Total Paid Map:", paidMap);
@@ -193,7 +197,7 @@ const [selectedInvoice, setSelectedInvoice] = useState();
           <TableBody>
             {PurchasebillDetails.map((invoice, index) => {
               const paidAmount = totalPaidMap[invoice.invoice_no] ?? 0;
-              const balance=totalPaidMap[invoice.invoice_no]??0;
+              const balance=invoice.total-paidAmount;
              
               
               return (
