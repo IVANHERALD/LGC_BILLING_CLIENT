@@ -75,6 +75,9 @@ function VendorDashBoard() {
         vendor_account_holder_name: vendor.vendor_account_holder_name || "N/A",
         contact: vendor.vendor_contact || "N/A",
         balance: totalBalance,
+        email: vendor.vendor_email || "N/A",
+        gstin: vendor.vendor_gstin || "N/A",
+        address: vendor.vendor_address || "N/A",
         lastTransaction
       };
     });
@@ -118,7 +121,7 @@ function VendorDashBoard() {
               </TableCell>
               <TableCell>{vendor.lastTransaction}</TableCell>
               <TableCell>
-                <Button variant="contained" size="small" color="primary" style={{ marginRight: 5 }} onClick={() => history('/purchasevendordisplay')}>View</Button>
+                <Button variant="contained" size="small" color="primary" style={{ marginRight: 5 }} onClick={() => history('/purchasevendordisplay', { state: { vendor }})}>View</Button>
                 <Button variant="contained" size="small" style={{ backgroundColor: '#4CAF50', color: 'white', marginRight: 5 }} onClick={() => history('/addpurchase')}>Purchase</Button>
                 <Button variant="contained" size="small" style={{ backgroundColor: '#FFA500', color: 'white' }} onClick={() => history('/addpayment')}>Pay</Button>
               </TableCell>
