@@ -1,36 +1,87 @@
-import React from 'react'
+import React, { useState,useEffect } from 'react'
 import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import './VendorDashBoard.css'
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
-const vendorData = [
-    {
-      name: 'ABC Supplies',
-      contact: 'John Doe - 555-1234',
-      balance: 24500,
-      lastTransaction: 'Apr 28, 2025',
-    },
-    {
-      name: 'XYZ Hardware',
-      contact: 'Jane Smith - 555-5678',
-      balance: 12750,
-      lastTransaction: 'Apr 28, 2025',
-    },
-    {
-      name: 'Metalworks Inc.',
-      contact: 'Mike Johnson - 555-9012',
-      balance: 8400,
-      lastTransaction: 'Apr 29, 2025',
-    },
-    {
-      name: 'Quality Tools Co.',
-      contact: 'Sarah Lee - 555-3456',
-      balance: 0,
-      lastTransaction: 'Apr 25, 2025',
-    }
-  ];
+import {fetchVendor} from '../services/Vendor'
+import { fetchPurchasebilldetails } from '../services/PurchaseBill';
+import { fetchTotalPaidAmount } from '../services/Purchasepayment';
+
+
 function VendorDashBoard() {
+  const [vendors, setVendors] = useState([]);
+  const [vendorData, setVendorData] = useState([]);
+  const [purchaseBills, setPurchaseBills] = useState([]);
+  const [totalPaidMap, setTotalPaidMap] = useState({});
     const history=useNavigate();
+    useEffect(() => {
+    
+    const loadData = async () => {
+      try {
+        const response = await fetchVendor();
+        if (!response) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        console.log("fetch vendor details", data.vendors);
+        setVendors(data.vendors);
+
+        const billResponse = await fetchPurchasebilldetails();
+        if (!billResponse) {
+          throw new Error('Failed to fetch bill data');
+        }
+        const billData = await billResponse.json();
+        console.log("fetch Purchasebill details", billData.getPurchaseBill);
+        setPurchaseBills(billData.getPurchaseBill);
+        const paidResponse = await fetchTotalPaidAmount();
+        if (!paidResponse) {  
+          throw new Error('Failed to fetch paid amount data');
+        }
+        const paidData = await paidResponse.json();
+        const paidMap = {};
+        paidData.forEach(entry => {
+          paidMap[entry.invoice_no] = entry.totalPaid;
+        });
+        console.log("Total Paid Amount Map:", paidMap);
+        setTotalPaidMap(paidMap);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    loadData();
+  }, []);
+  useEffect(() => {
+    if (vendors.length === 0 || purchaseBills.length === 0) return;
+
+    const result = vendors.map(vendor => {
+      // find all bills for this vendor
+      const vendorBills = purchaseBills.filter(b => b.vendor_name === vendor.vendor_name);
+
+      let totalBalance = 0;
+      let lastTransaction = "-";
+
+      vendorBills.forEach(bill => {
+        const paid = totalPaidMap[bill.invoice_no] ?? 0;
+        const balance = bill.total - paid;
+        totalBalance += balance;
+
+        // update lastTransaction (latest date)
+        if (!lastTransaction || bill.purchase_date > lastTransaction) {
+          lastTransaction = bill.purchase_date;
+        }
+      });
+      return {
+        name: vendor.vendor_name,
+        vendor_account_holder_name: vendor.vendor_account_holder_name || "N/A",
+        contact: vendor.vendor_contact || "N/A",
+        balance: totalBalance,
+        lastTransaction
+      };
+    });
+
+    setVendorData(result);
+  }, [vendors, purchaseBills, totalPaidMap]);
+
   return (
     <div className='vendor_dashboard_main'><div><Navbar/></div>
     <div className='dashboard-container'>
@@ -59,10 +110,11 @@ function VendorDashBoard() {
         <TableBody>
           {vendorData.map((vendor, index) => (
             <TableRow key={index}>
-              <TableCell>{vendor.name}</TableCell>
-              <TableCell>{vendor.contact}</TableCell>
+              <TableCell>{vendor.name
+}</TableCell>
+              <TableCell>{vendor.vendor_account_holder_name}-{vendor.contact}</TableCell>
               <TableCell style={{ color: vendor.balance === 0 ? 'green' : 'red' }}>
-                ₹{vendor.balance.toLocaleString()}
+                ₹{vendor.balance}
               </TableCell>
               <TableCell>{vendor.lastTransaction}</TableCell>
               <TableCell>
