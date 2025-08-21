@@ -61,7 +61,7 @@ const [selectedInvoice, setSelectedInvoice] = useState();
                     const data = await response.json();
                     console.log("Purchasebill details", data.getPurchaseBill);
                     const sortedBills = data.getPurchaseBill.sort((a, b) => 
-        new Date(b.purchase_date) - new Date(a.purchase_date)
+      dayjs(a.purchase_date,"DD-MM-YYYY") - dayjs(b.purchase_date,"DD-MM-YYYY")
       );
                     console.log("fetch Purchasebill details" ,sortedBills );
                     setPurchasebillDetails(sortedBills);
