@@ -226,8 +226,20 @@ const [selectedInvoice, setSelectedInvoice] = useState();
                     <TextField
                       variant="outlined"
                       fullWidth
+                      value={selectedInvoice === invoice.invoice_no ? PayNow : ""}
                            onClick={() =>setSelectedInvoice(invoice.invoice_no)}     
-            onChange={(e) => setPayNow(e.target.value)}          
+            
+            onChange={(e) => {
+      const entered = parseFloat(e.target.value) || 0;
+
+      // check against balance
+      if (entered > balance) {
+        // if too high, set it to balance (or just ignore update)
+        setPayNow(balance);
+      } else {
+        setPayNow(entered);
+      }
+    }} inputProps={{ min: 0, max: balance }}         
                     />
                   </TableCell>
                 </TableRow>
