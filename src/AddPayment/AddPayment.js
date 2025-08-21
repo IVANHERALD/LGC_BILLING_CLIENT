@@ -59,11 +59,12 @@ const [selectedInvoice, setSelectedInvoice] = useState();
                         throw new Error('Failed to fetch data');
                     }
                     const data = await response.json();
+                    console.log("Purchasebill details", data.getPurchaseBill);
                     const sortedBills = data.getPurchaseBill.sort((a, b) => 
         new Date(b.purchase_date) - new Date(a.purchase_date)
       );
-                    console.log("fetch Purchasebill details" ,data.getPurchaseBill );
-                    setPurchasebillDetails(sortedBills.slice(0,5));
+                    console.log("fetch Purchasebill details" ,sortedBills );
+                    setPurchasebillDetails(sortedBills);
                     
                     
                 } catch (error) {
@@ -207,7 +208,7 @@ const [selectedInvoice, setSelectedInvoice] = useState();
       if (balance <= 0) return false;
 
       return true;
-    })
+    }).slice(0,5)
     .map((invoice, index) => {
       const paidAmount = totalPaidMap[invoice.invoice_no] ?? 0;
       const balance = invoice.total - paidAmount;
