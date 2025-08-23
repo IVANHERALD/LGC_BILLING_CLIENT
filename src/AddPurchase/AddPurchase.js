@@ -1,7 +1,7 @@
 import { Select, TableCell, TableContainer, TableHead, TableRow, TextField, Typography,Table,Paper, TableBody, Button, MenuItem,Box,Grid,InputAdornment } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import React,{useState,useEffect} from 'react'
+import { useState ,useEffect} from 'react'
 import '../AddPurchase/AddPurchase.css'
 import AddIcon from '@mui/icons-material/Add';
 import { fetchVendor } from '../services/Vendor'
@@ -60,24 +60,22 @@ const [notes,setnotes]=useState('');
       }, []);
   const handleAddRow = (e) => {
     console.log(...items);
-     e.preventDefault();
-     const lastSiNo = items.length > 0 ? parseInt(items[items.length - 1].si_no) : 0;
-   
-     setitems([
-       ...items,
-       {
-         si_no:lastSiNo+1 ,
-         name: "",
-         quantity: 0,
-         rate: 0,
-         tax: 0,
-         amount: 0,
-         
-         
-       },
-     ]);
-   };
-   const handleInputChange = (index, field, value) => {
+    e.preventDefault();
+    const lastSiNo = items.length > 0 ? parseInt(items[items.length - 1].si_no) : 0;
+
+    setitems([
+      ...items,
+      {
+        si_no: lastSiNo + 1,
+        name: "",
+        quantity: 0,
+        rate: 0,
+        tax: 0,
+        amount: 0,
+      },
+    ]);
+  };
+  const handleInputChange = (index, field, value) => {
     const updatedItems = [...items];
     const parsedValue = field === "quantity" || field === "rate" || field === "tax"
     ? parseFloat(value) || 0
@@ -164,7 +162,7 @@ const [notes,setnotes]=useState('');
               </TableHead>
               <TableBody>
               {(items).map((item, index) => (
-              
+
                 <TableRow key={index}>
                   <TableCell>
                     <TextField variant='standard' InputProps={{disableUnderline:true}} onChange={(e) => handleInputChange( index,'si_no', e.target.value)} value={item.si_no}></TextField>
@@ -173,7 +171,7 @@ const [notes,setnotes]=useState('');
                     <TextField variant='standard' InputProps={{disableUnderline:true}} onChange={(e) => handleInputChange(index,'name', e.target.value)}></TextField>
                   </TableCell>
                   <TableCell>
-                    <TextField variant='standard' InputProps={{disableUnderline:true}} onChange={(e) => handleInputChange(index,'quantity', e.target.value)}></TextField>
+                    <TextField variant='standard' InputProps={{ disableUnderline: true }} onChange={(e) => handleInputChange(index, 'quantity', e.target.value)}></TextField>
                   </TableCell>
                   <TableCell>
                     <TextField variant='standard' InputProps={{disableUnderline:true,startAdornment: <InputAdornment position="start">₹</InputAdornment>}} onChange={(e) => handleInputChange(index,'rate', e.target.value)}></TextField>

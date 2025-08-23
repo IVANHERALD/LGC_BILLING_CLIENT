@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import './VendorDashBoard.css'
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../Navbar/Navbar';
 const vendorData = [
     {
       name: 'ABC Supplies',
@@ -31,7 +32,9 @@ const vendorData = [
 function VendorDashBoard() {
     const history=useNavigate();
   return (
-    <div className='dashboard-container'><h2>Vendor Management Dashboard</h2>
+    <div className='vendor_dashboard_main'><div><Navbar/></div>
+    <div className='dashboard-container'>
+      <h2>Vendor Management Dashboard</h2>
     <div className="dashboard-header">
       <div className="search-filter">
         <TextField label="Search vendors..." variant="outlined" size="small" />
@@ -64,8 +67,8 @@ function VendorDashBoard() {
               <TableCell>{vendor.lastTransaction}</TableCell>
               <TableCell>
                 <Button variant="contained" size="small" color="primary" style={{ marginRight: 5 }}>View</Button>
-                <Button variant="contained" size="small" style={{ backgroundColor: '#4CAF50', color: 'white', marginRight: 5 }}>Purchase</Button>
-                <Button variant="contained" size="small" style={{ backgroundColor: '#FFA500', color: 'white' }}>Pay</Button>
+                <Button variant="contained" size="small" style={{ backgroundColor: '#4CAF50', color: 'white', marginRight: 5 }} onClick={() => history('/addpurchase')}>Purchase</Button>
+                <Button variant="contained" size="small" style={{ backgroundColor: '#FFA500', color: 'white' }} onClick={() => history('/addpayment')}>Pay</Button>
               </TableCell>
             </TableRow>
           ))}
@@ -73,6 +76,7 @@ function VendorDashBoard() {
       </Table>
     </TableContainer>
 
+    </div>
     </div>
   )
 }

@@ -36,4 +36,6 @@
     font-size: 14px;
     color: #333;
   }
-  
+.vendor_dashboard_main{
+  display: flex;
+}
