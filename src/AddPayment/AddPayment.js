@@ -17,6 +17,7 @@ import {
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import React, { useEffect, useState } from 'react';
 import { fetchTotalPaidAmount, recordVendorPayment } from '../services/Purchasepayment';
+import { useLocation } from 'react-router-dom';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
@@ -24,20 +25,28 @@ import { fetchPurchasebilldetails } from '../services/PurchaseBill';
 import { fetchVendor } from '../services/Vendor';
 
 function AddPayment() {
+  const location = useLocation();
+  const preselectedVendor = location.state?.vendor?.name || "";
+  useEffect(() => {
+    if (preselectedVendor) {
+      setSelectedVendor(preselectedVendor);
+    }
+  }, [preselectedVendor]);
+
   const [vendor, setVendor] = useState('');
   const [paymentDate, setPaymentDate] = useState(dayjs());
   const [paymentMethod, setPaymentMethod] = useState('');
   const [referenceNo, setReferenceNo] = useState('');
   const [PayNow, setPayNow] = useState();
-  const [vendordetails,setvendordetails]=useState([]);
-  const [selectedVendor,setSelectedVendor]=useState();
-  const [PurchasebillDetails,setPurchasebillDetails]=useState([]);
-const [totalPaidMap, setTotalPaidMap] = useState({});
-const [selectedInvoice, setSelectedInvoice] = useState();
+  const [vendordetails, setvendordetails] = useState([]);
+  const [selectedVendor, setSelectedVendor] = useState(preselectedVendor);
+  const [PurchasebillDetails, setPurchasebillDetails] = useState([]);
+  const [totalPaidMap, setTotalPaidMap] = useState({});
+  const [selectedInvoice, setSelectedInvoice] = useState();
 
- 
+
   useEffect(() => {
-    
+
     const fetchVendorDetails = async () => {
       try {
         const response = await fetchVendor();
@@ -52,26 +61,26 @@ const [selectedInvoice, setSelectedInvoice] = useState();
         console.log(error.message);
       }
     };
-            const fetchPurchasebill = async () => {
-                try {
-                    const response = await fetchPurchasebilldetails();
-                    if (!response) {
-                        throw new Error('Failed to fetch data');
-                    }
-                    const data = await response.json();
-                    console.log("Purchasebill details", data.getPurchaseBill);
-                    const sortedBills = data.getPurchaseBill.sort((a, b) => 
-      dayjs(a.purchase_date,"DD-MM-YYYY") - dayjs(b.purchase_date,"DD-MM-YYYY")
-      );
-                    console.log("fetch Purchasebill details" ,sortedBills );
-                    setPurchasebillDetails(sortedBills);
-                    
-                    
-                } catch (error) {
-                    console.log(error.message);
-                }
-            };
-            const fetchPaidAmounts = async () => {
+    const fetchPurchasebill = async () => {
+      try {
+        const response = await fetchPurchasebilldetails();
+        if (!response) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        console.log("Purchasebill details", data.getPurchaseBill);
+        const sortedBills = data.getPurchaseBill.sort((a, b) =>
+          dayjs(a.purchase_date, "DD-MM-YYYY") - dayjs(b.purchase_date, "DD-MM-YYYY")
+        );
+        console.log("fetch Purchasebill details", sortedBills);
+        setPurchasebillDetails(sortedBills);
+
+
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    const fetchPaidAmounts = async () => {
       try {
         const response = await fetchTotalPaidAmount();
         if (!response.ok) throw new Error('Failed to fetch total paid data');
@@ -82,7 +91,7 @@ const [selectedInvoice, setSelectedInvoice] = useState();
         const paidMap = {};
         data.forEach(entry => {
           paidMap[entry.invoice_no] = entry.totalPaid;
-          
+
         });
         setTotalPaidMap(paidMap);
         console.log("Total Paid Map:", paidMap);
@@ -90,40 +99,40 @@ const [selectedInvoice, setSelectedInvoice] = useState();
         console.log(error.message);
       }
     };
-        
-            
-        
+
+
+
     fetchVendorDetails();
     fetchPurchasebill();
     fetchPaidAmounts();
   }, []);
-  const handlepay = async() => {
+  const handlepay = async () => {
     console.log("Paying for invoice:", selectedInvoice);
-     const paymentData = {
-    
-    //vendor_id: invoice.vendor_id, // You’ll need to resolve this from `vendor_name`
+    const paymentData = {
+
+      //vendor_id: invoice.vendor_id, // You’ll need to resolve this from `vendor_name`
       date: paymentDate.format("DD/MM/YYYY"),
       method: paymentMethod,
       reference_no: referenceNo,
       amount_paid: parseFloat(PayNow), // Validate before sending
-      payment_note: "payment ui" 
-    // Implement payment logic here
-  }
-  console.log("Payment Data:", paymentData);
-  console.log("Selected Invoice:", selectedInvoice);
-  try {
-    const response = await recordVendorPayment({ invoice_id: selectedInvoice, payment: paymentData });
-
-    if (response.ok) {
-      alert('Payment recorded successfully');
-    } else {
-      alert('Error: ' + response.message);
+      payment_note: "payment ui"
+      // Implement payment logic here
     }
-  } catch (error) {
-    console.error('Payment error:', error);
+    console.log("Payment Data:", paymentData);
+    console.log("Selected Invoice:", selectedInvoice);
+    try {
+      const response = await recordVendorPayment({ invoice_id: selectedInvoice, payment: paymentData });
+
+      if (response.ok) {
+        alert('Payment recorded successfully');
+      } else {
+        alert('Error: ' + response.message);
+      }
+    } catch (error) {
+      console.error('Payment error:', error);
+    }
+    console.log("Payment Data:", paymentData);
   }
-  console.log("Payment Data:", paymentData);
-}
 
 
 
@@ -139,10 +148,10 @@ const [selectedInvoice, setSelectedInvoice] = useState();
         <Grid item xs={4}>
           <Typography variant="subtitle2">Vendor</Typography>
           <Select fullWidth value={selectedVendor} onChange={(e) => setSelectedVendor(e.target.value)}>{vendordetails.map((vendor, index) => (
-    <MenuItem key={index} value={vendor.vendor_name}>
-      {vendor.vendor_name}
-    </MenuItem>
-  ))}</Select>
+            <MenuItem key={index} value={vendor.vendor_name}>
+              {vendor.vendor_name}
+            </MenuItem>
+          ))}</Select>
         </Grid>
         <Grid item xs={4}>
           <Typography variant="subtitle2">Payment Date</Typography>
@@ -201,50 +210,50 @@ const [selectedInvoice, setSelectedInvoice] = useState();
           <TableBody>
             {PurchasebillDetails.filter((invoice, index) => {
               const paidAmount = totalPaidMap[invoice.invoice_no] ?? 0;
-              const balance=invoice.total-paidAmount;
+              const balance = invoice.total - paidAmount;
               if (selectedVendor && invoice.vendor_name !== selectedVendor) {
-        return false;
-      }
-      if (balance <= 0) return false;
+                return false;
+              }
+              if (balance <= 0) return false;
 
-      return true;
-    }).slice(0,5)
-    .map((invoice, index) => {
-      const paidAmount = totalPaidMap[invoice.invoice_no] ?? 0;
-      const balance = invoice.total - paidAmount;
-             
-              
-              return (
-                <TableRow key={index}>
-                  <TableCell>{invoice.invoice_no}</TableCell>
-                  <TableCell>{invoice.purchase_date}</TableCell>
-                  <TableCell>{invoice.purchase_due_date}</TableCell>
-                  <TableCell>₹{invoice.total}</TableCell>
-                  <TableCell>₹{paidAmount}</TableCell>
-                  <TableCell>₹{balance}</TableCell>
-                  <TableCell>
-                    <TextField
-                      variant="outlined"
-                      fullWidth
-                      value={selectedInvoice === invoice.invoice_no ? PayNow : ""}
-                           onClick={() =>setSelectedInvoice(invoice.invoice_no)}     
-            
-            onChange={(e) => {
-      const entered = parseFloat(e.target.value) || 0;
+              return true;
+            }).slice(0, 5)
+              .map((invoice, index) => {
+                const paidAmount = totalPaidMap[invoice.invoice_no] ?? 0;
+                const balance = invoice.total - paidAmount;
 
-      // check against balance
-      if (entered > balance) {
-        // if too high, set it to balance (or just ignore update)
-        setPayNow(balance);
-      } else {
-        setPayNow(entered);
-      }
-    }} inputProps={{ min: 0, max: balance }}         
-                    />
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+
+                return (
+                  <TableRow key={index}>
+                    <TableCell>{invoice.invoice_no}</TableCell>
+                    <TableCell>{invoice.purchase_date}</TableCell>
+                    <TableCell>{invoice.purchase_due_date}</TableCell>
+                    <TableCell>₹{invoice.total}</TableCell>
+                    <TableCell>₹{paidAmount}</TableCell>
+                    <TableCell>₹{balance}</TableCell>
+                    <TableCell>
+                      <TextField
+                        variant="outlined"
+                        fullWidth
+                        value={selectedInvoice === invoice.invoice_no ? PayNow : ""}
+                        onClick={() => setSelectedInvoice(invoice.invoice_no)}
+
+                        onChange={(e) => {
+                          const entered = parseFloat(e.target.value) || 0;
+
+                          // check against balance
+                          if (entered > balance) {
+                            // if too high, set it to balance (or just ignore update)
+                            setPayNow(balance);
+                          } else {
+                            setPayNow(entered);
+                          }
+                        }} inputProps={{ min: 0, max: balance }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
       </TableContainer>
@@ -259,7 +268,7 @@ const [selectedInvoice, setSelectedInvoice] = useState();
         />
         <Box textAlign="right">
           <Typography variant="h6">
-           
+
           </Typography>
           <Box mt={1}>
             <Button variant="outlined" sx={{ mr: 2 }}>
