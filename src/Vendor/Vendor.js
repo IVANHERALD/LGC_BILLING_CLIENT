@@ -4,6 +4,7 @@ import {
 } from '@mui/material';
 import '../Vendor/Vendor.css'
 import { savevendor } from '../services/Vendor';
+import {v4 as uuidv4} from 'uuid';
 const steps = ['Basic Info', 'Contact', 'Address', 'Bank Details'];
 
 function Vendor() {
@@ -24,6 +25,7 @@ function Vendor() {
   
     const handleVendorSave =async () => {
       const vendorDetails = {
+        vendor_id:`vendor ${uuidv4()}`,
         vendor_name: formData.name,
         vendor_gstin: formData.gstin,
         vendor_contact:formData.phone,
@@ -37,17 +39,12 @@ function Vendor() {
         vendor_bank_name:formData.bankname,
         vendor_ifsc_code:formData.ifsc,
         vendor_branch_name:formData.branchname
-
-
-
-
-        
       };
     
       try {
         const response = await savevendor(vendorDetails);
         if (response.status === 201) {
-          console.log('Vendor added');
+       
           alert('Vendor saved successfully!');
         } else {
           console.error('Vendor not added');
