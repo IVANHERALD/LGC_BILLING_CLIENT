@@ -66,7 +66,7 @@ function VendorDashBoard() {
         totalBalance += balance;
 
         // update lastTransaction (latest date)
-        if (!lastTransaction || bill.purchase_date > lastTransaction) {
+        if (!lastTransaction || bill.purchase_date  > lastTransaction) {
           lastTransaction = bill.purchase_date;
         }
       });
@@ -78,6 +78,8 @@ function VendorDashBoard() {
         email: vendor.vendor_email || "N/A",
         gstin: vendor.vendor_gstin || "N/A",
         address: vendor.vendor_address || "N/A",
+        city:vendor.vendor_city || "",
+        state:vendor.vendor_state || "",
         lastTransaction
       };
     });

@@ -106,11 +106,12 @@ function AddPayment() {
     fetchPurchasebill();
     fetchPaidAmounts();
   }, []);
+  const vendorObj = vendordetails.find(v => v.vendor_name === selectedVendor);
   const handlepay = async () => {
     console.log("Paying for invoice:", selectedInvoice);
     const paymentData = {
 
-      //vendor_id: invoice.vendor_id, // You’ll need to resolve this from `vendor_name`
+      vendor_id:vendorObj.vendor_id, // You’ll need to resolve this from `vendor_name`
       date: paymentDate.format("DD/MM/YYYY"),
       method: paymentMethod,
       reference_no: referenceNo,
