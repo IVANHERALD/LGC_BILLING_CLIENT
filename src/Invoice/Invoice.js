@@ -613,7 +613,7 @@ function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
                 </div>
               </Typography>
             </div>
-            <div class="sub-grid-item label4" style={{display:"flex",justifyContent:"flex-end",paddingRight:"20px"}}><b>{isViewMode?(parseFloat(invoiceViewDetails.cgstamount).toFixed(2)):cgstAmount.toFixed(2)}</b></div>
+            <div class="sub-grid-item label4" style={{display:"flex",justifyContent:"flex-end",paddingRight:"20px"}}><b>{isViewMode?(parseFloat(invoiceViewDetails.cgstamount || 0.00).toFixed(2)):(cgstAmount?cgstAmount.toFixed(2): "0.00")}</b></div>
             <div class="sub-grid-item label5">
               <Typography
                 variant="body1"
@@ -646,7 +646,7 @@ function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
                 </div>
               </Typography>
             </div>
-            <div class="sub-grid-item label6" style={{display:"flex",justifyContent:"flex-end",paddingRight:"20px"}}><b>{isViewMode?(parseFloat(invoiceViewDetails.sgstamount).toFixed(2)):sgstAmount.toFixed(2)}</b></div>
+            <div class="sub-grid-item label6" style={{display:"flex",justifyContent:"flex-end",paddingRight:"20px"}}><b>{isViewMode?(parseFloat(invoiceViewDetails.sgstamount|| 0.00).toFixed(2)):(sgstAmount?sgstAmount.toFixed(2): "0.00")}</b></div>
             <div class="sub-grid-item label7">
               <Typography
                 variant="body1"
@@ -679,7 +679,7 @@ function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
                 </div>
               </Typography>
             </div>
-            <div class="sub-grid-item label8" style={{display:"flex",justifyContent:"flex-end",paddingRight:"10px"}}><b>{isViewMode?(parseFloat(invoiceViewDetails.igstamount).toFixed(2)):igstAmount.toFixed(2)}</b>&nbsp;&nbsp;</div>
+            <div class="sub-grid-item label8" style={{display:"flex",justifyContent:"flex-end",paddingRight:"10px"}}><b>{isViewMode?(parseFloat(invoiceViewDetails.igstamount | 0.00).toFixed(2)):(igstAmount?igstAmount.toFixed(2): "0.00")}</b>&nbsp;&nbsp;</div>
             <div class="sub-grid-item label9" >
               <Typography
                 variant="body1"
@@ -691,9 +691,14 @@ function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
             </div>
             <div class="sub-grid-item label10" style={{display:"flex",justifyContent:"flex-end",paddingRight:"10px",fontSize: "0.99rem", fontWeight: "bold"}}>
             {(() => {
-    const value = isViewMode 
-      ? parseFloat(invoiceViewDetails?.roundoff || 0).toFixed(2) 
-      : (parseFloat(roundoffAdjustment).toFixed(2));
+    const rawValue = isViewMode 
+    ? invoiceViewDetails?.roundoff 
+    : roundoffAdjustment;
+
+  // fallback: if it's empty, null, undefined, or NaN → 0
+  const safeValue = rawValue && !isNaN(parseFloat(rawValue)) ? parseFloat(rawValue) : 0;
+
+  const value = safeValue.toFixed(2);
     
     const prefix = parseFloat(value) > 0 ? "+" : ""; // Ensure + is displayed for positive numbers
 
@@ -711,7 +716,7 @@ function Invoice({invoiceViewDetails,viewitems,isViewMode, onInvoiceChange }) {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div class="sub-grid-item label12" style={{display:"flex",justifyContent:"flex-end",paddingRight:"20px"}}>
-              <b>{isViewMode?(parseFloat(invoiceViewDetails.grand_total).toFixed(2)):roundedTotalGrandAmount.toFixed(2)}</b>
+              <b>{isViewMode?(parseFloat(invoiceViewDetails.grand_total|| 0.00 ).toFixed(2)):roundedTotalGrandAmount?roundedTotalGrandAmount.toFixed(2): "0.00"}</b>
             </div>
           </div>
         </div>
