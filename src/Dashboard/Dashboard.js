@@ -12,6 +12,8 @@ function Dashboard() {
   const [monthlySales, setMonthlySales] = useState({});
   const [selectedMonth, setSelectedMonth] = useState('');
   const [availableMonths, setAvailableMonths] = useState([]);
+  const [availableYears, setAvailableYears] = useState([]); // added for year dropdown
+  const [selectedYear, setSelectedYear] = useState('');
 
   const getFinancialYear = (date) => {
     const d = new Date(date);
@@ -32,7 +34,21 @@ function Dashboard() {
   const [hours, minutes, seconds] = timePart.split(':').map(Number);
   return new Date(year, month - 1, day, hours, minutes, seconds);
 }
+const getCustomYearRange = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const fyStart = new Date(year, 9, 16); // Oct = 9 (0-indexed)
+    if (d >= fyStart) {
+      return `${year}-${year + 1}`; // current year onwards
+    } else {
+      return `${year - 1}-${year}`; // before Oct 16 → previous FY
+    }
+  };
 
+  const getCurrentCustomYearRange = () => {
+    const today = new Date();
+    return getCustomYearRange(today);
+  };
 
   useEffect(() => {
     const fetchbill = async () => {
@@ -42,7 +58,7 @@ function Dashboard() {
         const data = await response.json();
         const bills = data.Bill;
 
-        let overallStats = { total: 0, beforeTax: 0, gst: 0, weight: 0 };
+        let overallStats = { };
         let currentFYStats = { total: 0, beforeTax: 0, gst: 0, weight: 0 };
         let previousFYStats = { total: 0, beforeTax: 0, gst: 0, weight: 0 };
         let monthly = {};
@@ -53,6 +69,7 @@ function Dashboard() {
           const month = date.toLocaleString('default', { month: 'short' });
           const year = date.getFullYear();
           const fy = getFinancialYear(date);
+          const fyd = getCustomYearRange(date);
           const key = `${month} ${year}`;
           const keyDate = new Date(year, date.getMonth(), 1); // First day of that month
 
@@ -60,13 +77,16 @@ function Dashboard() {
           const total = parseFloat(bill.grand_total) || 0;
           const weight = parseFloat(bill.totalweight) || 0;
           const gst = total - beforeTax;
+          if (!overallStats[fyd]) {
+            overallStats[fyd] = { total: 0, beforeTax: 0, gst: 0, weight: 0 };
+          }
 
           // Overall
-          overallStats.total += total;
-          overallStats.beforeTax += beforeTax;
-          overallStats.gst += gst;
-          overallStats.weight += weight;
-
+          overallStats[fyd].total += total;
+          overallStats[fyd].beforeTax += beforeTax;
+          overallStats[fyd].gst += gst;
+          overallStats[fyd].weight += weight;
+          
           // FY Check
           if (isCurrentFY(fy)) {
             currentFYStats.total += total;
@@ -101,12 +121,19 @@ function Dashboard() {
         const defaultMonth = today.toLocaleString('default', { month: 'short' }) + ' ' + today.getFullYear();
         const fallbackMonth = monthKeys.includes(defaultMonth) ? defaultMonth : monthKeys[0];
 
-        setOverall(overallStats);
+        
         setCurrentFY(currentFYStats);
         setPreviousFY(previousFYStats);
         setMonthlySales(monthly);
         setAvailableMonths(monthKeys);
         setSelectedMonth(fallbackMonth);
+        const years = Object.keys(overallStats).sort().reverse();
+        const currentYear = getCurrentCustomYearRange();
+        const fallbackYear = years.includes(currentYear) ? currentYear : years[0];
+        setAvailableYears(years);
+        setSelectedYear(fallbackYear);
+        setOverall(overallStats);
+
       } catch (error) {
         console.log(error.message);
       }
@@ -121,12 +148,30 @@ function Dashboard() {
         <Navbar />
       </div>
       <div className="dashboard">
-        <h3>Overall Sales</h3>
-        <div className="analytics-section">
-        <p>Sales Without Tax: ₹{overall.beforeTax?.toFixed(2)}</p>
-        <p>Sales With Tax: ₹{overall.total?.toFixed(2)}</p>
-        <p>Total GST: ₹{overall.gst?.toFixed(2)}</p>
-        <p>Total Weight: {overall.weight?.toFixed(2)} Kgs</p></div>
+        <div><h3>Overall Sales</h3>
+        <div style={{ marginBottom: '1rem' }}>
+          <Select
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(e.target.value)}
+            displayEmpty
+          >
+            {availableYears.map((year) => (
+              <MenuItem key={year} value={year}>
+                {year}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
+        
+        {selectedYear && overall[selectedYear] && (
+          <div className="analytics-section">
+            <p>Sales Without Tax: ₹{overall[selectedYear].beforeTax.toFixed(2)}</p>
+            <p>Sales With Tax: ₹{overall[selectedYear].total.toFixed(2)}</p>
+            <p>Total GST: ₹{overall[selectedYear].gst.toFixed(2)}</p>
+            <p>Total Weight: {overall[selectedYear].weight.toFixed(2)} Kgs</p>
+          </div>
+        )}
+        </div>
 
         <h3>Current Financial Year</h3>
         <div className="analytics-section">

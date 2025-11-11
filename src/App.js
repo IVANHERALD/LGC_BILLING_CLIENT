@@ -10,6 +10,7 @@ import InvoiceDisplay from './InvoiceDisplay/InvoiceDisplay.js';
 import CastingDisplay from './CastingDisplay/CastingDisplay.js';
 import CustomerDisplay from './CustomerDisplay/CustomerDisplay.js';
 import Dashboard from './Dashboard/Dashboard.js';
+import Settings from './Settings/Settings.js';
 
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
       <Route path="/invoices" element={<InvoiceDisplay/>}/>
       <Route path='/castingdisplay' element={<CastingDisplay/>}/>
       <Route path='/customerdisplay' element={<CustomerDisplay/>}/>
-      
+      <Route path='/settings' element={<Settings/>}/>
       </Routes>
       
       </Router>
