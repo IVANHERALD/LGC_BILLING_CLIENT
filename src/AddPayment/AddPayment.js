@@ -116,7 +116,7 @@ function AddPayment() {
       method: paymentMethod,
       reference_no: referenceNo,
       amount_paid: parseFloat(PayNow), // Validate before sending
-      payment_note: "payment ui"
+      payment_note: ""
       // Implement payment logic here
     }
     console.log("Payment Data:", paymentData);
